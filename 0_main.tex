@@ -1,0 +1,159 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+
+%%%%%%%%%%Positioning of graphics figures
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{amssymb,amsthm,amsmath}   
+\graphicspath{{0_images/}}
+\usepackage{geometry}
+\usepackage[breaklinks]{hyperref}
+\usepackage[table,xcdraw]{xcolor}
+
+
+%Adding bibliography to table of contents
+\usepackage[nottoc]{tocbibind}
+%Adding bibtex reference file
+\usepackage[backend=biber,sorting=ynt]{biblatex}
+\addbibresource{references.bib}
+
+
+%Custom file where we put terms and definitions
+\usepackage{terms}
+\setlength\parindent{0pt}
+
+%Custom command for commenting out multiple lines
+\newcommand{\comment}[1]{}
+
+%Abbreviations package
+%\usepackage[acronym]{glossaries}
+
+%Center figure and table captions
+\usepackage{caption}
+
+%Formatting code
+\usepackage{listings}
+\lstset{
+    inputencoding=utf8,
+    extendedchars=true,
+    literate=   {"}{{\\o}}1
+                {ä}{{\"a}}1
+                {ü}{{\"u}}1
+}
+
+
+
+
+
+\begin{document}
+
+\begin{titlepage}
+\center % Center everything 
+\textsc{\LARGE Danmarks Tekniske Universitet}
+\\[1cm]
+\textsc{\huge{Bachelor Project}}
+\\[1cm]
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=10em]{dtu_logo.png}
+\end{figure}
+\\[2cm]
+\textsc{\huge{Scalable Machine Learning}}
+\\[0.5cm] 
+\textsc{\huge{for}}
+\\[0.5cm] 
+\textsc{\huge{Temporal Dynamic Graph Networks}}
+\\[1.0cm]
+\textsc{August Semrau Andersen - s183918
+\\ William Diedrichsen Marstrand - s183921} 
+\\[10pt]
+%\textsc{\LARGE } \\ \textsc{\LARGE} \\[0.5cm]
+%\includegraphics[width=9.5cm]{images/}
+
+\medskip
+%Number of characters: 12600, Standard Pages: 5.25
+\null
+\vfill
+\vspace{0.5cm}
+\begin{center}
+\today,
+ Danmarks Tekniske Universitet\\
+\end{center}
+\end{titlepage}
+
+
+\newpage
+\pagenumbering{gobble}
+
+
+\input{1_abstract}
+
+\newpage
+\pagenumbering{arabic}
+
+\tableofcontents
+\clearpage
+
+\input{2_abbreviations}
+%\printglossary[type=\acronymtype]
+%\printglossaries
+\clearpage
+
+\input{3_introduction}
+\clearpage
+
+
+
+\section{Method}
+\label{sec:Method}
+This section will delve with the technical methodology used in this project.
+\\
+First, it will give an explanation of the graph networks in the context that this project utilizes. 
+\\
+It will then explain the central idea behind the velocity dependant model about which the project revolves. 
+\\
+From there, this section will dive deep into the different aspects that this model relies upon.
+This both includes mathematical and statistical theory, as well as the methodology related to implementing the model in code.
+
+\input{4_Metode/1_GraphsAndNetworks}
+\input{4_Metode/2_VelocityModelIdea}
+\input{4_Metode/3_LatentSpaceModels}
+\input{4_Metode/4_PossionProcess}
+\input{4_Metode/5_IntensityFunction}
+\input{4_Metode/6_PiecewiseConstantVelocityModel}
+\input{4_Metode/7_Implementation}
+\clearpage
+
+
+\section{Results}
+\input{5_Results/Q1}
+\clearpage
+\input{5_Results/Q2}
+\clearpage
+\input{5_Results/Q3}
+\clearpage
+
+\section{Discussion}
+\input{6_Discussion/results_discussion}
+\clearpage
+
+
+
+
+
+
+\input{7_conclusion}
+\clearpage
+
+%\bibliographystyle{unsrt}
+%\bibliography{references}
+\printbibliography
+\clearpage
+
+\input{8_appendix/appendix}
+
+
+\end{document}
