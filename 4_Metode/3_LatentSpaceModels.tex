@@ -84,7 +84,6 @@ Their reciprocal distances governs the intensity of interaction between a given 
 For this project, this reciprocal distance is calculated as the Squared Euclidean distance, which is expressed below, very similar to the standard Euclidean distance:
 
 \begin{align} 
-\begin{split}
 ||\textbf{z}_u(t) - \textbf{z}_v(t)||_2^2
 &= 
 \left(\sqrt{((x_u + v_{x,u}t) - (x_v + v_{x,v}t))^2 + ((y_u + v_{y,u}t) - (y_v + v_{y,v}t))^2}\right)^2
@@ -94,9 +93,7 @@ For this project, this reciprocal distance is calculated as the Squared Euclidea
 \\
 &=
 (x_u - x_v + (v_{x,u} - v_{x,v})t)^2 + (y_u - y_v + ( v_{y,u} - v_{y,v})t)^2
-\end{split}
+\label{eq:SquaredEuclideanDistance}
 \end{align}
-
-
 
 

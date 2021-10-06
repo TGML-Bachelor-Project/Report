@@ -1,0 +1,50 @@
+
+\subsection{Proposed Model}
+\label{sec:Method:PiecewiseConstantVModel}
+
+The model, which was explained in non-technical terms in section \ref{sec:Method:VModel}, will here be fleshed out in full technical detail.
+This will combine the methodology presented in the previous 4 sections, including latent space models (\ref{sec:Method:LSM}), Poisson processes (\ref{sec:Method:Poisson}), the intensity function (\ref{sec:Method:IntensityFunc}) and the likelihood function (\ref{sec:Method:LikelihoodFunc}).
+
+
+\subsubsection{Constant Velocity base Model}
+\label{sec:Method:PiecewiseConstantVModel:ConstantVelocityModel}
+
+The constant velocity model, which serves as the basis of this project's modelling approach, determines the position and velocity for N nodes in a TDGN, based on the pairwise interactions they make over a given timespan.
+\\\\
+The model takes as input a chronologically ordered sequence of $n$ timestamped, pairwise node interactions, which are stored as $n$ tuples $(u_i, v_i, t_i)$.
+Here, $u_i$ and $v_i$ denote the two interacting nodes for interaction $i$, and $t_i$ denotes the relevant timestamp.
+\\
+The learnable parameters of the model are the set of parameter matrices $\textbf{Z}, \textbf{V} \in \mathbb{R} ^{N \times 2}$ as well as the bias term $\beta \in \mathbb{R}$.
+The parameter matrix $\textbf{Z}$ contains starting positions for all $N$ nodes in the TDGN, holding the $x$-component in the first column, and the $y$-component in the second.
+The same is true for $\textbf{V}$, just that it contains all velocities, which hence are constant over the given timespan.
+The bias term $\beta$, as explained in section \ref{sec:Method:IntensityFunc:BiasTerm}, is a real number used in modelling the background intensity of interaction.
+\\\\
+Each pair of nodes, $u$ and $v$, are associated with a Poisson point process, described under section \ref{sec:Method:Poisson:PoissonPointProcess}.
+These processes are each governed by an intensity function (\ref{eq:IntensityFunc}), described under section \ref{sec:Method:IntensityFunc}, which says that the closer $u$ and $v$ are, the higher the intensity of interaction will be. 
+These pairwise intensity functions are utilized in the log-likelihood function \ref{eq:LogLikelihoodFuncExplicit}, described under section \ref{sec:Method:LikelihoodFunc}, which outputs the log-likelihood of the input data given the parameters of the model, matrices $\textbf{Z}$ and $\textbf{V}$, and $\beta$.
+\\
+The optimization problem of the model is to maximize the log-likelihood (in practice minimize the negated log-likelihood) of the input data by tweaking the model parameters.
+In this regard, the goal is to learn the true initial conditions, $\textbf{Z}, \textbf{V}, \beta$, of the model.
+
+
+\subsubsection{Expanding to Piecewise Constant Velocity Model}
+\label{sec:Method:PiecewiseConstantVModel:PiecewiseConstantVelocityModel}
+
+With the constant velocity model, it is theoretically possible to model interactions between $N$ nodes in a TDGN by finding their true starting positions and velocities, as well as the bias term $\beta$, for a given timespan.
+\\\\
+The positions of nodes are modelled to change, reflecting the change in intensity of interaction between nodes, starting in $\textbf{Z}$ at time $t=0$ and moving along the trajectories that result from the constant velocities $\textbf{V}$ over time, until end time $T$.
+With only one set of parameters for the entire timespan, the modelling ability is limited to describing changes in intensity of interaction with only changes in positions along the the trajectory of the velocity vectors of $\textbf{V}$.
+This will in many cases be insufficient for depicting the given TDGN in a detailed manner. 
+In order to model with greater detail, the Constant Velocity Model is expanded to the Piecewise Constant Velocity Model. 
+The central idea with this model is splitting the entire timespan of a TDGN into smaller pieces, and using several instances of the Constant Velocity Model to model each of these pieces, resulting in several sets of true parameters.
+Having several sets of positions and velocities allows for the TDGN to be modelled in a much more detailed manner, and should produce better representations in the Euclidean latent space.
+\\\\
+As stated, the Piecewise Constant Velocity Model is in essence just a sequence of Constant Velocity Models, each modelling a piece of the entire timespan of which the given TDGN consists. 
+This means that eaach node in the TDGN will be associated with several positions and velocities, meaning it changes direction of travel in the Euclidean latent space over the course of the entire TDGN.
+
+
+
+\subsubsection{Regularizing Velocity Changes}
+
+
+

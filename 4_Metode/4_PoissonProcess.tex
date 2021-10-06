@@ -1,5 +1,5 @@
 \subsection{Poisson Distribution and Process}
-\label{sec:Method:Possion}
+\label{sec:Method:Poisson}
 
 The Poisson distribution models the probability that a given number of independent events, from a discrete random variable, will happen in a specific time interval \cite{PoissonScience}. 
 The events will happen at some rate, defined by the symbol $\lambda$, also named the intensity function. 
@@ -13,8 +13,8 @@ The intensity function might then be constant throughout the time interval or it
 
 
 
-\subsubsection{Possion Point Process}
-\label{sec:Method:Possion:PossionPointProcess}
+\subsubsection{Poisson Point Process}
+\label{sec:Method:Poisson:PoissonPointProcess}
 
 To understand the Poisson point process it is useful to first define the point process. 
 A point process is a stochastic process with a collection of random variables that represent the arrival times of events i.e. when events happen. 
@@ -69,14 +69,14 @@ where $X(0) = 0$.
 In the case of this project we are interested in the non-homogeneous Poisson process, in which case the process increments $X(s+t) - X(s)$ has the rate $\lambda(t)$ and becomes Poisson distributed with parameter $\int_s^t \lambda(u)\; du$, such that:
 
 \begin{equation}
-    P(X(s+t) - X(s) = k) = \frac{\left(\int_s^{s+t} \lambda(u) \; du \right)^k e^{-\int_s^{s+t} \lambda(u) \; du}}{k!}
+    P(X(s+t) - X(s) = k) = \frac{\left(\int_s^{s+t} \lambda(u) \; du \right)^k exp\left(-\int_s^{s+t} \lambda(u) \; du\right)}{k!}
 \end{equation}
 
 This gives the probability of having $k$ events in the time interval $(s, s+t]$ for the non-homogeneous Poisson point process.
 
 
 \subsubsection{Event Probability}
-\label{sec:Method:Possion:EventProbability}
+\label{sec:Method:Poisson:EventProbability}
 
 Now, if we consider the case where the interarrival times $(s, s+t]$ are made infinitesimally small, such that $t = dt$. 
 Then it will be assumed that no more than one event can occur during the interarrival time $(s, s+dt]$, leading to:
@@ -94,8 +94,11 @@ which means that the event probability of a single event happening becomes:
 
 \begin{align}
 \begin{split}
-    P(X(s+t) - X(s) = 1) &= \frac{\left(\int_s^{s+t} \lambda(u) \; du \right)^1 e^{-\int_s^{s+t} \lambda(u) \; du}}{1!} \\
-    &= \left(\int_s^{s+t} \lambda(u) \; du \right) e^{-\int_s^{s+t} \lambda(u) \; du}
+    P(X(s+t) - X(s) = 1) 
+    &= 
+    \frac{\left(\int_s^{s+t} \lambda(u) \; du \right)^1 \exp \left(-\int_s^{s+t} \lambda(u) \; du\right)}{1!} \\
+    &= 
+    \left(\int_s^{s+t} \lambda(u) \; du \right) \exp \left(-\int_s^{s+t} \lambda(u) \; du\right)
 \label{prob_single_event}
 \end{split}
 \end{align}
@@ -123,17 +126,18 @@ Here, the higher orders of the infinitesimal $ds$ are neglected.
 
 
 \subsubsection{Non-Event Probability}
-\label{sec:Method:Possion:NonEventProbability}
+\label{sec:Method:Poisson:NonEventProbability}
 
 A similar starting point can be taken for the non-event probability as with the event probability.
 If we consider the non-homogeneous Poisson point process with intensity $\lambda(t)$. 
 The probability of no events happening during the interarrival time $(s, s+t]$ becomes:
 
-\begin{align}
-\begin{split}
-P(X(s+t) - X(s) = 0) &= \frac{\left(\int_s^t \lambda(u)du \right)^0 e^{- \int_s^t \lambda(u)du}}{0!}\\
-&= e^{- \int_s^t \lambda(u)du}
-\end{split}
-\end{align}
+\begin{equation}
+    P(X(s+t) - X(s) = 0) 
+    = 
+    \frac{\left(\int_s^t \lambda(u)du \right)^0 \exp \left(- \int_s^t \lambda(u)du\right)}{0!}
+    = 
+    \exp \left(- \int_s^t \lambda(u)du\right)
+\end{equation}
 
 where $t = dt$ for infinitesimally small interarrival times.

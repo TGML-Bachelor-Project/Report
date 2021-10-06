@@ -1,15 +1,102 @@
 \subsection{Intensity Function}
 \label{sec:Method:IntensityFunc}
 
+For the constant velocity model, the intensity function is defined for each pair of nodes in the given TDGN.
+The intensity function $\lambda_{u,v}$ related to a pair of two nodes of interest, $u$ and $v$, is written as the following:
 
-\subsubsection{Likelihood Functions}
-\label{sec:Method:IntensityFunc:LikelihoodFunc}
+\begin{equation}
+    \lambda_{u,v}(t)
+    =
+    \exp \left(\beta - ||\textbf{z}_u(t) - \textbf{z}_v(t)||_2^2\right)
+    \label{eq:IntensityFunc}
+\end{equation}
+
+This function is governed by two important terms.
+\\
+The first, the distance term, is the reciprocal Euclidean distance of the node pair, which is described earlier in section \ref{sec:Method:LSM:SquaredEuclideanDistance}.
+This term is vital in reflecting the intensity of interaction between nodes as their reciprocal distance.
+As the positions of nodes are dependent on both starting position and velocity, these are parameters the model will learn through optimizing based ultimately on this intensity function.
+\\
+The second is the bias term $\beta$, briefly mentioned in section \ref{sec:Method:VModel:IntensityFuncIntro}.
+The bias term serves as the background intensity, and hence models the intensity of interaction between nodes regardless of their reciprocal distance in Euclidean space. 
 
 
-\subsubsection{Derivation of the Analytical Solution}
-\label{sec:Method:IntensityFunc:DerivationAnalytical}
+\subsubsection{Bias Term $\beta$}
+\label{sec:Method:IntensityFunc:BiasTerm}
 
+The bias term, $\beta$, a part of the intensity function, is a learnable parameter for the model.
+This project considers two different implementations of the bias term. One version uses a \textit{common bias term} with a single $\beta$ scalar parameter as explained for equation (\ref{eq:IntensityFunc}) above.
+An alternative to the common bias term is the \textit{node specific bias term} where a bias term is added for each node $i$, such that the scalar $\beta_i$ is a learnable model parameter for the bias of node $i$. This results in a model with a learnable parameter vector $\beta \in \mathbb{R}^N$ where $N$ is the number of nodes in the network. Then the intensity function is written as:
+\begin{equation}
+        \lambda_{u,v}(t)
+    =
+    \exp \left(\beta_u + \beta_v - ||\textbf{z}_u(t) - \textbf{z}_v(t)||_2^2\right)
+    \label{eq:NodeBiasIntensityFunc}
+\end{equation}
 
+For this report the common bias term model will be the primary implementation of consideration.
 
+\subsubsection{Integral of the Intensity Function}
+\label{sec:Method:IntensityFunc:IntegralIntensityFunc}
 
+The intensity function for a given pair of two nodes, $u$ and $v$, using the bias term $\beta$ and squared Euclidean distance as distance term, is as stated above given by (\ref{eq:IntensityFunc}).
+As seen earlier in (\ref{eq:SquaredEuclideanDistance}), the distance term can be written as a function of the starting position plus the velocity over time, as such:
 
+\begin{equation}
+    \lambda_{u,v}(t)
+    =
+    \exp \left(\beta - \left((x_u - x_v + (v_{x,u} - v_{x,v})t)^2 + (y_u - y_v + ( v_{y,u} - v_{y,v})t)^2\right)\right)
+\end{equation}
+
+In order to compute the log-likelihood function, which is explained in the next section \ref{sec:Method:LikelihoodFunc}, the solution for the integral of the intensity function needs to be found. 
+\\
+The reason the squared Euclidean distance is utilized, as opposed to using the standard Euclidean distance, is that it enables for an exact, analytical integration of the stated intensity function for constant velocity.
+Having an analytical solution for the integral is important for this project, as it enables the computation to be exact and run fast.
+\\
+This integral is written below:
+
+\begin{equation}
+    \int_{t_0}^T \lambda_{u,v}(s) \mathrm{d}s 
+    =
+    \int_{t_0}^T \exp \left(\beta - \left((x_u - x_v + (v_{x,u} - v_{x,v})s)^2 + (y_u - y_v + ( v_{y,u} - v_{y,v})s)^2\right)\right) \mathrm{d}s
+\end{equation}
+
+For ease of interpretation, substitutions are made for the following (without them, the final solution is incredibly long):
+
+\begin{align}
+    x_u - x_v &= a
+    \\
+    y_u - y_v &= b
+    \\
+    v_{x,u} - v_{x,v} &= m
+    \\
+    v_{y,u} - v_{y,v} &= n
+\end{align}
+
+This yields a substituted integral looking as such:
+
+\begin{equation}
+    \int_{t_0}^T \lambda_{u,v}(s) \mathrm{d}s 
+    =
+    \int_{t_0}^T \exp \left(\beta - \left((a + m \cdot s)^2 + (b + n \cdot s)^2\right)\right) \mathrm{d}s
+\end{equation}
+
+What is evident here, is that this integral must have an analytical solution, meaning approximation will not be needed in order to evaluate it's value. 
+This is specifically due to the fact that the integration is happening over the exponential function of a function of quadratic form.
+\\\\
+The analytical solution to this integral is computed to being:
+
+\begin{equation}
+    \int_{t_0}^T \lambda_{u,v}(s) \mathrm{d}s
+    = 
+    -\frac{\sqrt{\pi} \exp\left(\frac{\left(-b^{2}-a+\beta\right) m^{2}-n^{2}(-\beta+a)}{m^{2}+n^{2}}\right)}{2 \sqrt{m^{2}+n^{2}}} \cdot\left(\operatorname{erf}\left(\frac{\left(m^{2}+n^{2}\right) t_{0}+b n}{\sqrt{m^{2}+n^{2}}}\right)-\operatorname{erf}\left(\frac{\left(m^{2}+n^{2}\right) T+b n}{\sqrt{m^{2}+n^{2}}}\right)\right)
+\end{equation}
+
+As can be seen above, the solution contains the Gauss error function denoted by $erf$.
+This error function is a complex function of a complex variable, and is defined as:
+
+\begin{equation}
+\operatorname{erf} z=\frac{2}{\sqrt{\pi}} \int_{0}^{z} e^{-t^{2}} \mathrm{d} t
+\end{equation}
+
+What is important about the error function, is that while it poses the solving of another set of integrals, these do not disrupt the analytical nature of the integral of the intensity function.
