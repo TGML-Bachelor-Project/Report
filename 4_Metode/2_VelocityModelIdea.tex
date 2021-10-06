@@ -1,62 +1,65 @@
-\subsection{The Constant Velocity Model Idea}
+
+\subsection{Constant Velocity Model}
 \label{sec:Method:VModel}
-This subsection will describe the general idea of the velocity model, and lightly explain the theoretical aspects enabling its workings.
-The section will not delve into the deep theoretical aspects of how it works, as these will be unraveled in the following sections.
-Instead it serves as the foundation for understanding how these fit into the overall modelling of TDGNs.
+
+This subsection will describe the idea of the Constant Velocity Model, on which the Piecewise Constant Velocity Model is based, and lightly explain the theoretical aspects enabling its workings.
+The section will not dive into the technical aspects of how it works, as these will be delved with in the following sections.
+Instead, it serves as the foundation for understanding how these fit into the overall modelling of TDGNs.
 \\
-The fully theoretical explanation of the model used in this project is presented in section \ref{sec:Method:PiecewiseConstantVModel}.
+The fully technical explanation of the model used in this project is presented in section \ref{sec:Method:PiecewiseConstantVModel}.
 
 
-
-\subsubsection{Modelling Approach}
+\subsubsection{Constant Velocity Modelling Approach}
 \label{sec:Method:VModel:ModellingApproach}
 
-The overarching and most fundamental idea behind this project is to model the nodes of a TDGN as being positioned in Euclidean space through a latent representation. Thereby having the reciprocal distance of any pair of nodes in this space governing the intensity with which they interact.
-The Euclidean latent space will be explained further in the following section  \ref{sec:Method:LSM:EuclideanLatentSpace}. The basic intuition is that by placing two nodes on a two-dimensional plane, the closer they are, the more likely they are to interact.
+The overarching and most fundamental idea behind this project is to model the nodes of a TDGN as being positioned in a two-dimensional space. 
+In this space, a form of latent representation the reciprocal distance of any pair of nodes shall govern the intensity with which they interact.
+The basic intuition is that, the closer any pair of nodes are, the more likely they are to interact.
 \\
-Using a chronologically ordered sequence of pairwise interactions, among a given number of N nodes, as input data, the nodes will be modelled in the Euclidean latent space.
-For a TDGN, the intensity of interaction between pairs of nodes naturally changes over time, and so too does the positions of the nodes in Euclidean latent space and hence their pairwise reciprocal distances.
-The important understanding here is that, as a given pair of nodes interact more or less, this will be reflected by their reciprocal distance in the Euclidean latent space.
+%Given a chronologically ordered sequence of pairwise interactions with timestamps as input data, the $N$ nodes of a given TDGN will be modelled in the Euclidean latent space.
+For a TDGN, the intensity of interaction between nodes naturally changes over time, and so too does their positions and pairwise reciprocal distances.
+The important understanding here is that given a pair of nodes interacting increasingly more, their reciprocal distance in two-dimensional latent space will decrease, and vice versa.
 \\
-This leads to the second-most fundamental idea behind this project, which is that due to the changing positions over time, the nodes represented in Euclidean latent space are modelled to each have a velocity. 
-The intuition here is essentially that the velocity is what enables their reciprocal distances to change over time, to reflect the change in intensity of interaction.
-This idea is nonetheless important to understand, and an example is hence due. 
+This leads to the second-most fundamental idea behind this project, that the nodes' changing positions over time are represented as them each having a velocity. 
+The intuition here is essentially that in the two-dimensional latent space, the velocity enables their positions to change over time, in order to reflect the change in intensity of interaction between nodes.
+\\
+These two ideas make up the fundamentals of the COnstant Velocity Model.
+The intuition of how this works can though be hard to grasp, and hence an example is presented below.
+If you got the idea already, feel free to skip the next paragraph.
 \\\\
 A short example:
 \\
 Say we have TDGN with two people on Facebook (the nodes), their interactions being sending each other messages (edges). 
-The example story of these two, is that one of them has dropped their wallet in the metro, the other one picks it up and contacts the owner via Facebook, they exchange a bunch of messages relating to handing the wallet back, the wallet is handed back, and then they never write each other again.
+The example story of these two is that one of them has dropped their wallet in the Metro, the other one picks it up and contacts the owner via Facebook, they exchange a bunch of messages relating to handing the wallet back, the wallet is handed back, and then they never write each other again.
 In short terms, they have no interactions, they suddenly interact a lot, then they return to having no interactions.
 \\
 The interactions they make is now inputted into the velocity model as a chronologically ordered sequence of interactions, and they are placed as two nodes in the Euclidean latent space.
-Here, the model will assign each node a starting position, Z, and a starting velocity, V. 
-At first their reciprocal distance will be big, as they do not interact whatsoever, and the starting positions will be spaced far apart, yielding very low intensity of interaction.
-As we know, they will at some point interact a lot for a short while, and so the model will assign them each a velocity that will make them intercept at a given time, of high intensity. 
-The intuition is that the nodes will do a 'fly by' in Euclidean latent space, yielding a high intensity of interaction for a short while, and then gain reciprocal distance again lowering the intensity.
-The figure shows this as a graphic representation of the Euclidean latent space.
-\\
-This way, a temporally dependant set of interactions between a pair of agents is represented by positions and velocity in Euclidean latent space. 
-What this modelling approach provides us is essentially physical representation of network interactions.
+Here, the model will fit it's parameters to the input data, and when fitted assign each node a starting position, $Z$, and a starting velocity, $V$. 
+The starting positions of the two nodes will be far apart, yielding very low intensity of interaction, as they at first do not interact whatsoever.
+The example story tells us that they will at some point interact a lot for a short while, and so the model will assign them each a velocity that will make them intercept at a given time of high interaction intensity. 
+In this scenario, the nodes will start out far apart, travel gradually closer to each around the halfway of the timespan, and then gradually regain reciprocal distance.
+The distance in two-dimensional space will hence yield low, then high, then low intensity of interaction.
 \\\\
-One last important understanding of the modelling approach, while probably clear from the above, is that the model tries to learn the positions and velocities of each node in a TDGN based on their mutual interactions, NOT the other way around. 
-The modelling approach, and essentially the entire general idea behind this project, has the purpose of depicting interactions of a TDGN as movements in Euclidean latent space.
-
-\subsubsection{Intensity Function Introduction}
-\label{sec:Method:VModel:IntensityFuncIntro}
-The quintessential piece of math underlying the velocity modelling approach of this project is the intensity function, which describes the intensity of interaction between a given pair of nodes in a TDGN.
+FIGURE SHOWING TWO NODES MOVING AS EXPLAINED IN THE EXAMPLE ABOVE
 \\\\
-The next three sections will dive into great detail about the aspects that make up this intensity function.
+Using the Constant Velocity Model approach, the nodes of a TDGN can be represented as particles in two-dimensional latent space having starting positions and velocity. 
+What this modelling approach provides, is essentially a physical representation of temporally dynamic graph network interactions.
+\\\\
+One last important understanding of the modelling approach, while perhaps clear from the above, is that the goal of the model is to learn the positions and velocities of each node in a given TDGN, based on the timestamped interactions of the TDGN, NOT the other way around. 
+The modelling approach, and essentially the entire general idea behind this project, has the purpose of depicting a TDGN in observable space based on data of when pairs of nodes interact.
+\\\\
+The next four sections will dive into great detail about the texhnical aspects that enable the moddeling approach.
 \\
-First, as mentioned earlier, the concept of Euclidean latent space will be covered in section \ref{sec:Method:LSM:EuclideanLatentSpace}, in order to understand how and why it enables the modelling approach of this project. 
-As Squared Euclidean distance is used as the measure governing the intensity of interaction, this will be covered in detail.
+First, section \ref{sec:Method:LSM:EuclideanLatentSpace} covers the actual two-dimensional latent space used in this project, namely Euclidean latent space. 
+squared Euclidean distance is used as the distance measure for the intensity function, which governs the intensity of interaction, and so this will be covered in detail in section \ref{sec:Method:LSM:SquaredEuclideanDistance}.
 \\
 Second, a deep dive into Poisson statistics will be presented in section \ref{sec:Method:Poisson}.
-The intensity of interaction between any pair of two nodes in a given TDGN is associated with it's own Poisson point process, and therefor an essential part of the intensity function.
-Synthetic data generation also relies on Poisson statistics, and so this will also be explained fully.
+The intensity of interaction between any pair of two nodes in a given TDGN is associated with it's own Poisson point process, and therefor essential to understand.
+%Synthetic data generation also relies on Poisson statistics, and so this will also be explained fully.
 \\
-Thirdly, the intensity function which is used in order to compute the likelihood function is explained in detail.
-This function relies on the Squared Euclidean distance, and introduces the Bias term, in order to ground intensity of interaction between nodes in the Euclidean latent space.
+Thirdly, in section \ref{sec:Method:IntensityFunc}, the intensity function is explained in detail.
+This function relies on the squared Euclidean distance, and introduces the Bias term, and is what converts between intensity of interaction and pairwise reciprocal distance of nodes in Euclidean latent space.
 \\
-Fourth, the likelihood function that is used for computing the log-likelihood on which the model optimizes and evaluates is derived and explained.
+Fourth, the likelihood function that is used for computing the log-likelihood on which the model optimizes and evaluates is explained in section \ref{sec:Method:LikelihoodFunc}.
 \\
-Lastly, this is all put together and a thorough, much deeper technical explanation of the constant velocity model is given.
+All of this is put together, and a thorough technical explanation of the Piecewise Constant Velocity Model is given.

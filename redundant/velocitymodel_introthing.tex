@@ -1,0 +1,22 @@
+
+
+\subsubsection{Introduction}
+\label{sec:Method:VModel:IntensityFuncIntro}
+
+The quintessential piece of math underlying the velocity modelling approach of this project is the intensity function, which converts between intensity of interaction between a given pair of nodes in a TDGN and distance between these nodes in latent space.
+\\\\
+The next three sections will dive into great detail about the aspects that make up this intensity function.
+\\
+First, the actual two-dimensional latent space used in this project, namely Euclidean latent space, will be covered in section \ref{sec:Method:LSM:EuclideanLatentSpace}, in order to understand how and why it enables the modelling approach of this project. 
+As Squared Euclidean distance is used as the measure governing the intensity of interaction, this will be covered in detail in section \ref{sec:Method:LSM:SquaredEuclideanDistance}.
+\\
+Second, a deep dive into Poisson statistics will be presented in section \ref{sec:Method:Poisson}.
+The intensity of interaction between any pair of two nodes in a given TDGN is associated with it's own Poisson point process, and therefor an essential part of the intensity function.
+%Synthetic data generation also relies on Poisson statistics, and so this will also be explained fully.
+\\
+Thirdly, the intensity function which is used in order to compute the likelihood function is explained in detail.
+This function relies on the Squared Euclidean distance, and introduces the Bias term, in order to ground intensity of interaction between nodes in the Euclidean latent space.
+\\
+Fourth, the likelihood function that is used for computing the log-likelihood on which the model optimizes and evaluates is derived and explained.
+\\
+Lastly, this is all put together and a thorough, much deeper technical explanation of the constant velocity model is given.

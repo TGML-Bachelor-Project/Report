@@ -18,23 +18,23 @@ This term is vital in reflecting the intensity of interaction between nodes as t
 As the positions of nodes are dependent on both starting position and velocity, these are parameters the model will learn through optimizing based ultimately on this intensity function.
 \\
 The second is the bias term $\beta$, briefly mentioned in section \ref{sec:Method:VModel:IntensityFuncIntro}.
-The bias term serves as the background intensity, and hence models the intensity of interaction between nodes regardless of their reciprocal distance in Euclidean space. 
+The bias term is a scalar which is a learnable model parameter which the model learns during training. The bias term serves as the background intensity, and hence models the intensity of interaction between nodes regardless of their reciprocal distance in Euclidean space. In this way a large bias term will mean that nodes have an increased likelihood of interacting regardless of their latent positions and the opposite is true for a small bias term.
 
 
-\subsubsection{Bias Term $\beta$}
-\label{sec:Method:IntensityFunc:BiasTerm}
+% \subsubsection{Bias Term $\beta$}
+% \label{sec:Method:IntensityFunc:BiasTerm}
 
-The bias term, $\beta$, a part of the intensity function, is a learnable parameter for the model.
-This project considers two different implementations of the bias term. One version uses a \textit{common bias term} with a single $\beta$ scalar parameter as explained for equation (\ref{eq:IntensityFunc}) above.
-An alternative to the common bias term is the \textit{node specific bias term} where a bias term is added for each node $i$, such that the scalar $\beta_i$ is a learnable model parameter for the bias of node $i$. This results in a model with a learnable parameter vector $\beta \in \mathbb{R}^N$ where $N$ is the number of nodes in the network. Then the intensity function is written as:
-\begin{equation}
-        \lambda_{u,v}(t)
-    =
-    \exp \left(\beta_u + \beta_v - ||\textbf{z}_u(t) - \textbf{z}_v(t)||_2^2\right)
-    \label{eq:NodeBiasIntensityFunc}
-\end{equation}
+% The bias term, $\beta$, a part of the intensity function, is a learnable parameter for the model.
+% This project considers two different implementations of the bias term. One version uses a \textit{common bias term} with a single $\beta$ scalar parameter as explained for equation (\ref{eq:IntensityFunc}) above.
+% An alternative to the common bias term is the \textit{node specific bias term} where a bias term is added for each node $i$, such that the scalar $\beta_i$ is a learnable model parameter for the bias of node $i$. This results in a model with a learnable parameter vector $\beta \in \mathbb{R}^N$ where $N$ is the number of nodes in the network. Then the intensity function is written as:
+% \begin{equation}
+%         \lambda_{u,v}(t)
+%     =
+%     \exp \left(\beta_u + \beta_v - ||\textbf{z}_u(t) - \textbf{z}_v(t)||_2^2\right)
+%     \label{eq:NodeBiasIntensityFunc}
+% \end{equation}
 
-For this report the common bias term model will be the primary implementation of consideration.
+% For this report the common bias term model will be the primary implementation of consideration.
 
 \subsubsection{Integral of the Intensity Function}
 \label{sec:Method:IntensityFunc:IntegralIntensityFunc}
