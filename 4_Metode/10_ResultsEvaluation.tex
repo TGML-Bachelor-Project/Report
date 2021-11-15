@@ -83,6 +83,7 @@ After training, the modelled intensity of interaction is compared with the groun
 In order to test the model on real data, a test which does not require a ground truth model is devised.
 From the dataset, 10\% of interactions are removed before training.
 For each time point in the removed interactions, an alternative, false interaction is sampled, and the model is posed with evaluating the probability of the real interaction contra the false one.
+The probability is computed as the event probability, explained under section \ref{}
 
 The AUC score is computed as the area under the ROC (Receiver Operating Characteristics) curve.
 The ROC curve is the False Positive rate vs. the True Positive rate at some given decision thresh holds.
