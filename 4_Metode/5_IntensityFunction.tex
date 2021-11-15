@@ -86,11 +86,21 @@ This is specifically due to the fact that the integration is happening over the 
 \\\\
 The analytical solution to this integral is computed to being:
 
-\begin{equation}
+
+\begin{align}
     \int_{t_0}^T \lambda_{u,v}(s) \mathrm{d}s
     = 
-    -\frac{\sqrt{\pi} \exp\left(\frac{\left(-b^{2}-a+\beta\right) m^{2}-n^{2}(-\beta+a)}{m^{2}+n^{2}}\right)}{2 \sqrt{m^{2}+n^{2}}} \cdot\left(\operatorname{erf}\left(\frac{\left(m^{2}+n^{2}\right) t_{0}+b n}{\sqrt{m^{2}+n^{2}}}\right)-\operatorname{erf}\left(\frac{\left(m^{2}+n^{2}\right) T+b n}{\sqrt{m^{2}+n^{2}}}\right)\right)
-\end{equation}
+    -\frac{\sqrt{\pi}}{2 \sqrt{m^{2}+n^{2}}}
+    \cdot
+    \exp\left(\frac{\left(-b^{2}+\beta\right) m^{2}+2abmn-n^{2}(a^{2}-\beta)}{m^{2}+n^{2}}\right)
+    \\
+    \cdot 
+    \left(
+    \operatorname{erf}\left(\frac{\left(m^{2}+n^{2}\right)t_{0}+am+b n}{\sqrt{m^{2}+n^{2}}}\right)
+    -\operatorname{erf}\left(\frac{\left(m^{2}+n^{2}\right)T+am+b n}{\sqrt{m^{2}+n^{2}}}\right)
+    \right)
+    \label{eq:analytical_integral}
+\end{align}
 
 As can be seen above, the solution contains the Gauss error function denoted by $erf$.
 This error function is a complex function of a complex variable, and is defined as:

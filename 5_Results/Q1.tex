@@ -1,5 +1,100 @@
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{First Research Question}
 \label{sec:ResearchQuestion1}
+The first research question of this project states:
+\\
+"How well can TDGNs be modelled using a velocity-dependant representation in latent Euclidean space, with stepwise event computation, and how well can it model the evolution of the TDGNs?"
+\\\\
+In order to answer this question, the modelling approach will be evaluated on synthetically generated data.
+
+
+\subsubsection{Single-step TDGN modelling of synthetic data}
+\label{sec:ResearchQuestion1:singleStepSynthetic}
+The first part of answering the first research question consists in confirming proper modelling performance of a single-step Constant Velocity Model. 
+This is done as it lays the foundation of the stepwise CVM, meaning if the single-step model does not work as intended, the stepwise will neither.
+\\
+Synthetic dataset 1, see section \ref{sec:Method:Reproducibility:SyntheticDataset1}, is utilized here.
+\\\\
+Loss and beta convergence.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|cc|}
+\hline
+Batch Size   & Beta & NLL\\ \hline
+Ground Truth & 7.5  & 79,424      \\
+100          & XX   & XX       \\
+150          & XX   & XX       \\
+\hline
+\end{tabular}
+\caption{}
+\label{tab:SingleStep1}
+\end{table}
+
+\\\\
+Intensity rate comparison.
+
+
+\\\\
+Diad removal.
+
+
+\\\\
+Interaction removal.
+\\\\
+
+
+
+
+\subsubsection{Multi-step TDGN modelling of synthetic data}
+\label{sec:ResearchQuestion1:multiStepSynthetic}
+The second part of answering the first research question evaluates the multi-step, stepwise modelling capability of the CVM.
+\\
+Synthetic dataset 2, see section \ref{sec:Method:Reproducibility:SyntheticDataset2}, is utilized here.
+\\\\
+Loss and beta convergence.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|cc|}
+\hline
+Batch Size   & Beta & NLL\\ \hline
+Ground Truth & 7.5  & 79,424      \\
+100          & XX   & XX       \\
+150          & XX   & XX       \\
+\hline
+\end{tabular}
+\caption{}
+\label{tab:SingleStep1}
+\end{table}
+
+
+\\\\
+Intensity rate comparison.
+
+
+\\\\
+Diad removal.
+
+
+\\\\
+Interaction removal.
+
+
+
+\subsubsection{Multi-step modelling of real world data}
+\label{sec:ResearchQuestion1:dataset2}
+The third part of answering the first research question investigates the stepwise CVM's modelling capabilities on a real world dataset.
+\\
+Real dataset 1, see section \ref{sec:Method:Reproducibility:RealDataset1}, is utilized here.
+
+
+
+\\\\
+Diad removal.
+
+
+\\\\
+Interaction removal.
+
+
+
