@@ -7,7 +7,19 @@
 \subsubsection{First Research Question}
 \label{sec:Discussion:Results_Q1}
 
+The use of a dataset-wide bias term is possibly insufficient in terms of correctly representing the different nodes of the TDGN the model is trying to model. 
+This fact is of course not true for the synthetic dataset results, as the data of these sets are all generated from a single beta value, but for the real datasets it might very well be the case.
+In a given network, a very plausible scenario may be that some entities are less active than others, and the model then fits a beta value that reflects greater background intensity than these entities entail.
+In order to compensate for this, the model will place these less active entities further away from the more active entities, neglecting the proportions of each individual node's overall interaction intensity.
 
+A fitting expansion of the model would hence be node-specific bias terms, with which every node is attributed it's own beta value, and as such can be spatially modelled in latent space while accounting for the node's overall interaction intensity. 
+\\\\
+
+
+
+
+
+Having a 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Second Research Question}

@@ -1,27 +1,16 @@
-
 \subsection{Latent Space Models}
 \label{sec:Method:LSM}
 This subsection delves with explaining and understanding the latent space modelling approach.
-It will describe what the latent space is, how specifically the Euclidean latent space works and how the squared Euclidean distance is used as a metric for the velocity modelling approach.
 
-
-\subsubsection{Latent Space (This subsection is work in progress)}
-\label{sec:Method:LSM:LatentSpace}
-
-Latent space is an interesting concept, and may intuitively be hard to grasp.
-Latent space is nothing, it doesn't really exist, and it is merely a construct on which information can be represented with different properties than they have originally.
-Essentially, latent space representations serve to reduce dimensionality.
-\\
-% Fra WIKI: A latent space, also known as a latent feature space or embedding space, is an embedding of a set of items within a manifold in which items which resemble each other more closely are positioned closer to one another in the latent space. Position within the latent space can be viewed as being defined by a set of latent variables that emerge from the resemblances from the objects. In most cases, the dimensionality of the latent space is chosen to be lower than the dimensionality of the feature space from which the data points are drawn, making the construction of a latent space an example of dimensionality reduction, which can also be viewed as a form of data compression or machine learning. 
-
+A latent space, also refereed to as a latent embedding space, serves as an embedding in which a set of items, in this project the nodes of a TDGN, who resemble each other more closely are positioned more closely in the latent space.
+This resemblance is in this project based on the intensity of interaction, defined by the intensity function which is described later in section \ref{sec:Method:IntensityFunc}.
+The latent space, being a two-dimensional space, serves as a dimensionality reduction, given the fact that the interaction data is of much higher dimensions
 
 
 \subsubsection{Euclidean Latent Space}
 \label{sec:Method:LSM:EuclideanLatentSpace}
-
 The Euclidean latent space is latent space governed by Euclidean geometry.
-This means any measure of position, distance, velocity etc. are understood as Euclidean and can be computed as such. 
-\\
+This means any measure of position, distance and velocity are understood as Euclidean and can be computed as such. 
 Taking an offset in the nodes of a TDGN, and the modelling approach of this project, the properties of Euclidean space will be explained below.
 \\\\
 Given a TDGN consisting of $N$ nodes, these are all placed in the Euclidean latent space. 
@@ -30,8 +19,8 @@ $z_u = \begin{pmatrix}
 x_u, y_u
 \end{pmatrix}^T$.
 \\
-As the project deals with temporally dynamic graph networks, the positions of nodes are temporally dependant, i.e. change over time. 
-In order to accommodate this, each node is assigned a velocity vector, which entail they move at a constant velocity over a given timespan that the TDGN consists of.
+As the project deals with temporally dynamic graph networks, the positions of nodes are temporally dependant. 
+In order to accommodate for this, each node is assigned one or more velocity vectors, which entails that they move along the trajectory of a constant velocity over a given timespan.
 For node $u$, the velocity vector is expressed as:
 $v_u = \begin{pmatrix}
 v_{x,u}, v_{y,u}
@@ -56,7 +45,6 @@ By having a starting position, $z_u$, as well as a constant velocity, $v_u$, the
     y_u + v_{y,u}t
     \end{pmatrix}
 \end{equation}
-
 In the Euclidean latent space, based on the given positions, it is possible to compute distances using basic Pythagorean mathematics. 
 In order to find the distance between two nodes, the most straightforward approach is to compute their reciprocal Euclidean distance.
 The Euclidean distance at the starting position, ie. disregarding time, between node $u$ and $v$, can be computed from the following expression:
@@ -66,7 +54,6 @@ The Euclidean distance at the starting position, ie. disregarding time, between 
     = 
     \sqrt{(x_u - x_v)^2 + (y_u - y_v)^2}
 \end{equation}
-
 As seen above though, the positions of nodes \textbf{are} time dependant, and hence this carries over to the distance measure, which is expressed as:
 
 \begin{equation}
@@ -74,17 +61,11 @@ As seen above though, the positions of nodes \textbf{are} time dependant, and he
     = 
     \sqrt{((x_u + v_{x,u}t) - (x_v + v_{x,v}t))^2 + ((y_u + v_{y,u}t) - (y_v + v_{y,v}t))^2}
 \end{equation}
-
 For mathematical/computational reasons, which are explained in detail under section \ref{sec:Method:IntensityFunc:IntegralIntensityFunc}, this project utilizes the squared Euclidean distance as distance measure.
 
-
-\subsubsection{Squared Euclidean Distance}
-\label{sec:Method:LSM:SquaredEuclideanDistance}
-
-%The Euclidean latent space, as described above, entailing spatial information about something that is not inherently spatial in nature, enables the computation of distance between the nodes.
-As mentioned above, the $N$ nodes of a TDGN are placed in the Euclidean latent space, and the properties they have as nodes in the network are then approximately represented by the Euclidean measures that are positions and velocities.
-The pairwise reciprocal distances of nodes govern the intensity of interaction between a them.
-For this project, this reciprocal distance is calculated as the squared Euclidean distance, which is expressed below, very similar to the standard Euclidean distance:
+\begin{equation}
+    (x_u - x_v + (v_{x,u} - v_{x,v})t)^2 + (y_u - y_v + ( v_{y,u} - v_{y,v})t)^2
+\end{equation}
 
 \begin{align} 
 ||\textbf{z}_u(t) - \textbf{z}_v(t)||_2^2
@@ -101,5 +82,19 @@ For this project, this reciprocal distance is calculated as the squared Euclidea
 
 
 
-\subsubsection{Laten Space Models}
-\label{sec:Method:LSM:}
+\subsubsection{Squared Euclidean Distance}
+\label{sec:Method:LSM:SquaredEuclideanDistance}
+The reciprocal distances between nodes are calculated as the squared Euclidean distance, which is expressed below, very similar to the standard Euclidean distance:
+
+\begin{align} 
+||\textbf{z}_u(t) - \textbf{z}_v(t)||_2^2
+&= 
+\left(\sqrt{((x_u + v_{x,u}t) - (x_v + v_{x,v}t))^2 + ((y_u + v_{y,u}t) - (y_v + v_{y,v}t))^2}\right)^2
+\\
+&=
+((x_u + v_{x,u}t) - (x_v + v_{x,v}t))^2 + ((y_u + v_{y,u}t) - (y_v + v_{y,v}t))^2
+\\
+&=
+(x_u - x_v + (v_{x,u} - v_{x,v})t)^2 + (y_u - y_v + ( v_{y,u} - v_{y,v})t)^2
+\label{eq:SquaredEuclideanDistance}
+\end{align}

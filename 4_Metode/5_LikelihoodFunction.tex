@@ -1,38 +1,26 @@
 \subsection{Likelihood Function}
 \label{sec:Method:LikelihoodFunc}
-
-In order to properly model a TDGN, the velocity model presented in this project needs a metric on which it can train and evaluate.
+In order to properly model a TDGN, the model presented in this project needs a metric on which it can train.
 For this purpose, the likelihood function is introduced.
 The likelihood function computes a metric on which the model optimization can be based, in this case relying heavily on the intensity function described above in section \ref{sec:Method:IntensityFunc}.
 \\\\
 This likelihood function computes the likelihood of the relevant input data, given a set of model parameters $\textbf{Z}$, $\textbf{V}$ and $\beta$.
-\\
 In other words; with a set of model parameters, ie. the bias term $\beta$ as well as the starting positions $\textbf{Z}$ and constant velocities $\textbf{V}$ of the N nodes in the relevant TDGN, what is the likelihood that the input data, the chronologically ordered set of pairwise node interactions, would be occur/be produced.
-\\\\
+
 For this project, the likelihood function, specifically the log-likelihood function, $\ell$ is given by the following expression:
 
 \begin{equation}
-    \ell = \sum_{i=1}^n \log \lambda (t_i) - \int_{0}^T \lambda(t) \mathrm{d} t
+    \ell = \sum_{i=1}^n \log \lambda (t_i) - \int_{t_0}^{t_n} \lambda(t) \mathrm{d} t
     \label{eq:LogLikelihoodFunc}
 \end{equation}
+This log-likelihood is given by the sum of the log of the intensity function for all interactions in the input data, $\sum_{i=1}^n \log \lambda (t_i)$, minus the integral of the intensity function, $\int_{t_0}^{t_n} \lambda(t) \mathrm{d} t$ \ref{sec:Method:IntensityFunc:IntegralIntensityFunc}, over the entire timespan and for all node pairs.
 
-This log-likelihood is computed as the sum of the log of the intensity function for all interactions in the input data, minus the integral of the intensity function, see section \ref{sec:Method:IntensityFunc:IntegralIntensityFunc}, over the entire timespan and for all node pairs.
-\\
-A more explicit way of writing the log-likelihood function is then.
+A more explicit way of writing the log-likelihood, while explicitly accounting for all node-pairs, is then.
 
 \begin{equation}
-    \ell = \sum_{i=1}^n \log \lambda_{u_i,v_i} (t_i) - \sum_{u=1}^{N-1} \sum_{v > u}^{N} \int_{0}^T \lambda_{u,v}(t) \mathrm{d} t
+    \ell = \sum_{i=1}^n \log \lambda_{u_i,v_i} (t_i) - \sum_{u=1}^{N-1} \sum_{v > u}^{N} \int_{t_0}^{t_n} \lambda_{u,v}(t) \mathrm{d} t
     \label{eq:LogLikelihoodFuncExplicit}
 \end{equation}
-
-
-
-
-
-
-%\subsubsection{}
-%\label{sec:Method:LikelihoodFunc:}
-
 
 
 

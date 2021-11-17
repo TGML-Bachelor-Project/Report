@@ -2,8 +2,16 @@
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{amsmath}
+\usepackage{mathrsfs}
 
 
+%%%%%%%%%% To get three levels of sub sections
+\usepackage{titlesec}
+\setcounter{secnumdepth}{4}
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
 
 
 %%%%%%%%%%Positioning of graphics figures
@@ -45,8 +53,12 @@
                 {ü}{{\"u}}1
 }
 
-
-
+%Algorithms
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\newcommand{\pluseq}{\mathrel{+}=}
 
 
 \begin{document}
@@ -114,28 +126,25 @@
 \section{Method}
 \label{sec:Method}
 This section regards the technical methodology used in this project.
-\\
 First, it will give an explanation of the graph networks in the context that this project utilizes. 
-\\
 It will then explain the central idea behind the velocity dependant model about which the project revolves. 
-\\
 From there, this section will dive deep into the different aspects that this model relies upon.
 This both includes mathematical and statistical theory, as well as the methodology related to implementing the model in code.
 
 \input{4_Metode/1_GraphsAndNetworks}
-%\input{4_Metode/2_VelocityModelIdea}
-\input{4_Metode/3_LatentSpaceModels}
-\input{4_Metode/4_PoissonProcess}
-\input{4_Metode/5_IntensityFunction}
-\input{4_Metode/6_LikelihoodFunction}
-\input{4_Metode/7_ProposedModel}
-\input{4_Metode/8_Implementation}
-\input{4_Metode/9_Scalability}
+\input{4_Metode/2_LatentSpaceModels}
+\input{4_Metode/3_PoissonProcess}
+\input{4_Metode/4_IntensityFunction}
+\input{4_Metode/5_LikelihoodFunction}
+\input{4_Metode/6_ProposedModel}
+\input{4_Metode/7_Scalability}
+\input{4_Metode/8_PossionPointProcessSimulation}
+\input{4_Metode/9_Implementation}
 \input{4_Metode/10_ResultsEvaluation}
-\newpage
-\input{4_Metode/12_Reproducibility}
 \clearpage
 
+\input{5_Data}
+\clearpage
 
 \section{Results}
 \label{sec:Results}
@@ -154,6 +163,7 @@ It then dives into the future prospects of use that this technology poses.
 Finally, it discusses the future work that should be done in order to expand the capabilities of this technology.
 \input{6_Discussion/1_ResultsDiscussion}
 \input{6_Discussion/2_FutureWork}
+\input{6_Discussion/3_RealWorldApplications}
 \clearpage
 
 

@@ -1,8 +1,11 @@
+
+BASELINES: BETA OG Z0 såvel som simons arbejde!!! Average intensity of all dyads. 
+
 \subsection{First Research Question}
 \label{sec:ResearchQuestion1}
 The first research question of this project states:
 \\
-"How well can TDGNs be modelled using a velocity-dependant representation in latent Euclidean space, with stepwise event computation, and how well can it model the evolution of the TDGNs?"
+"How well can TDGNs be modelled using a velocity-dependant representation in latent Euclidean space, with stepwise event computation?"
 \\\\
 In order to answer this question, the modelling approach will be evaluated on synthetically generated data.
 
@@ -12,35 +15,43 @@ In order to answer this question, the modelling approach will be evaluated on sy
 The first part of answering the first research question consists in confirming proper modelling performance of a single-step Constant Velocity Model. 
 This is done as it lays the foundation of the stepwise CVM, meaning if the single-step model does not work as intended, the stepwise will neither.
 \\
-Synthetic dataset 1, see section \ref{sec:Method:Reproducibility:SyntheticDataset1}, is utilized here.
+Synthetic dataset 1, see section \ref{sec:Data:SyntheticData:SyntheticDataset1}, is utilized here.
 \\\\
-Loss and beta convergence.
+\textbf{Loss and beta convergence results.}
+The model has been trained, fitting one time step, for 50, 500 and 500 epochs using the full dataset as one training batch.
+Below, table \ref{tab:SingleStep1}, shows the learned beta parameter and final negative log loss, including that of the ground truth model.
 
-\begin{table}[h!]
+\begin{table}[H]
 \centering
-\begin{tabular}{|l|cc|}
+\begin{tabular}{|l|c|cc|}
 \hline
-Batch Size   & Beta & NLL\\ \hline
-Ground Truth & 7.5  & 79,424      \\
-100          & XX   & XX       \\
-150          & XX   & XX       \\
-\hline
+Model         & \multicolumn{1}{l|}{Num. Epochs} & Beta & Avg. NLL \\ \hline
+Ground Truth  & -                                & 7.5  & -82,000  \\
+No V Baseline & 5000                             & XX   & XX       \\
+1 Step Model  & 5                                & XX   & XX       \\
+1 Step Model  & 5000                             & XX   & XX       \\ \hline
 \end{tabular}
-\caption{}
+\caption{Final learned $\beta$ value and negative log loss for baseline trained model.}
 \label{tab:SingleStep1}
 \end{table}
 
 \\\\
-Intensity rate comparison.
+\textbf{Intensity rate comparison results.}
+\\
+The intensity rates for a 5000 epochs trained model on 
 
-
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{0_images/synth1_epochs5000.png}
+    \caption{Node pair interaction intensity for synthetic dataset 1 trained for 5000 epochs. Blue line is the ground truth model, red is the trained model.}
+    \label{fig:RQ1synth1}
+\end{figure}
 \\\\
-Diad removal.
-
-
+\textbf{Animation check.}
 \\\\
-Interaction removal.
+\textbf{Diad removal results.}
 \\\\
+\textbf{Interaction removal results.}
 
 
 
@@ -51,33 +62,32 @@ The second part of answering the first research question evaluates the multi-ste
 \\
 Synthetic dataset 2, see section \ref{sec:Method:Reproducibility:SyntheticDataset2}, is utilized here.
 \\\\
-Loss and beta convergence.
+\textbf{Loss and beta convergence results.}
 
-\begin{table}[h!]
+\begin{table}[H]
 \centering
 \begin{tabular}{|l|cc|}
 \hline
-Batch Size   & Beta & NLL\\ \hline
-Ground Truth & 7.5  & 79,424      \\
-100          & XX   & XX       \\
-150          & XX   & XX       \\
+Num. Epochs   & Beta & NLL\\ \hline
+Ground Truth & 7.5  & -6.29      \\
+5          & XX   & XX       \\
+50          & 7.438   & -6.208       \\
+500          & XX   & XX       \\
+2500          & XX   & XX       \\
+5000          & XX   & XX       \\
 \hline
 \end{tabular}
-\caption{}
-\label{tab:SingleStep1}
+\caption{Final learned $\beta$ value and negative log loss for trained model on synthetic dataset 2 \ref{sec:Method:Reproducibility:SyntheticDataset2}}
+\label{tab:MultiStep1}
 \end{table}
 
-
+\noindent \textbf{Intensity rate comparison results.}
 \\\\
-Intensity rate comparison.
-
-
+\textbf{Animation check.}
 \\\\
-Diad removal.
-
-
+\textbf{Diad removal results.}
 \\\\
-Interaction removal.
+\textbf{Interaction removal results.}
 
 
 
@@ -86,15 +96,12 @@ Interaction removal.
 The third part of answering the first research question investigates the stepwise CVM's modelling capabilities on a real world dataset.
 \\
 Real dataset 1, see section \ref{sec:Method:Reproducibility:RealDataset1}, is utilized here.
-
-
-
 \\\\
-Diad removal.
-
-
+\textbf{Animation check.}
 \\\\
-Interaction removal.
+\textbf{Diad removal results.}
+\\\\
+\textbf{Interaction removal results.}
 
 
 

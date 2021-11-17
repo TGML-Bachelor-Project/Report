@@ -1,6 +1,5 @@
 \subsection{Intensity Function}
 \label{sec:Method:IntensityFunc}
-
 For the constant velocity model, the intensity function is defined for each pair of nodes in the given TDGN.
 The intensity function $\lambda_{u,v}$ related to a pair of two nodes of interest, $u$ and $v$, is written as the following:
 
@@ -10,15 +9,15 @@ The intensity function $\lambda_{u,v}$ related to a pair of two nodes of interes
     \exp \left(\beta - ||\textbf{z}_u(t) - \textbf{z}_v(t)||_2^2\right)
     \label{eq:IntensityFunc}
 \end{equation}
-
 This function is governed by two important terms.
-\\
-The first, the distance term, is the reciprocal Euclidean distance of the node pair, which is described earlier in section \ref{sec:Method:LSM:SquaredEuclideanDistance}.
+
+The first, the distance term, is the reciprocal squared Euclidean distance of the node pair, which is described earlier in section \ref{sec:Method:LSM:SquaredEuclideanDistance}.
 This term is vital in reflecting the intensity of interaction between nodes as their reciprocal distance.
 As the positions of nodes are dependent on both starting position and velocity, these are parameters the model will learn through optimizing based ultimately on this intensity function.
-\\
-The second is the bias term $\beta$, briefly mentioned in section \ref{sec:Method:VModel:IntensityFuncIntro}.
-The bias term is a scalar which is a learnable model parameter which the model learns during training. The bias term serves as the background intensity, and hence models the intensity of interaction between nodes regardless of their reciprocal distance in Euclidean space. In this way a large bias term will mean that nodes have an increased likelihood of interacting regardless of their latent positions and the opposite is true for a small bias term.
+
+The second is the bias term $\beta$, a scalar which is a learnable model parameter. 
+The bias term serves as the background intensity, and is hence used in modelling the intensity of interaction between nodes regardless of their reciprocal distance in Euclidean space. 
+In this, way a large bias term will mean that nodes have higher intensity of interaction regardless of their latent positions and the opposite is true for a small bias term.
 
 
 % \subsubsection{Bias Term $\beta$}
@@ -38,7 +37,6 @@ The bias term is a scalar which is a learnable model parameter which the model l
 
 \subsubsection{Integral of the Intensity Function}
 \label{sec:Method:IntensityFunc:IntegralIntensityFunc}
-
 The intensity function for a given pair of two nodes, $u$ and $v$, using the bias term $\beta$ and squared Euclidean distance as distance term, is as stated above given by (\ref{eq:IntensityFunc}).
 As seen earlier in (\ref{eq:SquaredEuclideanDistance}), the distance term can be written as a function of the starting position plus the velocity over time, as such:
 
@@ -47,12 +45,10 @@ As seen earlier in (\ref{eq:SquaredEuclideanDistance}), the distance term can be
     =
     \exp \left(\beta - \left((x_u - x_v + (v_{x,u} - v_{x,v})t)^2 + (y_u - y_v + ( v_{y,u} - v_{y,v})t)^2\right)\right)
 \end{equation}
+In order to compute the log-likelihood, which is explained in the next section \ref{sec:Method:LikelihoodFunc}, the solution for the integral of the intensity function needs to be found. 
 
-In order to compute the log-likelihood function, which is explained in the next section \ref{sec:Method:LikelihoodFunc}, the solution for the integral of the intensity function needs to be found. 
-\\
 The reason the squared Euclidean distance is utilized, as opposed to using the standard Euclidean distance, is that it enables for an exact, analytical integration of the stated intensity function for constant velocity.
-Having an analytical solution for the integral is important for this project, as it enables the computation to be exact and run fast.
-\\
+Having an analytical solution for the integral is important for this project, as it enables the computation to be exact and run fast, hence improving scalability.
 This integral is written below:
 
 \begin{equation}
@@ -60,7 +56,6 @@ This integral is written below:
     =
     \int_{t_0}^T \exp \left(\beta - \left((x_u - x_v + (v_{x,u} - v_{x,v})s)^2 + (y_u - y_v + ( v_{y,u} - v_{y,v})s)^2\right)\right) \mathrm{d}s
 \end{equation}
-
 For ease of interpretation, substitutions are made for the following (without them, the final solution is incredibly long):
 
 \begin{align}
@@ -72,7 +67,6 @@ For ease of interpretation, substitutions are made for the following (without th
     \\
     v_{y,u} - v_{y,v} &= n
 \end{align}
-
 This yields a substituted integral looking as such:
 
 \begin{equation}
@@ -80,12 +74,10 @@ This yields a substituted integral looking as such:
     =
     \int_{t_0}^T \exp \left(\beta - \left((a + m \cdot s)^2 + (b + n \cdot s)^2\right)\right) \mathrm{d}s
 \end{equation}
-
 What is evident here, is that this integral must have an analytical solution, meaning approximation will not be needed in order to evaluate it's value. 
 This is specifically due to the fact that the integration is happening over the exponential function of a function of quadratic form.
 \\\\
-The analytical solution to this integral is computed to being:
-
+The analytical solution to this integral is computed as the following:
 
 \begin{align}
     \int_{t_0}^T \lambda_{u,v}(s) \mathrm{d}s
@@ -101,12 +93,11 @@ The analytical solution to this integral is computed to being:
     \right)
     \label{eq:analytical_integral}
 \end{align}
-
 As can be seen above, the solution contains the Gauss error function denoted by $erf$.
 This error function is a complex function of a complex variable, and is defined as:
 
 \begin{equation}
 \operatorname{erf} z=\frac{2}{\sqrt{\pi}} \int_{0}^{z} e^{-t^{2}} \mathrm{d} t
 \end{equation}
-
 What is important about the error function, is that while it poses the solving of another set of integrals, these do not disrupt the analytical nature of the integral of the intensity function.
+The error function disrupts the analytical nature of the integral, but while the error function is not a closed form, but while it nees to be approximated, it has very effecient approximations.

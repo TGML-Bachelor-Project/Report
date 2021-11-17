@@ -32,6 +32,21 @@ Intuitively, initial parameters (\ref{eq:InitParam1}) and (\ref{eq:InitParam2}) 
 \end{align}
 
 
+\subsubsection{Baseline Models}
+\label{sec:Method:Evaluation:BaselineModels}
+Baseline models will be utilized in order to evaluate wheter the proposed model is an improvement over prior work.
+
+There are three baseline models, which are incrisingly complex in their modelling capability.
+\\\\
+The first baseline consists in modelling the data by taking the average intensity of the nodepairs.
+\\\\
+The second baseline is the Constant Velocity model withour velocity, ie. merely fitting nodes to the optimal positions, but not attributing them a velocity.
+\\\\
+The third baseline used is the one-step Constant Velocity model.
+For modelling synthetic dataset 1 which is generated from a single velocity vector, see section \ref{sec:Method:Reproducibility:SyntheticDataset1}, this baseline will be redundant.
+For either synthetically generated data on more steps, or real data, this baseline will fit only one velocity for each node, one step.
+
+
 \subsubsection{Beta Convergence}
 \label{sec:Method:Evaluation:BetaConvergence}
 A properly trained Constant Velocity Model, which correctly models the given TDGN, most likely does not find the same parameters $z0$ and $v0$ as that of the ground truth model.
@@ -50,11 +65,11 @@ The loss, ie. negative log likelihood computed during model training, see sectio
 In this project, the average loss, meaning loss over the number of interactions in the given dataset, is used as it represents a more similar metric across different datasets.
 \\
 The average loss is written as:
+
 \begin{equation}
-   average loss = - \frac{\ell}{n} = - \frac{\sum_{i=1}^n \log \lambda_{u_i,v_i} (t_i) - \sum_{u=1}^{N-1} \sum_{v > u}^{N} \int_{0}^T \lambda_{u,v}(t) \mathrm{d} t}{n}
+   average loss = - \frac{\ell}{n_{dyads}} = - \frac{\sum_{i=1}^n \log \lambda_{u_i,v_i} (t_i) - \sum_{u=1}^{N-1} \sum_{v > u}^{N} \int_{0}^T \lambda_{u,v}(t) \mathrm{d} t}{n_{dyads}}
     \label{eq:LogLikelihoodFuncExplicit}
 \end{equation}
-
 When training on synthetic data, the present ground truth model enables for the computation of a ground truth average loss, to which the trained model should preferably converge.
 
 
@@ -63,12 +78,7 @@ When training on synthetic data, the present ground truth model enables for the 
 The interaction intensity between a given pair of nodes, over the temporal span of the TDGN, can be inspected accurately and serves as a more visual comparison to the GT model than the loss. 
 While using the average loss as a metric essentially enables for comparing the altogether deviation between the ground truth model and the learned model, singling out node pairs can better the understanding of a good fit for TDGN's with few nodes.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{0_images/5vs5000epochs.png}
-    \caption{Interaction intensity between node 0 and 1 for a given system, blue is the ground truth and red is the trained model. Left compares intensities after training the model for 5 epochs, right after training for 5000 epochs.}
-    \label{fig:5vs5000epochs}
-\end{figure}
+
 
 
 \subsubsection{Node Pair Removal}
@@ -78,12 +88,12 @@ For a given TDGN consisting of $N$ nodes, with a dataset consisting of interacti
 After training, the modelled intensity of interaction is compared with the ground truth, revealing how well the model is able to model the TDGN with entirely missing dyads, and to some extend how well it is able to infer the interactions of removed dyads based solely on their non-removed counterparts.
 
 
-\subsubsection{AUC score of removed nodes}
+\subsubsection{AUC Score of Removed Interactions}
 \label{sec:Method:Evaluation:AUC}
 In order to test the model on real data, a test which does not require a ground truth model is devised.
 From the dataset, 10\% of interactions are removed before training.
 For each time point in the removed interactions, an alternative, false interaction is sampled, and the model is posed with evaluating the probability of the real interaction contra the false one.
-The probability is computed as the event probability, explained under section \ref{}
+The probability is computed as the log of the event probability, explained under section \ref{sec:Method:Poisson:EventProbability}.
 
 The AUC score is computed as the area under the ROC (Receiver Operating Characteristics) curve.
 The ROC curve is the False Positive rate vs. the True Positive rate at some given decision thresh holds.

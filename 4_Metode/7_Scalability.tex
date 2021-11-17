@@ -1,0 +1,33 @@
+\subsection{Scalability}
+\label{sec:Method:Scalability}
+A key focus of this project was to make the modelling approach scalable, in order to enable the modelling of larger, more realistic networks.
+This subsection describes how vectorization of the model's calculations is introduced in order to parallelize the computations, enabling sufficient use of CUDA.
+
+\subsubsection{PyTorch and CUDA}
+\label{sec:Method:Scalability:PyTorch}
+EXPLAIN THE MOST IMPORTANT PROPERTIES OF PYTOCH THAT MAKES VECTORIZATION SCALABLE
+
+
+
+\subsubsection{SCVM Model Vectorization}
+\paragraph{Vectorized Latent Space Position Calculation}
+\label{sec:Method:LatentSpacePositionCalculation}
+To compute the node intensities for the given node interactions in the training data, the model needs to find the positions of each node pair in the latent space at the time they interact. For this the model uses a $step$ function which takes as input a vector $\textbf{t} \in \mathbb{R}^{T}$ of $T$ \textit{unique} time points. Each time point $t_i$ in $\textbf{t}$ is then transformed into a vector $\boldsymbol{\Delta} \texfbf{t}_{i} \in \mathbb{R}^S$ of $S$ time delta values, where $S$ corresponds to the size of the Step dimension in the model velocity matrix $\textbf{V}$. The transformation from $t_i$ to $\boldsymbol{\Delta} \texfbf{t}_{i}$ is done by computing the portions of $t_i$ that falls into each step $s_j \in S$ such:
+\begin{align}
+    \boldsymbol{\Delta} \textbf{t}_{i-1,j-1} = 
+    \begin{cases}
+        \Delta_{step} \;\; &\text{for} \;\; t_i >= (\Delta_{step} \cdot j) \\
+        \text{max}(0, t_i + \Delta_{step} - \Delta_{step} \cdot j) \;\; \;\; &\text{for} \;\; t_i < (\Delta_{step} \cdot j)
+    \end{cases}
+\end{align}
+where $\boldsymbol{\Delta} \textbf{t}_{i,j}$ is the $j$'th entry of the $i$'th time delta vector and $i,i \in \{1,2,3,...,S\}$.
+\\
+From these delta time values and the model velocities it is possible to calculate node movements. The latent space node positions $\textbf{Z}_{t_i}$ for a given time $t_i$ can then be calculated as the latent starting positions $\textbf{Z}$ i.e. the positions at time 0, plus the cumulative sum of movements to the time point $t_i$:
+\begin{align}
+    \textbf{Z}_{t_i} = \textbf{Z}_{0} + \sum_{j=0}^{S-1}\textbf{V}_{j} \cdot \boldsymbol{\Delta} \textbf{t}_{i,j}
+\end{align}
+When this process is applied to all time points in $\textbf{t}$ we get a collection of latent position matrices $\textbf{Z}_t$ according to the number of time points i.e. $Z_t \in \mathbb{R}^{N\text{x}D\text{x}T}$, which can be used to compute the event intensity for each node pair interacting at each time point $t_i$.
+
+\paragraph{Vectorized Loss Function}
+DESCRIBE VECTORIZED EVENT AND NON-EVENT INTENSITIES, VECTORIZED REGULARIZATION AND COMBINE TO VECTORIZED LOSS FUNCTION.
+

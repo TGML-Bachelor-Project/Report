@@ -1,0 +1,24 @@
+\subsection{Training Setup (Hyperparameters)}
+\label{sec:Method:Reproducibility:TrainingSetup}
+The models are governed by several hyperparameter options that naturally changes result-outcomes.
+
+The most important hyperparameter, as mentioned under section \ref{sec:Method:ModelImplementation:Adam} about the Adam Optimizer, is the learning rate associated with this optimizer. 
+For this project, a learning rate of $lr = 0.025$ was found to be a good fit.
+Note that all random number generators in this project, belonging to Python, Numpy and Torch, are set to $seed = 1$.
+The number of Epochs used for training varies for the different datasets, and as such are listed below:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|cccc|}
+\hline
+Dataset      & num. Epochs & Size $n$ & $t_{max}$ & Learning Rate \\ \hline
+Synthetic 1  & 5000          & 79,424   & 10        & 0.001       \\
+Synthetic 2  & 5000          & XX       & 50        & 0.001         \\
+Synthetic 3  & 5000          & XX       & 15        & 0.025         \\
+Real 1      & 5000          & XX       & XX        & 0.001         \\
+Real 2      & 5000          & XX       & XX        & 0.025         \\
+Real 3      & 5000          & XX       & XX        & 0.025         \\ \hline
+\end{tabular}
+\caption{Dataset details: Number of epochs, size of dataset n, max time $t_{max}$}
+\label{tab:DatasetDetails}
+\end{table}
