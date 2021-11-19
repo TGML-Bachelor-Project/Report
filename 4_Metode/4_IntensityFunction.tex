@@ -20,21 +20,6 @@ The bias term serves as the background intensity, and is hence used in modelling
 In this, way a large bias term will mean that nodes have higher intensity of interaction regardless of their latent positions and the opposite is true for a small bias term.
 
 
-% \subsubsection{Bias Term $\beta$}
-% \label{sec:Method:IntensityFunc:BiasTerm}
-
-% The bias term, $\beta$, a part of the intensity function, is a learnable parameter for the model.
-% This project considers two different implementations of the bias term. One version uses a \textit{common bias term} with a single $\beta$ scalar parameter as explained for equation (\ref{eq:IntensityFunc}) above.
-% An alternative to the common bias term is the \textit{node specific bias term} where a bias term is added for each node $i$, such that the scalar $\beta_i$ is a learnable model parameter for the bias of node $i$. This results in a model with a learnable parameter vector $\beta \in \mathbb{R}^N$ where $N$ is the number of nodes in the network. Then the intensity function is written as:
-% \begin{equation}
-%         \lambda_{u,v}(t)
-%     =
-%     \exp \left(\beta_u + \beta_v - ||\textbf{z}_u(t) - \textbf{z}_v(t)||_2^2\right)
-%     \label{eq:NodeBiasIntensityFunc}
-% \end{equation}
-
-% For this report the common bias term model will be the primary implementation of consideration.
-
 \subsubsection{Integral of the Intensity Function}
 \label{sec:Method:IntensityFunc:IntegralIntensityFunc}
 The intensity function for a given pair of two nodes, $u$ and $v$, using the bias term $\beta$ and squared Euclidean distance as distance term, is as stated above given by (\ref{eq:IntensityFunc}).
@@ -99,5 +84,4 @@ This error function is a complex function of a complex variable, and is defined 
 \begin{equation}
 \operatorname{erf} z=\frac{2}{\sqrt{\pi}} \int_{0}^{z} e^{-t^{2}} \mathrm{d} t
 \end{equation}
-What is important about the error function, is that while it poses the solving of another set of integrals, these do not disrupt the analytical nature of the integral of the intensity function.
-The error function disrupts the analytical nature of the integral, but while the error function is not a closed form, but while it nees to be approximated, it has very effecient approximations.
+What is important about the error function, is that while it is in fact \textit{not} of a closed form, and hence disrupts the analytical nature of the integral, very efficient approximations can be made that eliminate the inconvenience of its non-closed form \cite{Ren2007Closed-formScience}.

@@ -91,6 +91,7 @@ The idea of adding a step dimension to the velocity matrix means a slight change
 We then define the latent space movement of a node $u$ to a time point t, with $0 < t \le t_{max}$, as the sum of movements from each step:
 \begin{equation}
     \mathcal{M}_{u}(t) = \sum_{j = 1}^{S} \textbf{v}_{j, u} \cdot \Delta_{j}(t) \;\;,\;\; \mathcal{M}_{u} \in \mathbb{R}^2
+    \label{eq:Method:ConstantVelocity:Movement}
 \end{equation}
 Where $\textbf{v}_{j,u}$ is the $j$'th step velocity for node $u$, and $\Delta_{j}(t)$ is the portion of $t$ that falls into step $j$ i.e.:
 \begin{align}
@@ -99,6 +100,7 @@ Where $\textbf{v}_{j,u}$ is the $j$'th step velocity for node $u$, and $\Delta_{
         \Delta_{step} \;\; &\text{for} \;\; t \ge \Delta_{step} \cdot j\\
         \text{max}\left(0, t + \Delta_{step} - \Delta_{step} \cdot j\right) \;\; &\text{for} \;\; t < \Delta_{step} \cdot j
    \end{cases} \;\; , \;\; j \in \{1,2,...,S\}
+   \label{eq:delta_t}
 \end{align}
 \\
 We then get the latent node position for a given node $u$ to time $t$ as:
@@ -145,35 +147,40 @@ and stays unaffected.
 \\\\
 The same procedure is applied to the velocities $\textbf{V}$, which means that the node movement for a node $u_i$ now becomes:
 \begin{align}
-    \mathcal{M}_{u}(t) &= \sum_{j=1}^S \left[(\textbf{v}_{j,u} - \overline{\textbf{v}}_j) \cdot \Delta_{j}(t) \right] \\
-    &= \sum_{j=1}^S \textbf{v}_{j, u} \cdot \Delta_{j}(t) - \sum_{j=1}^S \overline{\textbf{v}}_j \cdot \Delta_{j}(t)
+    M_u(t) &= \sum_{j=1}^S \left[(\textbf{v}_{j,u} - \overline{\textbf{v}}_j) \cdot \Delta_{j}(t) \right] \\
+    &= \sum_{j=1}^S \textbf{v}_{j, u} \cdot \Delta_{j}(t) - \sum_{j=1}^S \overline{\textbf{v}}_j \cdot \Delta_{j}(t) \\
+    &= \mathcal{M}_u(t) - \sum_{j=1}^S \overline{\textbf{v}}_j \cdot \Delta_{j}(t)
 \end{align}
-For readability we define:
-\begin{align}
-    m_{u,1}(t) &=  \sum_{j=1}^S \textbf{v}_{j, u} \cdot \Delta_{j}(t) \\
-    m_{u,2}(t) &= \sum_{j=1}^S \overline{\textbf{v}}_j \cdot \Delta_{j}(t)
-\end{align}
-The latent node position for node $u$ to time $t$ then becomes:
+Where $\mathcal{M}_u(t)$ comes from equation
+(\ref{eq:Method:ConstantVelocity:Movement}).
+\\
+For brevity we define:
 \begin{equation}
-    \textbf{z}_{u}(t) = 
-    \begin{pmatrix}
-        x_{u}(t) \\
-        y_{u}(t)
-    \end{pmatrix}
-    =
-    \begin{pmatrix}
-        z_{u,x} + m_{u,1,x}(t) - m_{u,2,x}(t) \\
-        z_{u,y}+ m_{u,1,y}(t) - m_{u,2,y}(t)
-    \end{pmatrix}
+    \overline{\mathcal{M}}(t) = \sum_{j=1}^S \overline{\textbf{v}}_j \cdot \Delta_{j}(t) \;\;,\;\; \overline{\mathcal{M}}(t) \in \mathbb{R}^{2}
 \end{equation}
-
+The new latent space position of node $u$ at time $t$ then becomes:
+\begin{equation}
+    \textbf{p}_u(t) = 
+     \begin{pmatrix}
+        z_{u,x} + \mathcal{M}_{u,x}(t) - \overline{\mathcal{M}}_{x}(t) \\
+        z_{u,y}+ \mathcal{M}_{u,y}(t) - \overline{\mathcal{M}}_{y}(t)
+    \end{pmatrix} =
+    \textbf{z}_u(t) - \overline{\mathcal{M}}
+\end{equation}
+And the latent distance measure for a node pair $u$ and $v$:
+\begin{align}
+     \mathcal{D} &= \rVert \textbf{p}_u(t) - \textbf{p}_v(t) \rVert_2^2 \\
+     &= \left\rVert \left(\textbf{z}_u(t)-\overline{\mathcal{M}}) - (\textbf{z}_v(t)-\overline{\mathcal{M}}\right) \right\rVert_2^2 \\
+     &= \rVert \textbf{z}_u(t) - \textbf{z}_v(t) \rVert_2^2 
+\end{align}
+remains intact.
 
 \subsubsection{Extending Loss Function - Regularization of Velocity Changes}
 \label{sec:Method:ProposedModel:Regularization}
 The velocity from one step to another can change a lot. But, large changes in velocity can have a negative impact on the visualization of the node behavior in latent space e.g. if nodes dramatically speed up and down from step to step.
 Therefore a regularization term is added to the model loss function which penalizes high changes in velocities from one step to the next:
 \begin{align}
-    \mathcal{L} = - \left((- I_e - I_n) + \gamma \sum_{i=1}^{S} \rVert \textbf{V}_i - \textbf{V}_{i-1} \rVert_{F}^{2}\right)
+    \mathcal{L} = - (I_e - I_n) + \gamma \sum_{i=1}^{S} \rVert (\textbf{V}_i - \overline{\textbf{V}}_i) - (\textbf{V}_{i-1} - \overline{\textbf{V}}_{i-1}) \rVert_{F}^{2}
     \label{eq:Method:ProposedModel:vec_regularization}
 \end{align}
-Where $\gamma$ is the regularizatoin factor and $\rVert \cdot \rVert_F^2$ is the squared Frobenius norm.
+Where $\gamma$ is the regularizatoin factor and $\rVert \cdot \rVert_F^2$ is the squared Frobenius norm. Because of the position correction which subtracts the mean from the starting positions and the veolicities, the mean is also subtracted from the velocities in the regularization to make it center invariant.

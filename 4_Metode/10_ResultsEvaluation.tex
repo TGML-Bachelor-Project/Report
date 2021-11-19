@@ -37,13 +37,13 @@ Intuitively, initial parameters (\ref{eq:InitParam1}) and (\ref{eq:InitParam2}) 
 Baseline models will be utilized in order to evaluate wheter the proposed model is an improvement over prior work.
 
 There are three baseline models, which are incrisingly complex in their modelling capability.
-\\\\
+
 The first baseline consists in modelling the data by taking the average intensity of the nodepairs.
-\\\\
+
 The second baseline is the Constant Velocity model withour velocity, ie. merely fitting nodes to the optimal positions, but not attributing them a velocity.
-\\\\
+
 The third baseline used is the one-step Constant Velocity model.
-For modelling synthetic dataset 1 which is generated from a single velocity vector, see section \ref{sec:Method:Reproducibility:SyntheticDataset1}, this baseline will be redundant.
+For modelling synthetic dataset 1 which is generated from a single velocity vector, see section \ref{sec:Data:SyntheticData:SyntheticDataset1}, this baseline will be redundant.
 For either synthetically generated data on more steps, or real data, this baseline will fit only one velocity for each node, one step.
 
 
@@ -62,7 +62,7 @@ Hence, a strong indication of good modelling consists in whether $\beta$ converg
 \subsubsection{Average Training Loss}
 \label{sec:Method:Evaluation:Loss}
 The loss, ie. negative log likelihood computed during model training, see section \ref{sec:Method:LikelihoodFunc}, gives a clear picture of model training progress.
-In this project, the average loss, meaning loss over the number of interactions in the given dataset, is used as it represents a more similar metric across different datasets.
+In this project, the average loss, meaning the loss over the number of node pairs (dyads) in the given dataset, is used as it represents a more similar metric across different datasets.
 \\
 The average loss is written as:
 
@@ -81,21 +81,30 @@ While using the average loss as a metric essentially enables for comparing the a
 
 
 
-\subsubsection{Node Pair Removal}
+\subsubsection{Node Pair (dyad) Removal}
 \label{sec:Method:Evaluation:NodePairRemoval}
 Building on top of intensity rate comparison for node pairs, a very concrete test of modelling performance and to some extend modelling stability is devised.
-For a given TDGN consisting of $N$ nodes, with a dataset consisting of interactions between $\frac{N\cdot(N-1)}{2}$ pairs of nodes (assuming they all interact), a fraction of about 10\% of the node pairs, or dyads as they may be called, are removed from the dataset before training.
-After training, the modelled intensity of interaction is compared with the ground truth, revealing how well the model is able to model the TDGN with entirely missing dyads, and to some extend how well it is able to infer the interactions of removed dyads based solely on their non-removed counterparts.
+For a given dynamic network consisting of $N$ nodes, with a dataset consisting of $n$ interactions between $\frac{N\cdot(N-1)}{2}$ pairs of nodes, referred to as dyads, the test removes all interactions of (around) 10\% of these dyads.
+For a dataset consisting of $N = 5$ nodes, node $0,1,2,3,4$, hence with 10 dyads, $(0,1), (0,2), (0,3), (0,4), (1,2) (1,3), (1,4), (2,3), (2,4), (3,4)$, the test removes 1 dyad, it could be dyad (0,1), and all interactions between these two nodes.
+
+After training the SCVM on the data of the remaining nine dyads, the model computes the interaction intensity between dyad $(0,1)$, whose data is unseen.
+This computed intensity of interaction is then compared with the ground truth for this dyad, hence evaluating how well the model is able to infer the their interaction intensity from what it has learned on the basis of the data for the seen dyads.
 
 
 \subsubsection{AUC Score of Removed Interactions}
 \label{sec:Method:Evaluation:AUC}
-In order to test the model on real data, a test which does not require a ground truth model is devised.
-From the dataset, 10\% of interactions are removed before training.
-For each time point in the removed interactions, an alternative, false interaction is sampled, and the model is posed with evaluating the probability of the real interaction contra the false one.
-The probability is computed as the log of the event probability, explained under section \ref{sec:Method:Poisson:EventProbability}.
+In order to test the model on real data, a test which does not require a ground truth is devised.
+From a given dataset, 10\% of all interactions are chosen at random as the test set.
+The SCVM then trains on the remaining 90\% of interactions in the dataset, learning the best fitting parameter $\beta$, $z0$ and $v0$.
 
-The AUC score is computed as the area under the ROC (Receiver Operating Characteristics) curve.
+For each time point in the test set, ie. the removed interactions, an alternative, false node pair interaction is randomly sampled.
+This results in two sets of interactions; the true test set consisting of the original removed interactions, and the false test set, consisting of randomly sampled interactions between an alternative node pair.
+For each mutual time point in the true and false test sets, the model computes the probability of interaction between the rue node pair and the false node pair.
+These probabilities are computed as the log of the event probability, explained under section \ref{sec:Method:Poisson:EventProbability}.
+This results in two arrays of event probabilities, a true event probability array and a false probability array.
+
+Based on these arrays, the true positive rate and the false positive rate can be computed.
+The AUC score is computed as the area under the ROC (Receiver Operating Characteristics) curve, which utilizes these rates.
 The ROC curve is the False Positive rate vs. the True Positive rate at some given decision thresh holds.
 
 

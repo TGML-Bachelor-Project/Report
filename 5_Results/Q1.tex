@@ -5,20 +5,18 @@ BASELINES: BETA OG Z0 såvel som simons arbejde!!! Average intensity of all dyad
 \label{sec:ResearchQuestion1}
 The first research question of this project states:
 \\
-"How well can TDGNs be modelled using a velocity-dependant representation in latent Euclidean space, with stepwise event computation?"
+"How  well  can  dynamic  networks  be  modelled  using  a  SCVM  representation  in latent Euclidean space, with stepwise event computation?"
 \\\\
 In order to answer this question, the modelling approach will be evaluated on synthetically generated data.
+Here synthetic dataset 1 is utilized, which is synthesized using a single velocity vector, as explained in section \ref{sec:Data:SyntheticData:SyntheticDataset1}.
 
-
-\subsubsection{Single-step TDGN modelling of synthetic data}
+\subsubsection{Modelling of single-step synthetic data}
 \label{sec:ResearchQuestion1:singleStepSynthetic}
-The first part of answering the first research question consists in confirming proper modelling performance of a single-step Constant Velocity Model. 
-This is done as it lays the foundation of the stepwise CVM, meaning if the single-step model does not work as intended, the stepwise will neither.
-\\
-Synthetic dataset 1, see section \ref{sec:Data:SyntheticData:SyntheticDataset1}, is utilized here.
+The first part of answering research question one consists of confirming proper modelling performance of a single-step Constant Velocity Model(CVM). 
+This is done as an initial procedure as it lays the foundation of the stepwise CVM, meaning if the single-step model does not work as intended, the stepwise will neither.
 \\\\
 \textbf{Loss and beta convergence results.}
-The model has been trained, fitting one time step, for 50, 500 and 500 epochs using the full dataset as one training batch.
+The stepwise model has been trained for 50, 500 and 5000 epochs on the full dataset 1 as one training batch using a single velocity step and a learning rate of 0.025. The model is compared against a baseline model which is simply a model with no dynamics i.e. a model with no velocities. Also for comparison the ground truth is provided.
 Below, table \ref{tab:SingleStep1}, shows the learned beta parameter and final negative log loss, including that of the ground truth model.
 
 \begin{table}[H]
@@ -49,18 +47,20 @@ The intensity rates for a 5000 epochs trained model on
 \\\\
 \textbf{Animation check.}
 \\\\
-\textbf{Diad removal results.}
-\\\\
 \textbf{Interaction removal results.}
+The results from interaction removal, as explained in \ref{sec:Method:Evaluation:AUC}, shows quite a bad 
+\\\\
+\textbf{Dyad removal results.}
+
+The baseline that has no dynamics is killed here, as it is not even able to be intepreted for intensity rate comparison.
 
 
 
 
 \subsubsection{Multi-step TDGN modelling of synthetic data}
 \label{sec:ResearchQuestion1:multiStepSynthetic}
-The second part of answering the first research question evaluates the multi-step, stepwise modelling capability of the CVM.
-\\
-Synthetic dataset 2, see section \ref{sec:Method:Reproducibility:SyntheticDataset2}, is utilized here.
+The second part of answering the first research question evaluates the SCVM with 10 steps to test its capabilities with multiple steps.
+The test uses the synthetic dataset 2, see section \ref{sec:Data:SyntheticData:SyntheticDataset2}.
 \\\\
 \textbf{Loss and beta convergence results.}
 
@@ -85,21 +85,20 @@ Ground Truth & 7.5  & -6.29      \\
 \\\\
 \textbf{Animation check.}
 \\\\
-\textbf{Diad removal results.}
-\\\\
 \textbf{Interaction removal results.}
+The 
+\\\\
+\textbf{Dyad removal results.}
 
 
 
 \subsubsection{Multi-step modelling of real world data}
-\label{sec:ResearchQuestion1:dataset2}
-The third part of answering the first research question investigates the stepwise CVM's modelling capabilities on a real world dataset.
+\label{sec:ResearchQuestion1:ResistanceTraining}
+The third part of answering the first research question investigates the SCVM's modelling capabilities on a real world dataset.
 \\
-Real dataset 1, see section \ref{sec:Method:Reproducibility:RealDataset1}, is utilized here.
+Real dataset 1, see section \ref{sec:Data:RealData:RealDataset1}, is utilized here.
 \\\\
 \textbf{Animation check.}
-\\\\
-\textbf{Diad removal results.}
 \\\\
 \textbf{Interaction removal results.}
 

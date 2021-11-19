@@ -1,33 +1,62 @@
-
-
 \subsection{Discussion of Results}
 \label{sec:Discussion:Results}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{First Research Question}
-\label{sec:Discussion:Results_Q1}
 
+\subsubsection{Bias Term $\beta$}
+\label{sec:Discussion:Results:BiasTerm}
 The use of a dataset-wide bias term is possibly insufficient in terms of correctly representing the different nodes of the TDGN the model is trying to model. 
 This fact is of course not true for the synthetic dataset results, as the data of these sets are all generated from a single beta value, but for the real datasets it might very well be the case.
+
 In a given network, a very plausible scenario may be that some entities are less active than others, and the model then fits a beta value that reflects greater background intensity than these entities entail.
 In order to compensate for this, the model will place these less active entities further away from the more active entities, neglecting the proportions of each individual node's overall interaction intensity.
 
 A fitting expansion of the model would hence be node-specific bias terms, with which every node is attributed it's own beta value, and as such can be spatially modelled in latent space while accounting for the node's overall interaction intensity. 
 \\\\
+For the proposed SCVM, the fact that the different steps are governed by the same bias term may also be a limitation. 
+The mean intensities for each step may vary a lot, just as with the individual nodes.
+Hence, another expansion in relation to the bias term would be to have step-specific bias terms, each governing the background intensity of the given step.
+\\\\
+The combination of the node-specific bias term and the step-specific would then be the node-step-specific bias term, learning a beta parameter for each node for each step.
+
+
+\subsubsection{Alternative Training Setup}
+\label{sec:Discussion:Results:AlternativeTrainingSetups}
+For this project, the training was carried out using the Pytorch Ignite framework, and during all training epochs, the parameters $\beta$, $z0$ and $v0$ were all optimized at the same time.
+This training setup was deemed appropriate for the SCVM, as it was able to converge well given a training length of 5000 epochs.
+
+The length of the training was made possible by the speedup in computation, a result of improving scalability through vectorization, as well as the fact that the datasets used used in this project were of a certain maximum size.
+For \textit{even} larger dynamic networks, perhaps with several thousand nodes and several millions of interactions, the training of the SCVM would take days at least, which in many cases poses as unfeasible. 
+
+In order to enable training of larger dynamic networks in a feasible time frame, convergence of model parameters should ideally happen on the basis of relatively fewer epochs.
+One way to potentially realize this solution would be to run a sequential training setup, in which some parameters are initialized and learned before others.
+For the SCVM, this would mean initializing only the position parameter $z0$ first, and for the first third of the training only seek to optimize the model by changing the initial positions.
+Then, the model would initialize the velocities for all nodes, and for the middle third of training fit only the positions and velocities. 
+Lastly it would seek to optimize the model based on all three parameters.
+
+
+
+
+\subsubsection{Computation Times and Memory Limitations}
+\label{sec:Discussion:Results:MemoryLimitations}
+In the results for research question 2, see section \ref{sec:ResearchQuestion2}, it was shown how the proposed vectorized setup improved scalability to such extend that it reduced the run time for training on synthetic dataset 1 by around a factor 32.
+
+The subsequent section, regarding computational speed, gave a more detailed overview of the running times of the vectorized setup, in relation to number of nodes, steps and interactions.
+The results showed that both when increasing the number of nodes in the dataset, as well as the number of steps the SCVM had to fit, the run times where similar for low numbers, but increased seemingly exponentially when running the training on the CPU, and relatively linearly when training using CUDA.
+The explanation for these results seem rather straight forward; the vectorized setup enables parallization, enabling the computations to be run in parallel on multiple cores, of which the GPU has in abundance compared to the CPU. 
+Specifically, the CPU, an Intel Core i7-9750H, used for generating these results has 6 cores (with multi threading this number is actually 12) while the GPU, an NVIDA GeForce GTX 1650, has 896 CUDA cores.
+In theory, this means 896 calculations can happen simultaneously compared to 12.
+
+The size of the dataset, ie. number of interactions, resulted in the same run times for both the CPU and CUDA.
+This 
+\\\\
+A problem which was met when running larger dynamic networks, of $N = 100$ nodes and more, was the memory requirement.
+With an increased number on unique nodes, the amount of memory needed to be allocated expands fast due to the tensor having dimensions that are $N \cdot Num_Steps \cdot n$
+\\\\
+Improvement to be made for the vectorized setup consist first and foremost in handling the memory requirement. 
+The code underlying the proposed model is not optimed in terms of reducing memory requirement, this could potentially be done, but as of now we are not familiar with the 'how'.
 
 
 
 
 
-Having a 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Second Research Question}
-\label{sec:Discussion:Results_Q2}
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Third Research Question}
-\label{sec:Discussion:Results_Q3}

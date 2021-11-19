@@ -76,27 +76,55 @@ These ground parameters yield a dataset which has size $n=330,023$.
 
 \subsubsection{Synthetic Dataset 3}
 \label{sec:Data:SyntheticData:SyntheticDataset3}
-The third synthetic dataset is utilized in order to test scalability of the model, and hence is \textit{much} larger in terms of number of nodes, compared to the first two.
-\\
-The ground truth parameters of the third synthetic dataset are as follows:
+The third synthetic dataset is utilized in order to test scalability of the model, and for this purpose it is changeable in terms of number of nodes and beta value.
+The number of nodes is chosen from the following range of $N$'s:
 \begin{equation}
-    N = 152, \hspace{10}
-    t_{max} = 15, \hspace{10}
-    Z = \left( \begin{matrix}
-                -0.6 & 0.0\\
-                0.6 & 0.1\\
-                0.0 & 0.6\\
-                0.0 & -0.6
-                \end{matrix}\right), \hspace{10}
-    V = \left( \begin{matrix}
-                0.09 & 0.01\\
-                -0.01 & -0.01\\
-                0.01 & -0.09\\
-                -0.01 & 0.09
-                \end{matrix}\right), \hspace{10}
-    \beta = 7.5
+    N = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 34, 38, 42, 46, 50, 60]
 \end{equation}
-These ground parameters yield a dataset which has size $n=$.
+For the dataset consisting of $N = 2$ nodes, the starting positions are:
+\begin{equation}
+        Z = \left( \begin{matrix}
+                1.0 & 0.0\\
+                -1.0 & 0.0\\
+                \end{matrix}\right)
+\end{equation}
+For the dataset consisting of $N = 6$ nodes, four more nodes are added which are placed further up along the y-axis, as the following:
+\begin{equation}
+        Z = \left( \begin{matrix}
+                1.0 & 0.0\\
+                -1.0 & 0.0\\
+                1.0 & 1.0\\
+                -1.0 & 1.0\\
+                1.0 & 2.0\\
+                -1.0 & 2.0\\
+                \end{matrix}\right)
+\end{equation}
+The beta value $\beta$ is, like the number of nodes, also chosen from a range as follows:
+
+\begin{equation}
+    \beta = [5.0, 5.25, 5.5, 5.75, 6.0, 6.25, 6.5, 6.75, 7.0, 7.25, 7.5, 7.75, 8.0, 8.25, 8.5, 8.75, 9.0]
+\end{equation}
+The max time is $t_{max} = 20$, and as such the remaining ground truth parameter of the third synthetic dataset is the velocities of the four steps, which are replicated for each added set of nodes:
+\begin{equation}
+    
+    V_1 = \left( \begin{matrix}
+                -0.2 & -0.05\\
+                0.2 & 0.05\\
+                \end{matrix}\right), \hspace{5}
+    V_2 = \left( \begin{matrix}
+                0.2 & 0.05\\
+                -0.2 & -0.05\\
+                \end{matrix}\right), \hspace{5}
+    V_3 = \left( \begin{matrix}
+                -0.3 & -0.05\\
+                0.3 & 0.05\\
+                \end{matrix}\right), \hspace{5}
+    V_4 = \left( \begin{matrix}
+                0.3 & 0.05\\
+                -0.3 & -0.05\\
+                \end{matrix}\right)
+\end{equation}
+
 
 \subsection{Real Data}
 \label{sec:Data:RealData}

@@ -2,14 +2,27 @@
 \label{sec:Method:LSM}
 This subsection delves with explaining and understanding the latent space modelling approach.
 
-A latent space, also refereed to as a latent embedding space, serves as an embedding in which a set of items, in this project the nodes of a TDGN, who resemble each other more closely are positioned more closely in the latent space.
-This resemblance is in this project based on the intensity of interaction, defined by the intensity function which is described later in section \ref{sec:Method:IntensityFunc}.
-The latent space, being a two-dimensional space, serves as a dimensionality reduction, given the fact that the interaction data is of much higher dimensions
+A latent space, also refereed to as a latent embedding space, serves as an embedding in which a set of entities, in this project the nodes of a dynamic network, who resemble each other more closely are positioned more closer in the latent space.
+For a given set of eight entities, these could be human beings with a set of features entailing age, height, weight, eye and hair color etc., their mutual resemblance could be represented in two-dimensional latent space by their reciprocal distances.  
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{0_images/latentSpaceIllustration.png}
+    \caption{Eight humans placed on two-dimensional latent space, their reciprocal distances respresenting their resemblance.}
+    \label{fig:RLdataset3}
+\end{figure}
+For this project, this resemblance is based on the intensity of interaction, defined by the intensity function which is described later in section \ref{sec:Method:IntensityFunc}.
+The latent space, being a two-dimensional space, serves as a dimensionality reduction, given the fact that the interaction data is of much higher dimensions.
+
+Latent space models, or latent distance models as they are also referred to, have proved good in modelling higher dimensional data in lower dimensions, in this project two dimensions \cite{Gourieroux2021ScalableNetworks}.
+As mentioned in section \ref{sec:Intro:RelatedWork} about related work, the latent space approach by Sarkar and Moore et. al. modelled using positions in latent space \cite{Sarkar2005DynamicModels}.
+Tomerup et. al. \cite{Tommerup2021LearningNetworks} expanded their modelling approach by attributing the nodes of a dynamic network with simple Newtonian dynamics of motion, even though most dynamic networks will not be governed by Newtonian dynamics.
+This project expands the capabilites of the Newtonian dynamics approach in order to better the modelling ability of these networks which are not Newtonian in nature.
 
 
 \subsubsection{Euclidean Latent Space}
 \label{sec:Method:LSM:EuclideanLatentSpace}
-The Euclidean latent space is latent space governed by Euclidean geometry.
+The Euclidean latent space is latent space governed by Euclidean geometry in two dimensions.
 This means any measure of position, distance and velocity are understood as Euclidean and can be computed as such. 
 Taking an offset in the nodes of a TDGN, and the modelling approach of this project, the properties of Euclidean space will be explained below.
 \\\\
@@ -62,39 +75,14 @@ As seen above though, the positions of nodes \textbf{are} time dependant, and he
     \sqrt{((x_u + v_{x,u}t) - (x_v + v_{x,v}t))^2 + ((y_u + v_{y,u}t) - (y_v + v_{y,v}t))^2}
 \end{equation}
 For mathematical/computational reasons, which are explained in detail under section \ref{sec:Method:IntensityFunc:IntegralIntensityFunc}, this project utilizes the squared Euclidean distance as distance measure.
+This is written is a simplified form below:
 
-\begin{equation}
-    (x_u - x_v + (v_{x,u} - v_{x,v})t)^2 + (y_u - y_v + ( v_{y,u} - v_{y,v})t)^2
+\begin{equation} 
+||\textbf{z}_u(t) - \textbf{z}_v(t)||_2^2
+= 
+(x_u - x_v + (v_{x,u} - v_{x,v})t)^2 + (y_u - y_v + ( v_{y,u} - v_{y,v})t)^2
+\label{eq:SquaredEuclideanDistance}
 \end{equation}
 
-\begin{align} 
-||\textbf{z}_u(t) - \textbf{z}_v(t)||_2^2
-&= 
-\left(\sqrt{((x_u + v_{x,u}t) - (x_v + v_{x,v}t))^2 + ((y_u + v_{y,u}t) - (y_v + v_{y,v}t))^2}\right)^2
-\\
-&=
-((x_u + v_{x,u}t) - (x_v + v_{x,v}t))^2 + ((y_u + v_{y,u}t) - (y_v + v_{y,v}t))^2
-\\
-&=
-(x_u - x_v + (v_{x,u} - v_{x,v})t)^2 + (y_u - y_v + ( v_{y,u} - v_{y,v})t)^2
-\label{eq:SquaredEuclideanDistance}
-\end{align}
 
 
-
-\subsubsection{Squared Euclidean Distance}
-\label{sec:Method:LSM:SquaredEuclideanDistance}
-The reciprocal distances between nodes are calculated as the squared Euclidean distance, which is expressed below, very similar to the standard Euclidean distance:
-
-\begin{align} 
-||\textbf{z}_u(t) - \textbf{z}_v(t)||_2^2
-&= 
-\left(\sqrt{((x_u + v_{x,u}t) - (x_v + v_{x,v}t))^2 + ((y_u + v_{y,u}t) - (y_v + v_{y,v}t))^2}\right)^2
-\\
-&=
-((x_u + v_{x,u}t) - (x_v + v_{x,v}t))^2 + ((y_u + v_{y,u}t) - (y_v + v_{y,v}t))^2
-\\
-&=
-(x_u - x_v + (v_{x,u} - v_{x,v})t)^2 + (y_u - y_v + ( v_{y,u} - v_{y,v})t)^2
-\label{eq:SquaredEuclideanDistance}
-\end{align}

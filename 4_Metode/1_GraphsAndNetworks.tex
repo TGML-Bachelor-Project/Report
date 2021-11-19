@@ -3,21 +3,34 @@
 The most common way of describing a network of anything, that could be of accounts on Facebook, the electrical grid, distribution of goods from warehouses to stores etc. is to use a graph.
 A graph is a representation that consists of a set of $N$ nodes, the entities whose interactions we are trying to depict, and edges $E$ which represent said interactions.
 
+
 \subsubsection{Static Graphs}
 \label{sec:Method:Graphs:StaticGraphs}
 The most common type of graph is the static graph with a representation of nodes and edges that never changes. 
 In this way, the static graph can be seen as a snapshot of a given network at a single point in time.
 
+A static graph representation of the relationships between characters in the book series 'Harry Potter', can be seen in figure \ref{fig:StaticGraph}.
 
-\subsubsection{Dynamic Graphs}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{0_images/reallife_dataset_2_dist.png}
+    \caption{A static graph representation of the relationships between characters in the book series 'Harry Potter'. Each node represents a specific character, that can be Hermione Granger, Ron Weasly or Harry Potter himself, and the edges that connect them represent the fact that a given pair of characters have interacted directly during the book series}
+    \label{fig:StaticGraph}
+\end{figure}
+
+
+\subsubsection{Temporally Dynamic Graphs}
 \label{sec:Method:Graphs:DynamicGraphs}
-Not all networks can be represented by static graphs though, and sometimes having graphs be non-static means that they make for a better representation of the network they are modelling. When talking about dynamic graphs this project refers to graphs that are subject to a sequence of \textit{updates}. Where an update is an action that \textit{inserts} or \textit{deletes} edges or nodes in the graph or actions that \textit{alter attributes} of nodes or edges.
-\\
-The dynamic aspect differ between graphs, as they can be changing in different dimensions. This project focuses entirely on the very commonly used graphs that are dynamic in the temporal dimension, \textit{temporal dynamics graphs}, i.e. they change over time, this is not always the case. Another example could be if we had a network representing the airports which a plane could directly fly to. Now the graph would be dynamic in the geographical position of the plane as the graph could change to show which airport the plane is connected to based on its current position. Say the graph for the plane being at the Reykjavik Airport on Iceland will then change when the plane gets to Los Angles.
+Not all networks can be represented by static graphs though, and sometimes having graphs be non-static means that they make for a better representation of the network they are modelling. 
+When talking about temporally dynamic graphs, this project refers to graphs that are subject to a sequence of \textit{updates} over time. 
+An update is an action that \textit{inserts} or \textit{deletes} edges or nodes in the graph or actions that \textit{alter attributes} of nodes or edges.
 
-%\subsubsection{Temporal Dynamics}
-%\label{sec:Method:Graphs:TemporallyDynamicGraphs}
 
+The dynamic aspect differ between graphs, as they can be changing in different dimensions. 
+This project focuses entirely on the very commonly used graphs that are dynamic in the temporal dimension, \textit{temporal dynamics graphs}, i.e. they change over time, this is not always the case. 
+Another example could be if we had a network representing the airports which a plane could directly fly to. 
+Now the graph would be dynamic in the geographical position of the plane as the graph could change to show which airport the plane is connected to based on its current position. 
+Say the graph for the plane being at the Reykjavik Airport on Iceland will then change when the plane gets to Los Angles.
 
 
 
