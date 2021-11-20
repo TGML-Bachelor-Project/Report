@@ -61,9 +61,9 @@ In the case of this project, the aforementioned intensity function $\lambda(t)$ 
     \exp \left(\beta - ||\textbf{z}_u(t) - \textbf{z}_v(t)||_2^2\right)
     \label{eq:IntensityFunc2}
 \end{equation}
-
+\noindent
 First of all, this means that for each timestep ranging from $t_0$ to $t_0 + \Delta_{step}$, the non-homogeneous Poisson process has to be simulated for each of $\frac{N(N-1)}{2}$ node pairs.
-
+\noindent
 Secondly, finding the upper bound $\lambda_U$ of a given intensity function $\lambda_{u,v}(t)$ is not straight forward, as the different intensity functions may be either be descending or ascending in the given step's time interval, and have a local minimum or maximum.
 The explained method for simulating a non-homogeneous Poisson process using thinning is modified in order to accommodate for this difficulty.
 
@@ -73,4 +73,4 @@ This means that a given sub-interval for time $[t_n,t_{n+1}]$ has the monotonici
 If the sign is negative, ie. the monotonicity is decrasing, the upper bound intensity rate is set to $\lambda_U = \lambda_{u,v}(t)$.
 If the monotonicity is increasing, the upper bound is set to $\lambda_U = \lambda_{u,v}(t+1)$.
 In the cases the monotonicity changes from positive to negative for the next sub-interval, ie. passing a local maximum, the current sub-interval is positioned over a root, and gets the upper bound of $\lambda_U = \lambda_{u,v}(r)$.
-If the monotonicity changes from negative to positive, the sub-interval is placed over a local minimum root, and must get the upper bound $\lambda_U = MAX(\lambda_{u,v}(t_n), \lambda_{u,v}(t_{n+1}))$
+If the monotonicity changes from negative to positive, the sub-interval is placed over a local minimum root, and must get the upper bound $\lambda_U = \text{max}(\lambda_{u,v}(t_n), \lambda_{u,v}(t_{n+1}))$

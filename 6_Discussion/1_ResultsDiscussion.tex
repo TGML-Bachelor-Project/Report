@@ -2,58 +2,58 @@
 \label{sec:Discussion:Results}
 
 
-\subsubsection{Bias Term $\beta$}
-\label{sec:Discussion:Results:BiasTerm}
-The use of a dataset-wide bias term is possibly insufficient in terms of correctly representing the different nodes of the TDGN the model is trying to model. 
-This fact is of course not true for the synthetic dataset results, as the data of these sets are all generated from a single beta value, but for the real datasets it might very well be the case.
+\subsubsection{Modelling Performance and Testing of the SCVM}
+\label{sec:Discussion:Results:ModellingPerformance}
 
-In a given network, a very plausible scenario may be that some entities are less active than others, and the model then fits a beta value that reflects greater background intensity than these entities entail.
-In order to compensate for this, the model will place these less active entities further away from the more active entities, neglecting the proportions of each individual node's overall interaction intensity.
+The results presented for answering research question 1 showed 
 
-A fitting expansion of the model would hence be node-specific bias terms, with which every node is attributed it's own beta value, and as such can be spatially modelled in latent space while accounting for the node's overall interaction intensity. 
-\\\\
-For the proposed SCVM, the fact that the different steps are governed by the same bias term may also be a limitation. 
-The mean intensities for each step may vary a lot, just as with the individual nodes.
-Hence, another expansion in relation to the bias term would be to have step-specific bias terms, each governing the background intensity of the given step.
-\\\\
-The combination of the node-specific bias term and the step-specific would then be the node-step-specific bias term, learning a beta parameter for each node for each step.
-
-
-\subsubsection{Alternative Training Setup}
-\label{sec:Discussion:Results:AlternativeTrainingSetups}
-For this project, the training was carried out using the Pytorch Ignite framework, and during all training epochs, the parameters $\beta$, $z0$ and $v0$ were all optimized at the same time.
-This training setup was deemed appropriate for the SCVM, as it was able to converge well given a training length of 5000 epochs.
-
-The length of the training was made possible by the speedup in computation, a result of improving scalability through vectorization, as well as the fact that the datasets used used in this project were of a certain maximum size.
-For \textit{even} larger dynamic networks, perhaps with several thousand nodes and several millions of interactions, the training of the SCVM would take days at least, which in many cases poses as unfeasible. 
-
-In order to enable training of larger dynamic networks in a feasible time frame, convergence of model parameters should ideally happen on the basis of relatively fewer epochs.
-One way to potentially realize this solution would be to run a sequential training setup, in which some parameters are initialized and learned before others.
-For the SCVM, this would mean initializing only the position parameter $z0$ first, and for the first third of the training only seek to optimize the model by changing the initial positions.
-Then, the model would initialize the velocities for all nodes, and for the middle third of training fit only the positions and velocities. 
-Lastly it would seek to optimize the model based on all three parameters.
-
-
+The results in regards to testing the SCVM in regards to its ability to model the intensity of dyads which were removed  
+removing interactions
 
 
 \subsubsection{Computation Times and Memory Limitations}
-\label{sec:Discussion:Results:MemoryLimitations}
-In the results for research question 2, see section \ref{sec:ResearchQuestion2}, it was shown how the proposed vectorized setup improved scalability to such extend that it reduced the run time for training on synthetic dataset 1 by around a factor 32.
+\label{sec:Discussion:Results:ComputationSpeed}
+In the results for research question 2, see section \ref{sec:ResearchQuestion2}, it was shown how the proposed vectorized setup improved scalability to such extend that it reduced the run time for training on synthetic dataset 1 by around a factor 32 compared to the non-vectorized setup.
 
 The subsequent section, regarding computational speed, gave a more detailed overview of the running times of the vectorized setup, in relation to number of nodes, steps and interactions.
-The results showed that both when increasing the number of nodes in the dataset, as well as the number of steps the SCVM had to fit, the run times where similar for low numbers, but increased seemingly exponentially when running the training on the CPU, and relatively linearly when training using CUDA.
-The explanation for these results seem rather straight forward; the vectorized setup enables parallization, enabling the computations to be run in parallel on multiple cores, of which the GPU has in abundance compared to the CPU. 
+The results showed that both when increasing the number of nodes in the dataset, as well as the number of steps the SCVM had to fit, the run times were similar for low numbers, but increased seemingly exponentially when running the training on the CPU, and relatively linearly when training using CUDA.
+The explanation for these results seem rather straight forward; the vectorized setup enables parallelization, enabling the computations to be run in parallel on multiple cores, of which the GPU has in abundance compared to the CPU. 
 Specifically, the CPU, an Intel Core i7-9750H, used for generating these results has 6 cores (with multi threading this number is actually 12) while the GPU, an NVIDA GeForce GTX 1650, has 896 CUDA cores.
 In theory, this means 896 calculations can happen simultaneously compared to 12.
 
-The size of the dataset, ie. number of interactions, resulted in the same run times for both the CPU and CUDA.
-This 
+The size of the dataset, ie. number of interactions, resulted in the same run times for both the CPU and CUDA, growing proportionally with $n$.
+The vectorized setup enables parallelization over nodes, but not 
+
+
+\subsubsection{Explainability of SCVM Animations}
+\label{sec:Discussion:Results:Explainability}
+The results for research question 3, see section \ref{sec:ResearchQuestion3}, first showed what impact applying position, drift and rotation correction to the SCVM had, in regards to the visualizations of the learned dynamics.
+It could clearly be seen that correcting positions and drift made for visualizations that were more interpretable, as they could more easily be inspected by an observer.
+
+Correction of the rotation of the learned dynamics yielded a visualization that was distinct from its non-rotation-corrected counterpart, and while it initially seems negligible by an observer, it will non the less increase interpretability.
+This is due to the fact that correcting rotation standardises the movements in latent space to always have the most movement in the x-axis, regardless of which directions the learned parameters end up moving along.
+As such, comparing different learned dynamics is more consistent with rotation corrected.
+
+Applying regularization clearly dampened the change in velocity between steps, hence smoothing the movements of nodes. 
+While the nodes definitely moved more slowly through latent space with higher regularization parameters $\gamme$, the addition of regularization for the sake of explainability did not seem strikingly convincing.
+Having less possibility for drastic movements in latent space should
 \\\\
-A problem which was met when running larger dynamic networks, of $N = 100$ nodes and more, was the memory requirement.
-With an increased number on unique nodes, the amount of memory needed to be allocated expands fast due to the tensor having dimensions that are $N \cdot Num_Steps \cdot n$
-\\\\
-Improvement to be made for the vectorized setup consist first and foremost in handling the memory requirement. 
-The code underlying the proposed model is not optimed in terms of reducing memory requirement, this could potentially be done, but as of now we are not familiar with the 'how'.
+When looking at the visualizations made on the basis of interactions in a game of Resistance, the visualizations with 100 steps to some extend enables for an understanding of how each player relates to each other over the duration of the game. 
+The computer, shown in the animations as P0, is less active during the game, and this can clearly be seen in the animation as it floats further from the human players, only being engaged by some players at few points during the game.
+The players can in the animation be seen as interacting with each other in a somewhat interpretable way, their relation can be inspected at a given time point, yet they can easily be seen as sporadic.
+Taking the stance that the data is modelled to the best extend possible by the SCVM, and that this modelling is sufficient in describing the dynamics of the game, it can be argued that the animation lacks the ability to show the observer whether this sporadic-like behaviour is in fact based in the underlying data.
+If the interactions of the human players \textit{is} in fact sporadic to some degree, the animation should communicate this information to the observer.
+One way of doing this would be to visually include the actual interactions of the underlying dataset.
+This could be done by showing/flashing a link between a given node pair at the time of their actual interactions.
+This addition to the animation would help to rationalize the closeness of nodes, as closer nodes in this case should have much more frequent link-connections than nodes farther apart.
+
+The animation made on the basis of the Lyon Primary School dataset depicts an at the same time clear and somewhat confusing picture of interactions between students and teachers.
+Each student node, labelled with the appropriate school class, is clearly seen clustering with other nodes of the same class, and in most of the animation accommodated by a teacher.
+For much of the animation, multiple of the present clusters consist of multiple classes with an appropriate number of teachers, but while a straight forward answer to why this is the case is that they of course interact with each other at those times, this yields no understanding of why they do.
+In order to better understand the dynamic network from the presented animation, an observer needs more information.
+For the Lyon Primary School dataset, the animation shows some time spans where the nodes do not cluster much, and while this \textit{could} be due to the pupils having a holiday period, an observer can only guess.
+%For the Lyon Primary School dataset, information about what courses are running at a given time would for example enable for an observer to better grasp 
+
 
 
 

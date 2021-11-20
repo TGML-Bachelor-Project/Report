@@ -23,17 +23,17 @@ GPU: NVIDIA Corporation TU117M [GeForce GTX 1650 Mobile / Max-Q].
 The proposed SCVM presented in this project utilizes vectorization in order to parallelize computation for model training.
 In order to evaluate the improvement this entails over previous work, namely the CVM proposed by Tommerup et. el. \cite{Tommerup2021LearningNetworks}, the run times and memory requirements for training on a dynamic, one-step network with an increasing number of (few) nodes is evaluated.
 
-Below, table \ref{tab:RuntimeBaseline} shows the run times for the baseline model, non-vectorized SVM, and the proposed model, vectorized SCVM, trained for 500 epochs on the first two, three and all four nodes of synthetic dataset 1 (see sections \ref{sec:Data:SyntheticData:SyntheticDataset1}).
+Below, table \ref{tab:RuntimeBaseline} shows the run times for the baseline model, non-vectorized SVM, and the proposed model, vectorized SCVM, trained for 500 epochs on the first two, three and all four nodes $N$ of synthetic dataset 1 (see sections \ref{sec:Data:SyntheticData:SyntheticDataset1}).
 The models were trained on the CPU.
 
 \begin{table}[H]
 \centering
 \begin{tabular}{|l|ccc|}
 \hline
-Model           & \multicolumn{1}{l}{2 Nodes ($n = 11,133$)} & 3 Nodes ($n = 39,546$)& 4 Nodes ($n = 79,424$)         \\ \hline
-Baseline CVM    & X                         & X             & 2h 52m 53s: 10,373s    \\
-Vectorized SCVM & 2m 18s: 138s              & 3m 17s: 197s  & 5m 19s: 319s    \\ 
-Run time improvement & $X$ times faster             & $X$ times faster  & $32.5$ times faster   \\ \hline
+Model           & \multicolumn{1}{l}{$N = 2$ ($n = 11,133$)} & $N = 3$ ($n = 39,546$)& $N = 4$($n = 79,424$)         \\ \hline
+Baseline CVM    & 28m 51s: 1731s            & 1h 28m 14s: 5294s             & 2h 52m 53s: 10,373s    \\
+Vectorized SCVM & 2m 18s: 138s              & 3m 17s: 197s  & 5m 19s: 319s    \\ \hline
+Improvement & $12.5$ times faster  & $26.9$ times faster  & $32.5$ times faster   \\ \hline
 \end{tabular}
 \caption{Run times for the non-vectorized CVM vs. the vectorized SCVM}
 \label{tab:RuntimeBaseline}
@@ -72,6 +72,10 @@ Figure \ref{fig:NumNodesRuntimes} below shows the run times per epoch given the 
     \caption{Run time of the SCVM relative to the number of nodes $N$}
     \label{fig:NumNodesRuntimes}
 \end{figure}
+The figure depicts a clear difference in run times between using the CPU and CUDA.
+They both have similar run times for lower $N$'s, but as the number increases, the run times for the CPU increase at what could look like an exponential growth, while the GPU has a slight linear increase.
+It can hence be stated that running on CUDA outperforms CPU for larger dynamic networks.
+\\\\
 \textbf{Number of Steps}
 \\
 The second test is carried out in order to evaluate the impact on run time in relation to the number of steps the SCVM has to fit.
@@ -90,6 +94,9 @@ Figure \ref{fig:NumStepsRuntimes} below shows the run times per epoch given the 
     \caption{Run time of the SCVM relative to the number of steps}
     \label{fig:NumStepsRuntimes}
 \end{figure}
+The increase in run time in relation to the number of steps depicted above, shows the CPU once again being outperformed by CUDA.
+The run times increase seemingly linearly for both, but with a lower rate for the CUDA.
+\\\\
 \textbf{Number of Interactions}
 \\
 The third and final scalability test is carried out with the goal of evaluating the impact on run time the dataset size has.
@@ -107,10 +114,11 @@ Once again, for each dataset size, the mean run time per epoch over five runs ar
 
 Figure \ref{fig:NumInteractionsRuntimes} below shows the run times per epoch given the number of steps the SCVM has to fit, using the CPU (in blue) and CUDA (in orange).
 
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{0_images/numinteractions_runtime2.png}
     \caption{Run time of the SCVM relative to the number of interactions}
     \label{fig:NumInteractionsRuntimes}
 \end{figure}
+The figure above shows similar run times for both the CPU and CUDA in relation to the number of interactions in the dataset.
+The growth that they both experience is linear, and hence directly proportional to $n$.

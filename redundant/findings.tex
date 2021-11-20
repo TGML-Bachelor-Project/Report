@@ -140,3 +140,26 @@ Real dataset 2, see section \ref{sec:Data:RealData:RealDataset2}, is utilized he
 \\\\
 \textbf{Interaction removal results.}
 
+
+
+\subsubsection{Real Dataset 2: EU Research Institution Email Correspondences}
+\label{sec:Data:RealData:RealDataset2}
+Dataset can be found here: \href{https://snap.stanford.edu/data/email-Eu-core-temporal.html}{https://snap.stanford.edu/data/email-Eu-core-temporal.html}
+\\\\
+The second real-life dataset consists of email correspondences between institution members.
+The original dataset consists of 332.334 member-interactions (email exchanges) timestamped in seconds, with the first email being sent at time $t_{min} = 0$ seconds and the last email being sent at 69.459.254 seconds, 803 days after the first.
+The dataset is reduced to 329.910 interactions due to a large empty gap between times $5 \cdot 10^5$ seconds and $6.88 \cdot 10^5$ seconds, whereas the last 2424 interactions are removed, hence the max time is $t_{max} = 45,405,138$ second, approximately 525.52 days.
+
+The timestamps are transformed to days by the following formula:
+
+\begin{equation}
+    t_i = 525.52 \cdot \frac{t_i - t_{min}}{t_{max}}
+\end{equation}
+The distribution of email exhanges are as seen below in figure \ref{fig:RLdataset2}:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{0_images/reallife_dataset_2_dist.png}
+    \caption{Distribution of Real Dataset 2: EU Emails}
+    \label{fig:RLdataset2}
+\end{figure}

@@ -125,7 +125,7 @@ Which is similar to (\ref{eq:Method:ConstantVelocity:latent_pos}), but where $\m
 The loss function of the stepwise model loss function remains identical to that of the constant velocity model, since the event and non-event intensities $I_e$ and $I_n$ can still be calculated as in (\ref{eq:Method:ProposedModel:event_intensity_calc}) and (\ref{eq:Method:ProposedModel:nonevent_intensity_calc}). The only difference will be, that the latent space positions used to calculate the event intensities are computed using the method described in section \ref{sec:Method:StepwiseLatentSpacePositions}.
 
 
-\subsubsection{Position Correction}
+\subsubsection{Position and Drift Correction}
 \label{sec:Method:ProposedModel:PositionCorrection}
 Since the model is only fitted based on the relative node distances, and velocity changes if regularization is used. This means that the model is unaware of the exact values of the starting positions and velocities $\textbf{Z}$ and $\textbf{V}$ as long as the relative node distances produce a good fit. This also means that the model fitting can result in displacement from origo of the node starting positions and that drift can be introduced in the node positions, which is undesirable when visualizing the node behavior in latent space.
 \\
@@ -175,6 +175,10 @@ And the latent distance measure for a node pair $u$ and $v$:
 \end{align}
 remains intact.
 
+\subsubsection{Rotation Correction}
+\label{sec:Method:ProposedModel:RotationCorrection}
+
+
 \subsubsection{Extending Loss Function - Regularization of Velocity Changes}
 \label{sec:Method:ProposedModel:Regularization}
 The velocity from one step to another can change a lot. But, large changes in velocity can have a negative impact on the visualization of the node behavior in latent space e.g. if nodes dramatically speed up and down from step to step.
@@ -184,3 +188,6 @@ Therefore a regularization term is added to the model loss function which penali
     \label{eq:Method:ProposedModel:vec_regularization}
 \end{align}
 Where $\gamma$ is the regularizatoin factor and $\rVert \cdot \rVert_F^2$ is the squared Frobenius norm. Because of the position correction which subtracts the mean from the starting positions and the veolicities, the mean is also subtracted from the velocities in the regularization to make it center invariant.
+
+
+

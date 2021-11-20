@@ -1,3 +1,18 @@
-
 \subsection*{Abstract}
+
+This project proposes the Stepwise Constant Velocity Model (SCVM) which models dynamic networks in two-dimensional latent space using Newtonian dynamics with stepwise computation.
+The SCVM was implemented with a vectorized training setup in order to utilize the power of CUDA that stems from parallelization.
+
+The proposed model was evaluated in terms of modelling capabilities, and was found to model dynamic networks well, using Newtonian dynamics in a stepwise fashion as to accommodate for the 
+
+Running times were evaluated for the SCVM running on CPU and CUDA, the results concluding that vectorized training setup greatly improves running times when utilizing CUDA.
+This scalable implementation enabled for the modelling of larger dynamic networks than would have been feasible with a non-parallelized training setup.
+
+The learned Newtonian dynamics of a given dynamic network were visualized via the creation of animation which depicted the stepwise constant velocity movements of nodes in latent space.
+These animations were improved through the implementation of non-disruptive corrections to the learned dynamics, elevating the interpretability and explainability of the modelled dynamic network.
+
+
+The paper discusses these results and argues for the investigation of number of aspects of the proposed SCVM which could improve its modelling capabilities, scalability and the explainability of resulting visualizations.
+
+Lastly, possible use cases for the proposed model are discussed, amongst which 
 

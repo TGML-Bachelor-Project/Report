@@ -23,6 +23,34 @@
 \usepackage[breaklinks]{hyperref}
 \usepackage[table,xcdraw]{xcolor}
 
+%%%%%%%%%%%%%%%%%%%%%%% Code formatting
+\usepackage{listings}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+
 
 %Adding bibliography to table of contents
 \usepackage[nottoc]{tocbibind}
@@ -130,7 +158,6 @@ First, it will give an explanation of the graph networks in the context that thi
 It will then explain the central idea behind the velocity dependant model about which the project revolves. 
 From there, this section will dive deep into the different aspects that this model relies upon.
 This both includes mathematical and statistical theory, as well as the methodology related to implementing the model in code.
-
 \input{4_Metode/1_GraphsAndNetworks}
 \input{4_Metode/2_LatentSpaceModels}
 \input{4_Metode/3_PoissonProcess}
@@ -148,7 +175,7 @@ This both includes mathematical and statistical theory, as well as the methodolo
 
 \section{Results}
 \label{sec:Results}
-This section presents results that are used in answering the stated research question and sub-questions.
+This section presents results that are used in answering the stated research questions.
 \input{5_Results/0_reproducibility}
 \input{5_Results/Q1}
 \clearpage
@@ -160,8 +187,8 @@ This section presents results that are used in answering the stated research que
 \section{Discussion}
 \label{sec:Discussion}
 This section first of all discusses the overarching takeaways that the results have posed.
-It then dives into the future prospects of use that this technology poses.
-Finally, it discusses the future work that should be done in order to expand the capabilities of this technology.
+It then discusses the future work that should be done in order to expand the capabilities of the proposed model.
+Finally, it dives into the future prospects of use that this technology poses.
 \input{6_Discussion/1_ResultsDiscussion}
 \input{6_Discussion/2_FutureWork}
 \input{6_Discussion/3_RealWorldApplications}

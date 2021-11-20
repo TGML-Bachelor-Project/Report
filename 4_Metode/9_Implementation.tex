@@ -4,23 +4,14 @@
 
 
 
+% \subsection{Learning}
+% \label{sec:Method:Learning}
+% This section briefly describes the learning setup for the proposed model.
+% The model learning is implemented using the \hyperlink{https://pytorch.org/ignite/}{Pytorch-Ignite-0.4.7}\cite{IgniteDocumentation} framework.
+%  %The model training uses batching to handle the large amounts of data for TDGNs with many interactions. where each batch fed to the model contains $E$ rows for $E$ node interactions and 3 columns . which are fitted using backpropagation, based on the negative of the loglikelihood presented in equation  \ref{eq:LogLikelihoodFuncExplicit} in section \ref{sec:Method:LikelihoodFunc}
 
-\subsection{Learning}
-\label{sec:Method:Learning}
-This section briefly describes the learning setup for the proposed model.
-The model learning is implemented using the \hyperlink{https://pytorch.org/ignite/}{Pytorch-Ignite-0.4.7}\cite{IgniteDocumentation} framework.
- %The model training uses batching to handle the large amounts of data for TDGNs with many interactions. where each batch fed to the model contains $E$ rows for $E$ node interactions and 3 columns . which are fitted using backpropagation, based on the negative of the loglikelihood presented in equation  \ref{eq:LogLikelihoodFuncExplicit} in section \ref{sec:Method:LikelihoodFunc}
 
 
-\subsubsection{Adam Optimizer}
-\label{sec:Method:Learning:Adam}
-Training the models in this project is done using the Adam optimization algorithm, short for Adaptive Moment Estimation, which is a form of stochastic gradient descent \cite{Kingma2014Adam:Optimization}.
-A gradient descent algorithm seeks to optimize learnable parameters by stepping towards the direction of the negative gradient of the loss function with respect to these parameters.
-This way, the model will eventually find the parameters that, globally or locally, minimize the loss function.
-What makes the Adam optimization a stochastic gradient descent is the fact that the gradient is a stochastic approximation of the gradient based on the given batch of training data.
-
-The most important hyperparameter in regards to the Adam optimization algorithm is the learning rate, usually denoted by $\alpha$, which determines the step size that is taken in the direction of the negative gradient. 
-As Adam builds upon the RMSProp optimizer, short for Root Mean Square Propagation, this learning rate is adapted for each learnable parameter, and hence slightly changing.
 
 
 
