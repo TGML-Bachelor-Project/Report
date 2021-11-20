@@ -1,6 +1,6 @@
 \subsection{Future Work and Improvements}
 \label{sec:Discussion:FutureWork}
-A stated in previous sections, the work of this project takes a big step towards utilizing the latent space modelling approach as a detailed, scalable means of modelling temporally dynamic graph networks data in an explainable way.
+As stated in previous sections, the work of this project takes a big step towards utilizing the latent space modelling approach as a detailed, scalable means of modelling dynamic networks in an explainable way.
 In regards to the implemented model, the discussion points regarding the results also discuss potential improvements that could be made to the already implemented components that make up the SCVM and visualisation. 
 \\
 In order to fully realize the potential of the modelling approach though, some further, new components could advantageously be added on top of the work presented in this project.
@@ -8,61 +8,37 @@ In order to fully realize the potential of the modelling approach though, some f
 
 \subsubsection{Memory Limitations}
 \label{sec:Discussion:FutureWork:MemoryLimitations}
-A problem which was met when running larger dynamic networks, of $N = 100$ nodes and more, was the memory requirement.
-With an increased number on unique nodes, the amount of memory needed to be allocated expands fast due to the tensor having dimensions that are $N \cdot Num\_Steps \cdot n$
-\\\\
-Improvement to be made for the vectorized setup consist first and foremost in handling the memory requirement. 
-The code underlying the proposed model is not optimized in terms of reducing memory requirement, this could potentially be done, but as of now we are not familiar with the 'how'.
-
-Nodewise Batching.
-
-Datatypes, keep things as float 32 or 16.
-
-Multiple GPU distribution, eg. using Spark.
+A problem which was met when running larger dynamic networks, of $N = 100$ nodes and more, was the memory requirement on the GPU.
+With an increased number of unique nodes and an increased number of steps, the amount of memory needed to be allocated expands fast due to the tensor having dimensions of $Nodes \times 2 \times Steps$. Particularly the number of unique nodes is a limiting factor, since the node pairwise computations e.g. the distances grows exponentially in size.
+Therefore an improvement to be made for the vectorized setup consist first and foremost in handling this memory requirement. The code underlying the proposed model is not particularly optimized in terms of reducing memory requirements, as the focus has mainly been on optimizing the scalability in regards to run time. But, one way the memory use could potentially be improved is to split up the computation of node interaction intensities through batching of the nodes. This is in theory easily done, as the computations of each node batch intensity can be computed and summed, thereby keeping an upper limit on how many nodes as included in each computation. Another approach could be to not directly do nodewise batching, but instead (or also) use multiple gpus. This approach was considered during the project, but do to too large queue times on the DTU HPC servers when requesting multiple GPUs it was dropped. In theory this should however be quite easily done by using the Pytorch DataParallel\cite{DataParallelDocumentation} class and specifying multiple device ids. Yet another way of improving memory usage would be to check the code consistently to ensure objects send to the GPU device are detached optimally, i.e. when no longer used, to check for types that can be reduced in size e.g. float64 to float32, and to explore the possibility of using sparse data representations\cite{Torch.sparseDocumentation} for large tensors.
 
 
 \subsubsection{Bias Term $\beta$}
 \label{sec:Discussion:Results:BiasTerm}
-The use of a dataset-wide bias term is possibly insufficient in terms of correctly representing the different nodes of the TDGN the model is trying to model. 
+The use of a dataset-wide bias term is possibly insufficient in terms of correctly representing the different nodes of the dynamic network. 
 This fact is of course not true for the synthetic dataset results, as the data of these sets are all generated from a single beta value, but for the real datasets it might very well be the case.
-
 In a given network, a very plausible scenario may be that some entities are less active than others, and the model then fits a beta value that reflects greater background intensity than these entities entail.
 In order to compensate for this, the model will place these less active entities further away from the more active entities, neglecting the proportions of each individual node's overall interaction intensity.
-
-A fitting expansion of the model would hence be node-specific bias terms, with which every node is attributed it's own beta value, and as such can be spatially modelled in latent space while accounting for the node's overall interaction intensity. 
+A fitting expansion of the model would hence be node-specific bias terms, with which every node is attributed its own beta value, and as such can be spatially modelled in latent space while accounting for the node's overall interaction intensity. 
 \\\\
 For the proposed SCVM, the fact that the different steps are governed by the same bias term may also be a limitation. 
 The mean intensities for each step may vary a lot, just as with the individual nodes.
 Hence, another expansion in relation to the bias term would be to have step-specific bias terms, each governing the background intensity of the given step.
-\\\\
-The combination of the node-specific bias term and the step-specific would then be the node-step-specific bias term, learning a beta parameter for each node for each step.
+\\
+Finally a combination of the node-specific bias term and the step-specific would then be the node-step-specific bias term, learning a beta parameter for each node for each step.
 
 
 \subsubsection{Alternative Training Setup}
 \label{sec:Discussion:Results:AlternativeTrainingSetups}
 For this project, the training was carried out using the Pytorch Ignite framework, and during all training epochs, the parameters $\beta$, $z0$ and $v0$ were all optimized at the same time.
 This training setup was deemed appropriate for the SCVM, as it was able to converge well given a training length of 5000 epochs which could be completed in a feasible time frame.
-
 The length of the training was made possible by the speedup in computation, a result of improving scalability through vectorization, as well as the fact that the datasets used in this project were of a certain maximum size.
-When training on the Lyon dataset thoug, which has 237 nodes and 3.5 million interactions, fitting 249 steps, the training time was around 14 hours when running on an NVIDIA GTX 1650 GPU.
-For \textit{even} larger dynamic networks, perhaps with several thousand nodes and several millions of interactions, the training of the SCVM would likely take days at least, which in many cases poses as unfeasible. 
-
-In order to enable training of such larger dynamic networks in a feasible time frame, convergence of model parameters should ideally happen on the basis of relatively fewer epochs.
-One way to potentially realize this solution would be to run a sequential training setup, in which some parameters are initialized and learned before others.
-For the SCVM, this would mean initializing only the position parameter $z0$ first, and for the first third of the training only seek to optimize the model by changing the initial positions.
+When training on the Lyon dataset though, which has 237 nodes and 3.5 million interactions, fitting 249 steps, the training time was around 14 hours when running on an NVIDIA GTX 1650 GPU.
+For \textit{even} larger dynamic networks, perhaps with several thousand nodes and several millions of interactions, the training of the SCVM is likely take days at least, which in many cases poses as infeasible. 
+\\
+In order to enable training of such large dynamic networks in a manageable time frame, convergence of model parameters should ideally happen on the basis of relatively fewer epochs.
+One way to potentially realize this would be to run a sequential training setup, in which some parameters are initialized and learned before others.
+For the SCVM, this could mean initializing only the position parameter $\textbf{Z}$ first, and for the first third of the training only seek to optimize the model by changing the initial positions.
 Then, the model would initialize the velocities for all nodes, and for the middle third of training fit only the positions and velocities. 
 Lastly it would train the model while also fitting the $\beta$ parameter.
-
-
-\subsubsection{Expanding the Model}
-\label{sec:Discussion:FutureWork:ModelExpansion}
-Time bin size: Resolution
-
-
-
-
-\subsubsection{Distribution: pip package}
-\label{sec:Discussion:FutureWork:Pip}
-
-Pip package
-
+Another solution also presented for solving the memory limitations, would be to use multiple GPUs either through Pytorch or scale up to multiple clusters through other frameworks like Apache Spark\cite{ApacheAnalytics}.

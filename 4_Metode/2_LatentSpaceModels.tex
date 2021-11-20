@@ -2,22 +2,24 @@
 \label{sec:Method:LSM}
 This subsection delves with explaining and understanding the latent space modelling approach.
 
-A latent space, also refereed to as a latent embedding space, serves as an embedding in which a set of entities, in this project the nodes of a dynamic network, who resemble each other more closely are positioned more closer in the latent space.
-For a given set of eight entities, these could be human beings with a set of features entailing age, height, weight, eye and hair color etc., their mutual resemblance could be represented in two-dimensional latent space by their reciprocal distances.  
+A latent space, also refereed to as a latent embedding space, serves as an embedding in which a set of entities, in this project the nodes of a dynamic network, who resemble each other more closely are positioned closer in the latent space \cite{Sarkar2005DynamicModels} \cite{Kim2017AVariables}.
+For a given set of four nodes, with weighted links between them, this weight can be represented in two-dimensional latent space by their reciprocal distances.  
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{0_images/latentSpaceIllustration.png}
-    \caption{Eight humans placed on two-dimensional latent space, their reciprocal distances respresenting their resemblance.}
-    \label{fig:RLdataset3}
+    \includegraphics[width=0.8\textwidth]{0_images/latentspace.png}
+    \caption{Four nodes placed in two-dimensional latent space, weights represented by their reciprocal distances.}
+    \label{fig:latentspace}
 \end{figure}
-For this project, this resemblance is based on the intensity of interaction, defined by the intensity function which is described later in section \ref{sec:Method:IntensityFunc}.
-The latent space, being a two-dimensional space, serves as a dimensionality reduction, given the fact that the interaction data is of much higher dimensions.
+For this project, the resemblance of nodes, shown as the link weights in figure \ref{fig:latentspace}, is based on the intensity of interaction between entities in a given dynamic network.
+This intensity is defined by the intensity function, which is described later in section \ref{sec:Method:IntensityFunc}.
 
-Latent space models, or latent distance models as they are also referred to, have proved good in modelling higher dimensional data in lower dimensions, in this project two dimensions \cite{Gourieroux2021ScalableNetworks}.
-As mentioned in section \ref{sec:Intro:RelatedWork} about related work, the latent space approach by Sarkar and Moore et. al. modelled using positions in latent space \cite{Sarkar2005DynamicModels}.
-Tomerup et. al. \cite{Tommerup2021LearningNetworks} expanded their modelling approach by attributing the nodes of a dynamic network with simple Newtonian dynamics of motion, even though most dynamic networks will not be governed by Newtonian dynamics.
-This project expands the capabilites of the Newtonian dynamics approach in order to better the modelling ability of these networks which are not Newtonian in nature.
+The latent space, being a two-dimensional space, serves as a dimensionality reduction, given the fact that the dynamics of the networks which are being mapped are of possibly much higher dimensions.
+Latent space models, or latent distance models as they are also referred to, have proved good in modelling higher dimensional data in lower dimensions \cite{Gourieroux2021ScalableNetworks}.
+
+As mentioned in section \ref{sec:Intro:RelatedWork} about related work, the latent space approach by Sarkar and Moore et. al. modelled dynamic networks using only positions in latent space \cite{Sarkar2005DynamicModels}.
+Tomerup et. al. \cite{Tommerup2021LearningNetworks} expanded their modelling approach by attributing the nodes of a dynamic network with simple Newtonian dynamics of motion, and even though most dynamic networks are not be governed by Newtonian dynamics, this approach has the advantage of having a higher degree of explainability.
+This project expands the capabilities of the Newtonian dynamics approach, in order to better model dynamic networks which are not Newtonian in nature.
 
 
 \subsubsection{Euclidean Latent Space}

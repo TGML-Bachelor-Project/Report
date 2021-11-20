@@ -1,17 +1,17 @@
 \subsection{Real World Applications}
 \label{sec:Discussion:UseCases}
-The proposed SCVM represents the possibility of modelling larger dynamical networks in latent space using Newtonian dynamics.
-While not many dynamic networks are based in Newtonian dynamic, the stepwise approach enables for the modelling of non-Newtonian dynamic networks with greater detail than previous work, while retaining the ease of explainability that Newtonian dynamics in latent space provides.
+The proposed SCVM represents the possibility of modelling the interactions in larger dynamical networks in a 2D Euclidean latent space using velocity dynamics. 
+While not many dynamic networks are based in 2D Euclidean space, the SCVM approach enables for an intuitive interpretable modelling of the dynamic network interactions simply by using node interaction data which can give many insights on how the nodes are behaving in relation to each other.
+In this regard, the SCVM provides an opportunity to visually understand complex networks and possibly to use the latent space network representation as a form of embedding to train other machine learning models on.
+To further exemplify this, a couple of interesting real life use cases are briefly presented below.
 
-In this regard, the SCVM 
-
-
-\subsubsection{Hospitals}
+\subsubsection{Logistics - Hospitals}
 \label{sec:Discussion:UseCases:Hospitals}
-Hospitals logging.
+Optimization of logistics is a very real challenge for organizations with large complex work environments such as hospitals. A lot of logging are typically done in these environments such as treatment times of patients or hospital porter movements. The SCVM could be utilized for such data to for instance give some insights on how the hospital workers interact with each other and the patients, or to maybe try and predict which interactions are most likely to occur and plan in advance to smoothen the work flow.
 
-
-
-\subsubsection{Marketing}
+\subsubsection{Future Contacts - Edge Prediction}
 \label{sec:Discussion:UseCases:Marketing}
-Edge prediction: Determine nodes that are most likely to interact in the future, but aren't currently.
+The SCVM can also be applied to social network data to try and determine likely future contacts for people in the network. This might be possible by looking at nodes that are close to each other in the latent space but do not yet interact. If these nodes are near each other but do not directly interact it means they both have some other nodes in common which they interact with. This could for instance be that they have common friends. In this case they could be likely to meet at a future event and thereby interact.
+
+\subsection{Node Classification on Latent Space}
+A third option could be to train machine learning models on the SCVM latent space representation for instance by labeling the nodes and training a supervised model to classify nodes based on their positions in the latent space. The latent space representation could also be used in a unsupervised learning setting to help cluster and then label similar nodes based on their interactions.
