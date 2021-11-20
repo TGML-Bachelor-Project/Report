@@ -1,31 +1,22 @@
 \section{Introduction}
 \label{sec:Intro}
 
-%This section introduces the project and the motivations behind it.
-%It will lightly shed light on the technical background of the project, introducing machine learning on graph networks.
-%A review of previous, related work is given, followed by stating and explaining the present research questions.
-%Lastly, an outline of the contents of the project will be given.
-
 
 \subsection{Motivation}
 \label{sec:Intro:Motivation}
-Many real world systems and problems can be represented as static graph networks, a representation that enables both a human and machine-interpretable understanding of the given system, further allowing for the use of various machine learning tasks such as link prediction 
-%(Thomas N. Kipf and Max Welling. Variational Graph Auto-Encoders. 2016. arXiv: 1611.07308 [stat.ML], Aditya Grover and Jure Leskovec. Node2vec: Scalable Feature Learning for Networks. New York, NY, USA, 2016. doi: 10.1145/2939672.2939754. url: https://doi.org/10.1145/2939672.2939754., William L. Hamilton, Rex Ying, and Jure Leskovec. Representation Learning on Graphs: Methods and Applications. 2018. arXiv: 1709.05584 [cs.SI].)
-.
+Many real world systems and problems can be represented as static graph networks, a representation that enables both a human and machine-interpretable understanding of the given system, further allowing for the use of various machine learning tasks such as link prediction \cite{GroverNode2vec:Networks} \cite{Hamilton2017RepresentationApplications}.
 Hence, in order to grasp the structure of a social network such as Facebook, a static graph network representation seems appropriate.
 Yet, to fully grasp such a network system, the aspect of time is crucial.
 In the case of Facebook, taking a static snapshot, ie. a static graph representation, will show us how it's users relate to each other for one instant, but next to nothing about how these users interact.
-It is evident that to properly understand interactions between users, say how they make new connections and break old, the the graph network representation must be temporally dynamic.
+It is evident that to properly understand interactions between users, say how they make new connections and break old, the graph network representation must be temporally dynamic.
 
-This project is motivated by this fact, and works solely with networks that change over time, which can be represented as temporally dynamic graph networks (TDGNs).
-Approaches to modelling TDGN's have in recent years proved successful in allowing for well performing machine learning task
-%(Srijan Kumar, Xikun Zhang, and Jure Leskovec. Predicting Dynamic Em-bedding Trajectory in Temporal Interaction Networks. New York, NY,USA, 2019. doi: 10.1145/3292500.3330895. url: https://doi.org/10.1145/3292500.3330895., Rakshit Trivedi et al. DyRep: Learning Representations over Dynamic Graphs. 2019. url: https://openreview.net/forum?id=HyePrhR5KX., da Xu et al. Inductive representation learning on temporal graphs. 2020. url: https://openreview.net/forum?id=rJeW1yHYwH., Emanuele Rossi et al. Temporal Graph Networks for Deep Learning onDynamic Graphs. 2020. arXiv: 2006.10637 [cs.LG].)
-, yet most lack explainability and the ability for human-level understanding.
+This project is motivated by this fact, and works solely with networks that change over time, which can be represented as temporally dynamic graph networks, referred to as dynamic networks.
+Approaches to modelling dynamic networks have in recent years proved successful in allowing for well performing machine learning task \cite{Xu2020INDUCTIVEGRAPHS} \cite{Trivedi2019DYREP:GRAPHS} \cite{Rossi2020TEMPORALGRAPHS}, yet most lack explainability and the ability for human-level understanding.
 This project is further motivated by this, and seeks to investigate modelling of TDGNs in a manner that enforces explainability. 
 
-A very recent work was developed by Simon Tommerup et. al. \cite{Tommerup2021LearningNetworks}, models TDGN's with while enforcing explainability, by utilizing a simpler modelling approach based on Newtonian dynamics in the latent space.
-The work though suffers in terms of information loss, ie. the amount of information is kept during modelling, and severely in terms of scalability.
-On the basis of this Newtonian dynamics modelling approach, the fundamental goal with this project is to expand it's modelling capabilities, which allow for explainability and visualization, while improving scalability, making them suitable for use on larger, more complex TDGN data.
+A very recent work developed, by Simon Tommerup et. al. \cite{Tommerup2021LearningNetworks}, models dynamic networks while enforcing explainability by utilizing a simpler modelling approach based on Newtonian dynamics in two-dimensional latent space.
+Though the work achieves some explainability, it suffers greatly in terms of information loss, ie. the amount of information kept during modelling, and severely in terms of scalability.
+On the basis of this Newtonian dynamics modelling approach, the fundamental goal with this project is to expand it's modelling capabilities, allowing for explainability of the modelled network, while improving scalability, making them suitable for use on larger, more complex data.
 
 
 
@@ -33,11 +24,9 @@ On the basis of this Newtonian dynamics modelling approach, the fundamental goal
 \label{sec:Intro:RelatedWork}
 The work presented in this project is related to, and builds upon, many principles established in earlier work.
 
-The first work to establish the use of Latent Space as a means of modelling graph networks was Hoff P et. al. \cite{Hoff2002LatentAnalysis}, in which the concept of depicting a static graph as nodes in latent space, with their relative distances describing likelihood of interaction, was introduced.
+The first work to establish the use of latent space as a means of modelling graph networks was Hoff P et. al. \cite{Hoff2002LatentAnalysis}, in which the concept of depicting a static graph as nodes in latent space, with their relative distances describing likelihood of interaction, was introduced.
 
 In "Dynamic Social Network Analysis using Latent Space Models" by Sarkar and Moore \cite{Sarkar2005DynamicModels}, the latent space approach was expanded to dynamic graph networks.
-%, and the Discrete Diffusion model introduced.
-%The Discrete Diffusion model entails 
 The approach developed by Sarkar and Moore serves as an early foundation for this project in terms of modelling TDGNs in an explainable manner.
 
 Several publications have since Sarkar and Moore been made, all presenting latent modelling approaches for dynamic graph networks. 
@@ -51,18 +40,19 @@ His work seeks to simplify the latent space approach, by utilizing the simple Po
 
 \subsubsection{Research Questions} 
 \label{sec:Intro:ResearchQs}
-The main scope, and essentially the overarching research question of this project lies in determining how a scalable and explainable model can be implemented for visualizing interactions in a temporal dynamic graph network.
+The main scope, and essentially the overarching research question of this project lies in determining how a scalable and explainable model can be implemented for visualizing interactions in a dynamic network.
 In order to answer this question, three research questions have been put forth.
-The first of these is
 \\\\
 \hspace*{5mm} 1. How well can dynamic networks be modelled using a Stepwise Constant Velocity Model (SCVM) representation in Euclidean latent space?
 %\hspace*{5mm} 1. How well can TDGNs be modelled using a velocity-dependant representation in latent Euclidean space, with stepwise event computation, and how well can it model the evolution of the TDGNs?
 \\
-This research question will be explored in two steps:
-First, the constant velocity model will be implemented, based in the state of the art approach by Simon Tommerup et. al., as it serves as the foundation of modelling TDGN's through learning a starting position and a constant velocity vector for each node.
-Then the approach will be expanded with stepwise computation, meaning each node is attributed several velocity vectors in order to better reflect changes over time.
-\\
-Evaluating the modelling ability of these approaches involves testing how well the model is able to infer correct node interactions from unseen data, and it's ability to map data of entire node pairs when these are unseen during testing.
+This research question will be explored in two parts:
+First, the constant velocity model will be implemented, based on the state of the art approach by Tommerup et. al. \cite{Tommerup2021LearningNetworks}
+This represents the foundation of modelling dynamic networks, through learning a starting position and a constant velocity vector in latent space for each node.
+Then, the approach will be expanded with stepwise computation, in order to better reflect changes over time.
+This means the timespan of a dynamic network is binned to match number of steps, and each node is attributed one velocity vectors for each time bin.
+
+Evaluating the modelling ability of these approaches involve comparing intensity rates of node pairs based on the learned dynamics with ground truth models, testing how well the model is able to infer correct node interactions from unseen data, and investigating it's ability to map data of entire node pairs when these are unseen during testing.
 \\\\
 \hspace*{5mm} 2. To what extend can the model be implemented in a scalable manner?
 \\

@@ -177,8 +177,40 @@ remains intact.
 
 \subsubsection{Rotation Correction}
 \label{sec:Method:ProposedModel:RotationCorrection}
-
-
+The model might also fit starting positions and velocity vectors, that introduce different rotations. These different rotations can have a negative impact on the interpretability and comparison of the visualizations of the nodes in latent space. To accomodate for this, a rotation correction is used. Here singular value decomposition is used to decompose the starting positions $\textbf{Z}$ and the velocities $\textbf{V}$ into $\textbf{U} \boldsymbol{\Sigma} \textbf{V}^{T}$, where $\textbf{V}^T$ has nothing to do with the velocities, but is simply the standard way of writing the initial rotation component of the SVD. 
+From the SVD only the orthonormal basis $\textbf{U}$ and the scaling $\boldsymbol{\Sigma}}$ are chosen, leaving out $\textbf{V}^{T}$ to remove the intial rotation. This gives us the rotation corrected $\textbf{Z}$ and $\textbf{V}$ scaled onto the orthonormal basis.
+\\\\
+The SVD is done by stacking $\textbf{Z}$ and each step in $\textbf{V}$ into a matrix with shape $\mathbb{R}^{N+(N \cdot S) \times 2}$. Where the the first $N \times 2$ part is $\textbf{Z}$ and the remaining $N\cdot S \times 2$ are the vertically stacked velocities from $\textbf{V}$:
+\begin{equation}
+    \textbf{ZV}_{stacked} = 
+    \begin{pmatrix}
+       z_{x_1} & z_{y_1} \\
+       \vdots & \vdots  \\
+       z_{x_N} & z_{y_N} \\
+       v_{1, x_1} & v_{1,y_1} \\
+       \vdots & \vdots  \\
+       v_{1,x_N} & v_{1,y_N} \\
+       \vdots & \vdots  \\
+       v_{S, x_1} & v_{S,y_1} \\
+       \vdots & \vdots  \\
+       v_{S,x_N} & v_{S,y_N} \\
+    \end{pmatrix}
+\end{equation}
+\noindent
+When SVD is applied to $\textbf{ZV}_{stacked}$ then $\textbf{U}\boldsymbol{\Sigma}$ will also be a matrix of the form $\mathbb{R}^{N+(N \cdot S) \times 2}$ following the shape of $\textbf{ZV}_{stacked}$, so $\textbf{Z}$ and $\textbf{V}$ without the initial rotation can be found by taking the right indices out.
+\\\\
+The reason why the initial rotation can be removed is, that it does not affect the calculation of the latent node pair distances, so the intensities are preserved. This can be seen if we take the decomposition of the positions of two nodes $\textbf{z}_u = \textbf{U}_u \boldsymbol{\Sigma}_u \textbf{V}^T$ and $\textbf{z}_v= \textbf{U}_v \boldsymbol{\Sigma}_v \textbf{V}^T$. Then the squared Euclidean distance is:
+\begin{align}
+      \mathcal{D} &= \rVert \textbf{z}_u - \textbf{z}_v \rVert_2^2 \\
+      &= \rVert \textbf{U}_u \boldsymbol{\Sigma}_u \textbf{V}^T - \textbf{U}_v \boldsymbol{\Sigma}_v \textbf{V}^T \rVert_2^2 \\
+      &= (\textbf{U}_u \boldsymbol{\Sigma}_u \textbf{V}^T - \textbf{U}_v \boldsymbol{\Sigma}_v \textbf{V}^T)^T (\textbf{U}_u \boldsymbol{\Sigma}_u \textbf{V}^T - \textbf{U}_v \boldsymbol{\Sigma}_v \textbf{V}^T)\\
+      &= (\textbf{U}_u \boldsymbol{\Sigma}_u - \textbf{U}_v \boldsymbol{\Sigma}_v)^T\textbf{V} \textbf{V}^T(\textbf{U}_u \boldsymbol{\Sigma}_u - \textbf{U}_v \boldsymbol{\Sigma}_v)\\
+      &= (\textbf{U}_u \boldsymbol{\Sigma}_u - \textbf{U}_v \boldsymbol{\Sigma}_v)^T \textbf{I} (\textbf{U}_u \boldsymbol{\Sigma}_u - \textbf{U}_v \boldsymbol{\Sigma}_v)\\
+      &= (\textbf{U}_u \boldsymbol{\Sigma}_u - \textbf{U}_v \boldsymbol{\Sigma}_v)^T (\textbf{U}_u \boldsymbol{\Sigma}_u - \textbf{U}_v \boldsymbol{\Sigma}_v)\\
+\end{align}
+So the initial rotation is removed, as it becomes the identity matrix and thereby does not influence the distance of the node pair.
+\clearpage
+\\\\
 \subsubsection{Extending Loss Function - Regularization of Velocity Changes}
 \label{sec:Method:ProposedModel:Regularization}
 The velocity from one step to another can change a lot. But, large changes in velocity can have a negative impact on the visualization of the node behavior in latent space e.g. if nodes dramatically speed up and down from step to step.
