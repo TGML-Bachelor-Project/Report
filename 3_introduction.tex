@@ -52,43 +52,44 @@ This represents the foundation of modelling dynamic networks, through learning a
 Then, the approach will be expanded with stepwise computation, in order to better reflect changes over time.
 This means the timespan of a dynamic network is binned to match number of steps, and each node is attributed one velocity vectors for each time bin.
 
-Evaluating the modelling ability of these approaches involve comparing intensity rates of node pairs based on the learned dynamics with ground truth models, testing how well the model is able to infer correct node interactions from unseen data, and investigating it's ability to map data of entire node pairs when these are unseen during testing.
+Evaluating the modelling ability of the SCVM involves comparing intensity rates of node pairs with ground truths, testing how well the model is able to infer correct node interactions from unseen data, and investigating it's ability to map data of entire node pairs when these are unseen during testing.
 \\\\
 \hspace*{5mm} 2. To what extend can the model be implemented in a scalable manner?
 \\
-The current approaches to modelling TDGN's are heavily limited in terms of computational cost and are unable to model larger networks on accessible hardware in a timely fashion.
-A scalable model will be able to model TDGN's in a way that is much more computationally efficient than prior approaches, and allow for the modelling of larger, more complex networks.
+The current approaches to modelling dynamic networks are heavily limited in terms of computational cost and hence unable to model larger networks on accessible hardware in a timely fashion.
+A scalable model will be able to run in a way that is much more computationally efficient than prior approaches, and allow for the modelling of larger, more complex networks.
 \\
-This research question will be answered by implementing the computations of the proposed model in a parallelizable manner, and evaluated based on the improvement in efficiency over conventional, non-parralized computation approach.
+This research question will be answered by implementing the computations of the proposed model in a vectorized manner.
+This implementation is evaluated based on the improvement in efficiency over the work by Tommerup et. al. \cite{Tommerup2021LearningNetworks}, as well as the increase in run time in regards to network attributes when training on the CPU and GPU separately.
 \\\\
 \hspace*{5mm} 3. How can the model be visualized to enforce explainability?
 \\
-A key advantage to the modelling approach using latent space representations is it's explainability, ie. that it is interpretable by a human observer.
-Expanding to a stepwise constant velocity modelling approach should allow for a more detailed interpretation of the complex behavior that a TDGN might have over it's temporal duration.
+A key advantage to the latent space modelling approach is it's explainability, ie. that it is interpretable by a human observer.
+The proposed SCVM should allow for a more detailed interpretation of the complex behavior that a dynamic network might have over it's temporal duration.
 \\
-In order to answer this research question, visualizations of the TDGN as learned by the modelling approach will be evaluated based on interpretability. 
+In order to answer this research question, visualizations of real life dynamic networks, as learned by the SCVM, will be evaluated based on interpretability. 
 
 
 
 \subsection{Project Outline}
 \label{sec:Intro:ThesisOutline}
-The project consist of 4 more sections.
+The project consist of 5 more sections.
 
 Section 2, the methodology section, provides a thorough technical explanation of the work presented in this project.
 The first half of this section explains the theoretical aspects underlying the proposed model.
 This part also describes the way synthetic data is generated for testing the model.
-\\
-The second half fleshes out the proposed model, giving a detailed description of the optimization taking place within it, and hence the learning of the stepwise, dynamical representation that the model produces.
-An explanation of the scalability aspects is further given, as this too defines how the model functions, in a parallizable manner.
-The sections ends with an outline of details relating to reproducibility of the present work, enabling for future work.
+The second half fleshes out the proposed model, giving a detailed description of the learning taking place within it.
+An explanation of the scalability aspects is further given, as this too defines how the model functions, in a parallelized manner.
 
-Section 3 presents and analyzes the results which relate to answering the three research questions.
+Section 3 explains the datasets used for producing results.
 
-Section 4 discusses the present work, and gives some context as to how the work may be utilized in real-life use-cases.
+Section 4 begins by listing details related to reproducibility, and then presents and analyzes the results which relate to answering the three research questions.
 
-Section 5 is the conclusion, summarizing the key findings presented in the project, hence wrapping up.
+Section 5 discusses the results and possible future improvements, and ends by discussing some real life use cases in which the SCVM may be utilized.
+
+Section 6 is the conclusion, summarizing the key findings presented in the project, hence wrapping up.
 \\\\
-All code for the project is publicly available at:
+All code for the project is publicly available via the following link:
 \\
 \href{https://github.com/TGML-Bachelor-Project/TGML}{\textcolor{blue}{https://github.com/TGML-Bachelor-Project/TGML}}
 

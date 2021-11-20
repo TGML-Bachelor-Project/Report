@@ -30,6 +30,7 @@ No V Baseline & 5000                             & 6.487  & 34715        \\
 \caption{Final learned $\beta$ value and negative log loss for baseline trained model.}
 \label{tab:SingleStep1}
 \end{table}
+\noindent
 Here the single step SCVM more or less converge to the precise beta value and prove much better than the no velocity baseline, which is no way near the correct beta.
 \\\\
 \noindent
@@ -50,6 +51,7 @@ The intensity rates for 5000 epochs training of the baseline model:
     \caption{Basline model's node pair interaction intensity for synthetic dataset 1 trained for 5000 epochs. Blue line is the ground truth model, red is the baseline model.}
     \label{fig:RQ1:baseline_intensity}
 \end{figure}
+\clearpage
 \noindent
 Intensity rates for 5000 epochs single step SCVM model training:
 \begin{figure}[H]
@@ -68,7 +70,9 @@ Intensity rates for 5000 epochs single step SCVM model training:
 \end{figure}
 \noindent
 The interaction intensity plots supports the performance of the single SCVM being much better then the no velocity model.
-\\\\
+\clearpage
+\vspace*{-2cm}
+\noindent
 \textbf{Interaction removal results.}
 \\
 The results from interaction removal, as explained in \ref{sec:Method:Evaluation:AUC}, shows a worse than random accuracy for the no velocity baseline model:
@@ -87,15 +91,15 @@ The single step SCVM has a better, but still low accuracy, for predicting the co
     \label{fig:RQ1:SCVM_accuracy}
 \end{figure}
 \noindent
-However a difference for the SCVM compared to the basline is, that the single step SCVM actually achieves an accuracy similar to that of the ground truth model.
+However a difference for the SCVM compared to the basline is, that the single step SCVM actually achieves an accuracy similar to that of the ground truth model,
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{0_images/rq1_GT_accuracy_SCVM.png}
     \caption{Ground truth model interaction removal accuracy 95 \% confidence interval for synthetic dataset 1}
 \end{figure}
 \noindent
-As both models are within a 46-47 \% accuracy confidence interval in the tests.
-\\\\
+as both  models are within a 46-47 \% accuracy confidence interval in the tests.
+\clearpage
 \noindent
 \textbf{Dyad removal results}
 \\
@@ -139,9 +143,11 @@ Single Step SCVM & 5000                          & 6.971 &  -153453.037      \\
 \end{table}
 \noindent 
 The convergence results now clearly shows the limitation of the single step SCVM, as the synthetic data has changed to be generated with several velocities, the model no longer converge to the correct beta value, and receives a worse NLL. On the other hand, the 10 step SCVM shows a fint NLL and convergence to the correct beta.
-\\\\
+\clearpage
+\vspace*{-2cm}
+\noindent
 \textbf{Intensity rate comparison results}
-\\\\
+\\
 Investigating the interaction intensity plots for the two models also, supports the convergence findings.
 \\\\
 The intensity rates for 5000 epochs training of the single step SCVM:
@@ -149,16 +155,17 @@ The intensity rates for 5000 epochs training of the single step SCVM:
     \centering
     \begin{subfigure}[b]{\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{0_images/rq1_2_1step_intensity_plot_node_01_02.PNG}
+        \includegraphics[width=0.7\textwidth]{0_images/rq1_2_1step_intensity_plot_node_01_02.PNG}
     \end{subfigure}
     \vfill
     \begin{subfigure}[b]{\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{0_images/rq1_2_1step_intensity_plot_node_23_34.PNG}
+        \includegraphics[width=0.7\textwidth]{0_images/rq1_2_1step_intensity_plot_node_23_34.PNG}
     \end{subfigure}
     \caption{Single step SCVM model's node pair interaction intensity for synthetic dataset 2 trained for 5000 epochs. Blue line is the ground truth model, red is the model estimation.}
     \label{fig:RQ1:part2:1step_intensity}
 \end{figure}
+\vspace*{-0.1cm}
 \noindent
 The single step SCVM is clearly limited by only having a single velocity to fit.
 For all interaction intensity plots from the single step SCVM  see appendix \ref{appendix:rq1:part2:1step_intensity}.
@@ -166,26 +173,25 @@ For all interaction intensity plots from the single step SCVM  see appendix \ref
 The intensity rates for 5000 epochs training of the 10 step SCVM:
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[b]{\textwidth}
+    \begin{subfigure}[b]{0.9\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{0_images/rq1_10step_SCVM_intensity1.png}
+        \includegraphics[width=0.8\textwidth]{0_images/rq1_10step_SCVM_intensity1.png}
     \end{subfigure}
     \vfill
     \begin{subfigure}[b]{0.45\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{0_images/rq1_10step_SCVM_intensity3.png}
+        \includegraphics[width=0.8\textwidth]{0_images/rq1_10step_SCVM_intensity3.png}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{0_images/rq1_10step_SCVM_intensity2.png}
+        \includegraphics[width=0.8\textwidth]{0_images/rq1_10step_SCVM_intensity2.png}
     \end{subfigure}
     \caption{10 step SCVM model's node pair interaction intensity for synthetic dataset 2 trained for 5000 epochs. Blue line is the ground truth model, red is the model estimation.}
     \label{fig:RQ1:part2:10step_intensity}
 \end{figure}
 \noindent
 Here the model clearly benefits from having multiple velocities to fit the node pair intensities. To see all interaction intensity plots for the 10 step SCVM see appendix \ref{appendix:rq1:part2:10step_intensity}
-\\\\
+\clearpage
 \noindent
 \textbf{Interaction removal results}
 \\
@@ -200,6 +206,7 @@ The accuracy on removed interactions for the single step SCVM model:
 \noindent
 The accuracy confidence interval shows an accuracy of the single step model which is around random. 
 \clearpage
+\vspace*{-2cm}
 The accuracy on removed interactions for the 10 step SCVM model:
 \begin{figure}[H]
     \centering
@@ -215,24 +222,26 @@ The accuracy on removed interactions for the 10 step SCVM model:
 \noindent
 Here we also see an accuracy close to random for the 10 step model. However, the accuracy of the model matches that of the ground truth, which also only achieves around 55 \% accuracy on the synthetic dataset 2.
 \clearpage
+\vspace*{-2cm}
 \noindent
 \textbf{Dyad removal results}
 \\
 The interaction intensity fits after dyad removal for the single step SCVM were just as bad as for the initial fits, where no dyads were removed. Which again speaks to the limitation of the single step SCVM when fitting data with multiple veclocity changes. 
-To see the interaction intensity plots for the single step SCVM after removal of node dyad (0,2) see appendix \ref{appendix:rq1:part2:1step_dyad_remove}.
-\clearpage
+All interaction intensity plots for the single step SCVM after removal of node dyad (0,2) in appendix \ref{appendix:rq1:part2:1step_dyad_remove}.
+\\\\
+\vspace*{-1cm}
 \noindent
 The dyad removal results for 10 step SCVM:
 \begin{figure}[H]
     \centering
     \begin{subfigure}[b]{\textwidth}
         \centering
-        \includegraphics[width=0.8\textwidth]{0_images/10step_SCVM_dyad_removal_plot1.png}
+        \includegraphics[width=0.7\textwidth]{0_images/10step_SCVM_dyad_removal_plot1.png}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{\textwidth}
         \centering
-        \includegraphics[width=0.8\textwidth]{0_images/10step_SCVM_dyad_removal_plot2.png}
+        \includegraphics[width=0.7\textwidth]{0_images/10step_SCVM_dyad_removal_plot2.png}
     \end{subfigure}
         \caption{10 step SCVM intensity plot after removing node pair (0,2)}
     \label{fig:RQ1:SCVM_accuracy}
