@@ -15,11 +15,9 @@ The code underlying the proposed model is not particularly optimized in terms of
 \\
 One way the memory requirements could potentially be reduced though, would be by splitting up the computation of node interaction intensities through batching of the nodes. 
 This is in theory easily done, as the computations of each node batch intensity can be computed and summed, thereby keeping an upper limit on how many nodes are included in each computation. 
-\\
 Another approach could be to not directly do node-wise batching, but instead (or also) use multiple GPUs. 
 This approach was considered during the project, but due to large queue times on the DTU HPC servers when requesting multiple GPUs, did not come to fruition. 
 This should however quite easily be done by using the Pytorch DataParallel \cite{DataParallelDocumentation} class and specifying multiple device IDs. 
-\\
 Yet another way of improving memory utilization would be to check the model consistently to ensure objects sent to the GPU device are detached optimally when no longer used.
 Further, checking and converting data types that can be reduced in size, e.g. float64 to float32, could be explored.
 Also, exploring the possibility of using sparse data representations \cite{Torch.sparseDocumentation} for large tensors would be interesting.
@@ -36,7 +34,6 @@ A fitting expansion of the model would be the implementation of node-specific bi
 For the proposed SCVM, the fact that the different steps are governed by the same bias term may also be a limitation. 
 The average intensities for each step may vary a lot, just as with the individual nodes.
 Hence, another expansion in relation to the bias term would be to have step-specific bias terms, each governing the background intensity of the given step.
-\\
 Finally a combination of the node-specific bias term and the step-specific would then be the node-step-specific bias term, learning a beta parameter for each node for each step.
 
 

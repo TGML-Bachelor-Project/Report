@@ -6,9 +6,8 @@ A graph is a representation of a network that consists of a set of $N$ nodes, th
 
 \subsubsection{Static Graphs}
 \label{sec:Method:Graphs:StaticGraphs}
-The most common type of graph is a static graph, providing a representation of the nodes in a network and edges that are static, ie. do not change. 
+The most common type of graph is a static graph, providing a representation of the nodes in a network and edges that are static, i.e. do not change. 
 In the context of this project, the static graph can be seen as a snapshot of a given network at a single point in time.
-
 A static graph representation of the relationships between $N=4$ nodes, you and three friends who do not know each other, could look as the graph presented in figure \ref{fig:StaticGraph}.
 
 \begin{figure}[H]
@@ -17,6 +16,7 @@ A static graph representation of the relationships between $N=4$ nodes, you and 
     \caption{The relationship between you and three friends. You know each one of them, buth they do not know each other.}
     \label{fig:StaticGraph}
 \end{figure}
+\noindent
 The most common way of representing network information in a machine-interpretable way is with an adjacency matrix $\textbf{A} \in \R^{N \times N}$, \cite{NetworkBarabasi} chapter 2.11.
 The adjacency matrix $\textbf{A}$ holds information of whether two given nodes, $u$ and $v$ are connected, having $\textbf{A}_{u,v} = 1$ if a link is present, and $\textbf{A}_{u,v} = 0$ if not.
 For the above figure, the appropriate adjacency matrix  with you as the first column/row, friend 1 as the second and so forth, would look as the following:
@@ -32,20 +32,18 @@ For the above figure, the appropriate adjacency matrix  with you as the first co
 \subsubsection{Temporally Dynamic Graphs}
 \label{sec:Method:Graphs:DynamicGraphs}
 Not all networks can be represented by static graphs though, and sometimes having graphs be non-static means that they make for a better representation of the network they are modelling. 
-
 The dynamic aspect differ between graphs, as they can be changing in different dimensions. 
-This project focuses entirely on graphs that are dynamic in the temporal dimension, \textit{temporal dynamics graphs}, i.e. they change over time. 
+This project focuses entirely on graphs that are dynamic in the temporal dimension, \textit{temporal dynamic graphs}, i.e. they change over time. 
 An update happening over time for such a network would be the insertion or deletion of edges or nodes.
-
 A very simple dynamic network, building on the static network example in figure \ref{fig:StaticGraph}, could be visualized by the three static graph representations in figure \ref{fig:DynamicGraph}.
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{0_images/dynamic_graph2.png}
     \caption{The dynamic relationship between you and three friends, changing from time $t=0$, to time $t=5$ and lastly $t=10$. Between each time, the friends get to know each other, and the graph hence changes over time.}
     \label{fig:DynamicGraph}
 \end{figure}
-This kind of representation, called \textit{Discrete-time dynamic graphs} \cite{Rossi2020TEMPORALGRAPHS} (p. 2), entails that the dynamics of the network are presented as snapshots, ie. static graph representations, for different time points throughout the dynamic network.
+\noindent
+This kind of representation, called \textit{Discrete-time dynamic graphs} \cite{Rossi2020TEMPORALGRAPHS} (p. 2), entails that the dynamics of the network are presented as snapshots, i.e. static graph representations, for different time points throughout the dynamic network.
 Using this representation approach, the adjacency matrix representation would hence also be three separate matrices, each representing the time points $t= [0,5,10]$ 
 
 \begin{equation}
@@ -68,8 +66,8 @@ Using this representation approach, the adjacency matrix representation would he
                 1 & 0 & 1 & -
                 \end{pmatrix}, \hspace{10pt}
 \end{equation}
-
-Another approach to representing networks with temporal dynamics is what is called \textit{continious-time dynamic graphs} \cite{Rossi2020TEMPORALGRAPHS} (p. 2).
+\noindent
+Another approach to representing networks with temporal dynamics is \textit{continious-time dynamic graphs} \cite{Rossi2020TEMPORALGRAPHS} (p. 2).
 With this approach, the dynamic graphs is represented as timed lists of $n$ events, in which the link between two nodes $u$ and $v$ at a point in time $t$ is written as a tuple $(u, v, t)$.
 With this representation, the example given in figure \ref{fig:DynamicGraph} would be written as the following:
 

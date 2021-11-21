@@ -35,7 +35,7 @@ T_2 &= t_2 - t_1 \\
 T_n &= t_n - t_{n-1}
 \end{align*}
 where ${T_n ; n \ge 1}$ is a stochastic process with the random variables denoting the interarrival times.
-
+\clearpage
 A Poisson point process with positive intensity function $\lambda > 0$ can be defined as a point process in which the interarrival times ${T_n ; n \ge 1}$ are independent exponentially distributed random variables. 
 If the intensity function $\lambda$ of the Poisson process is constant for all time intervals, the process is said to be homogeneous. 
 During the interarrival times, the Poisson process increments happen as:
@@ -47,7 +47,6 @@ X_2 &= X(t_2) - X(t_1) \\
 X_n &= X(t_n) - X(t_{n-1})
 \end{align*}
 These are independent random variables that yield the number of events happening in the time interval $(t_{n-1}, t_n]$. 
-
 For the homogeneous Poisson process with $\lambda > 0$, with starting time $s \ge 0$ and an interarrival time step $t > 0$, the random variable $X(s+t) - X(s)$ is Poisson distributed, such that:
 
 \begin{equation}
@@ -56,19 +55,17 @@ For the homogeneous Poisson process with $\lambda > 0$, with starting time $s \g
 where $X(0) = 0$.
 \\\\
 If the intensity function of the Poisson process is not constant, ie. a function of time $\lambda(t)$, the process is said to be non-homogeneous or in-homogeneous \cite{Bas2019AProcess} (p. 136).
-
 In the case of this project, the non-homogeneous Poisson point process is most relevant. 
 This is because the intensity function, which describes the likelihood of node interactions, is governed by the squared Euclidean distance between the nodes. 
 This distance changes through time, as the nodes change positions in Euclidean latent space, and as such the intensity function also changes over time.
-
+\\
 For the non-homogeneous Poisson process, the process increments with $X(s+t) - X(s)$ have ans has rate $\lambda(t)$, becoming Poisson distributed with parameter $\int_s^t \lambda(u)\; du$ \cite{Bas2019AProcess} (p. 136), such that:
 
 \begin{equation}
     P(X(s+t) - X(s) = k) = \frac{\left(\int_s^{s+t} \lambda(u) \; du \right)^k exp\left(-\int_s^{s+t} \lambda(u) \; du\right)}{k!}
 \end{equation}
 This yield the probability of having $k$ events in the time interval $(s, s+t]$ for the non-homogeneous Poisson point process.
-
-
+\clearpage
 \subsubsection{Event Probability}
 \label{sec:Method:Poisson:EventProbability}
 Considering the case where the interarrival times $(s, s+t]$ are made infinitesimally small, such that $t = dt$, it will be assumed that no more than one event can occur during the interarrival time $(s, s+dt]$ \cite{Tommerup2021LearningNetworks}.

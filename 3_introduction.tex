@@ -46,14 +46,13 @@ First, the constant velocity model will be implemented, based on the state of th
 This represents the foundation of modelling dynamic networks, through learning a starting position and a constant velocity vector in latent space for each node.
 Then, the approach will be expanded with stepwise computation, in order to better reflect changes over time.
 This means the timespan of a dynamic network is binned to match number of steps, and each node is attributed one velocity vectors for each time bin.
-
+\\
 Evaluating the modelling ability of the SCVM involves comparing intensity rates of node pairs with ground truths, testing how well the model is able to infer correct node interactions from unseen data, and investigating it's ability to map data of entire node pairs when these are unseen during testing.
 \\\\
 2. To what extend can the model be implemented in a scalable manner?
 \\
 The current approaches to modelling dynamic networks are heavily limited in terms of computational cost and hence unable to model larger networks on accessible hardware in a timely fashion.
 A scalable model will be able to run in a way that is much more computationally efficient than prior approaches, and allow for the modelling of larger, more complex networks.
-\\
 This research question will be answered by implementing the computations of the proposed model in a vectorized manner.
 This implementation is evaluated based on the improvement in efficiency over the work by Tommerup et. al. \cite{Tommerup2021LearningNetworks}, as well as the increase in run time in regards to network attributes when training on the CPU and GPU separately.
 \\\\
@@ -61,7 +60,6 @@ This implementation is evaluated based on the improvement in efficiency over the
 \\
 A key advantage to the latent space modelling approach is it's explainability, ie. that it is interpretable by a human observer.
 The proposed SCVM should allow for a more detailed interpretation of the complex behavior that a dynamic network might have over it's temporal duration.
-\\
 In order to answer this research question, visualizations of real life dynamic networks, as learned by the SCVM, will be evaluated based on interpretability. 
 
 

@@ -39,7 +39,6 @@ The non-event intensity $I_n$ for $n$ node pair interactions is simply computed 
     \label{eq:Method:ProposedModel:nonevent_intensity_calc}
 \end{equation}
 Where $\varphi$ is the analytical solution to the constant velocity intensity integral evaluated for the start time $t_0=0$ and end time $t_{max}$ which is the latest node pair interaction time.
-\\\\
 The constant velocity model loss is then computed as
 $$
 \mathcal{L} = - I_e - I_n
@@ -158,10 +157,10 @@ remains intact.
 
 \subsubsection{Rotation Correction}
 \label{sec:Method:ProposedModel:RotationCorrection}
-The model might also fit starting positions and velocity vectors, that introduce different rotations. These different rotations can have a negative impact on the interpretability and comparison of the visualizations of the nodes in latent space. To accomodate for this, a rotation correction is used. Here singular value decomposition is used to decompose the starting positions $\textbf{Z}$ and the velocities $\textbf{V}$ into $\textbf{U} \boldsymbol{\Sigma} \textbf{V}^{T}$, where $\textbf{V}^T$ has nothing to do with the velocities, but is simply the standard way of writing the initial rotation component of the SVD. 
-From the SVD only the orthonormal basis $\textbf{U}$ and the scaling $\boldsymbol{\Sigma}$ are chosen, leaving out $\textbf{V}^{T}$ to remove the intial rotation. This gives us the rotation corrected $\textbf{Z}$ and $\textbf{V}$ scaled onto the orthonormal basis.
+The model might also fit starting positions and velocity vectors, that introduce different rotations. These different rotations can have a negative impact on the interpretability and comparison of the visualizations of the nodes in latent space. To accomodate for this, a rotation correction is used. Here singular value decomposition is used to decompose the starting positions $\textbf{Z}$ and the velocities $\textbf{V}$ into $\textbf{U} \boldsymbol{\Sigma} \textbf{V}^{T}$, where $\textbf{V}^T$ has nothing to do with the velocities, but is simply the standard way of writing the initial rotation component of the SVD\cite{Lange2010SingularDecomposition}. 
+From the SVD only the orthonormal basis $\textbf{U}$ and the scaling $\boldsymbol{\Sigma}$ are chosen, leaving out $\textbf{V}^{T}$ to remove the intial rotation. This gives us the rotation corrected starting positions $\textbf{Z}$ and velocities $\textbf{V}$ scaled onto $\textbf{U}$.
 \\\\
-The SVD is done by stacking $\textbf{Z}$ and each step in $\textbf{V}$ into a matrix with shape $\mathbb{R}^{N+(N \cdot S) \times 2}$. Where the the first $N \times 2$ part is $\textbf{Z}$ and the remaining $N\cdot S \times 2$ are the vertically stacked velocities from $\textbf{V}$:
+The SVD is done by stacking $\textbf{Z}$ and each step in $\textbf{V}$ into a matrix with shape $\mathbb{R}^{(N+(N \cdot S)) \times 2}$. Where the the first $N \times 2$ part is $\textbf{Z}$ and the remaining $(N\cdot S) \times 2$ are the vertically stacked velocities from $\textbf{V}$:
 \begin{equation}
     \textbf{ZV}_{stacked} = 
     \begin{pmatrix}
@@ -178,7 +177,7 @@ The SVD is done by stacking $\textbf{Z}$ and each step in $\textbf{V}$ into a ma
     \end{pmatrix}
 \end{equation}
 \noindent
-When SVD is applied to $\textbf{ZV}_{stacked}$ then $\textbf{U}\boldsymbol{\Sigma}$ will also be a matrix of the form $\mathbb{R}^{N+(N \cdot S) \times 2}$ following the shape of $\textbf{ZV}_{stacked}$, so $\textbf{Z}$ and $\textbf{V}$ without the initial rotation can be found by taking the right indices out.
+When SVD is applied to $\textbf{ZV}_{stacked}$ then $\textbf{U}\boldsymbol{\Sigma}$ will also be a matrix of the form $\mathbb{R}^{(N+(N \cdot S)) \times 2}$ following the shape of $\textbf{ZV}_{stacked}$, so $\textbf{Z}$ and $\textbf{V}$ without the initial rotation can be found by taking the corresponding indices out.
 \\\\
 The reason why the initial rotation can be removed is, that it does not affect the calculation of the latent node pair distances, so the intensities are preserved. This can be seen if we take the decomposition of the positions of two nodes $\textbf{z}_u = \textbf{U}_u \boldsymbol{\Sigma}_u \textbf{V}^T$ and $\textbf{z}_v= \textbf{U}_v \boldsymbol{\Sigma}_v \textbf{V}^T$. Then the squared Euclidean distance is:
 \begin{align}
@@ -189,18 +188,18 @@ The reason why the initial rotation can be removed is, that it does not affect t
       &= (\textbf{U}_u \boldsymbol{\Sigma}_u - \textbf{U}_v \boldsymbol{\Sigma}_v)^T \textbf{I} (\textbf{U}_u \boldsymbol{\Sigma}_u - \textbf{U}_v \boldsymbol{\Sigma}_v)\\
       &= (\textbf{U}_u \boldsymbol{\Sigma}_u - \textbf{U}_v \boldsymbol{\Sigma}_v)^T (\textbf{U}_u \boldsymbol{\Sigma}_u - \textbf{U}_v \boldsymbol{\Sigma}_v)\\
 \end{align}
-So the initial rotation is removed, as it becomes the identity matrix and thereby does not influence the distance of the node pair.
+So the computation is rotation invariant as the initial rotation becomes the identity matrix and thereby does not influence the distance of the node pair.
 
 
-\subsubsection{Extending Loss Function - Regularization of Velocity Changes}
+\subsubsection{Extending the Loss Function - Regularization of Stepwise Velocity Changes}
 \label{sec:Method:ProposedModel:Regularization}
-The velocity from one step to another can change a lot. But, large changes in velocity can have a negative impact on the visualization of the node behavior in latent space e.g. if nodes dramatically speed up and down from step to step.
+The velocity from one step to another can potentially change a lot. But, large changes in velocity can have a negative impact on the visualization of the node behavior in latent space e.g. if nodes dramatically speed up and down from step to step.
 Therefore a regularization term is added to the model loss function which penalizes high changes in velocities from one step to the next:
 \begin{align}
     \mathcal{L} = - (I_e - I_n) + \gamma \sum_{i=1}^{S} \rVert (\textbf{V}_i - \overline{\textbf{V}}_i) - (\textbf{V}_{i-1} - \overline{\textbf{V}}_{i-1}) \rVert_{F}^{2}
     \label{eq:Method:ProposedModel:vec_regularization}
 \end{align}
-Where $\gamma$ is the regularizatoin factor and $\rVert \cdot \rVert_F^2$ is the squared Frobenius norm. Because of the position correction which subtracts the mean from the starting positions and the veolicities, the mean is also subtracted from the velocities in the regularization to make it center invariant.
+Where $\gamma$ is the regularization factor and $\rVert \cdot \rVert_F^2$ is the squared Frobenius norm. To keep the regularization center invariant the stepwise mean of the velocities is also subtracted.
 
 
 

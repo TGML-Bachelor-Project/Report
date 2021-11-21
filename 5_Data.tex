@@ -7,7 +7,6 @@ In order to enforce reproducibility of results, this section provides a detailed
 \label{sec:Data:SyntheticData}
 The synthetic data used for validating the SCVM is generated in order to be able to compare the learned model parameters with ground truth parameters.
 The data is generated using the Poisson process simulation explained in detail under section \ref{sec:Method:PoissonSimulation}.
-
 The ground truth parameters defined for each synthetic dataset are the number of nodes $N$, their initial positions $\textbf{Z}$, their initial velocities $\textbf{V}$ and the $\beta$ bias term.
 One further parameter that has to be determined is the max time with which interactions are included, meaning interactions are simulated only for times $t < t_{max}$.
 
@@ -34,7 +33,7 @@ The ground truth parameters of the first synthetic dataset are as follows:
     \beta = 7.5
 \end{equation}
 These ground truth parameters yield a dataset, tuples denoting the two interacting nodes $u$ and $v$ in its first two columns, as well as the time of interaction $t$ in the third, ie. $(u_i, v_i, t_i)$, which has size $n=79,424$. 
-The following links provide animations of the data:
+An animated representation of the dataset is given via the following links:
 \begin{align*}
     &\text{\bluehref{https://tgml-bachelor-project.github.io/GT-dataset1-no-correction.html}{LINK: SYNTHETIC DATASET 1 WITHOUT CORRECTION}} \\
     &\text{\bluehref{https://tgml-bachelor-project.github.io/GT-dataset1-with-correction.html}{LINK: SYNTHETIC DATASET 1 WITH CORRECTION}}
@@ -44,7 +43,6 @@ to get a visual understanding of the setup.
 \subsubsection{Synthetic Dataset 2}
 \label{sec:Data:SyntheticData:SyntheticDataset2}
 The second synthetic dataset is utilized in order to test the modelling capabilities of the SCVM on multi-step data. 
-
 In order to generate a dataset which can properly showcase modelling using a stepwise approach, the velocities vectors associated with each node is changed over the timespan $(t_0, t_{max})$.
 For synthetic dataset 2, five nodes are each attributed a starting position and 10 velocity vectors which each govern a tenth of the total time span.
 The ground truth parameters of the second synthetic dataset are as follows:
@@ -75,10 +73,8 @@ The ground truth parameters of the second synthetic dataset are as follows:
     \beta = 7.5
 \end{equation}
 All velocity vectors are written in appendix \ref{appendix:SyntheticDataset2}.
-\\
 These ground truth parameters yield a dataset which has size $n=330,023$.
-\\
-To see an animated representation of the dataset the following links are provided:
+An animated representation of the dataset is given via the following links:
 \begin{align*}
     &\text{\bluehref{https://tgml-bachelor-project.github.io/GT-dataset2-no-correction.html}{LINK: SYNTHETIC DATASET 2 WITHOUT CORRECTION}} \\
     &\text{\bluehref{https://tgml-bachelor-project.github.io/GT-dataset2-with-correction.html}{LINK: SYNTHETIC DATASET 2 WITH CORRECTION}}
@@ -142,7 +138,7 @@ The max time is $t_{max} = 20$, and as such the remaining ground truth parameter
                 -0.3 & -0.05\\
                 \end{matrix}\right)
 \end{equation}
-A visual representation is provided through the links below:
+An animated representation of the dataset with $N=6$ nodes is given via the following links:
 \begin{align*}
     &\text{\bluehref{https://tgml-bachelor-project.github.io/GT-dataset3-no-correction.html}{LINK: SYNTHETIC DATASET 3 WITHOUT CORRECTION}} \\
     &\text{\bluehref{https://tgml-bachelor-project.github.io/GT-dataset3-with-correction.html}{LINK: SYNTHETIC DATASET 3 WITH CORRECTION}}
