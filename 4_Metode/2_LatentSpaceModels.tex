@@ -24,24 +24,24 @@ This project expands the capabilities of the Newtonian dynamics approach, in ord
 
 \subsubsection{Euclidean Latent Space}
 \label{sec:Method:LSM:EuclideanLatentSpace}
-The Euclidean latent space is latent space governed by Euclidean geometry in two dimensions.
+The Euclidean latent space is governed by Euclidean geometry in two dimensions.
 This means any measure of position, distance and velocity are understood as Euclidean and can be computed as such. 
-Taking an offset in the nodes of a TDGN, and the modelling approach of this project, the properties of Euclidean space will be explained below.
+Taking an offset in the nodes of a dynamic network, and the modelling approach of presented in this project, the properties of Euclidean space will be explained below.
 \\\\
-Given a TDGN consisting of $N$ nodes, these are all placed in the Euclidean latent space. 
-Positions in the Euclidean latent space are denoted as two-dimensional coordinates, and hence each node in the given TDGN is assigned a position, expressed for node $u$ as:
-$z_u = \begin{pmatrix}
+Given a dynamic network consisting of $N$ nodes, these are all placed in the Euclidean latent space. 
+Positions in the Euclidean latent space are denoted as two-dimensional coordinates, and hence each node in the given network is assigned a position, expressed for node $u$ as
+$\textbf{z}_u = \begin{pmatrix}
 x_u, y_u
 \end{pmatrix}^T$.
-\\
-As the project deals with temporally dynamic graph networks, the positions of nodes are temporally dependant. 
+
+As the project deals with temporally dynamic networks specifically, the positions of nodes are temporally dependant. 
 In order to accommodate for this, each node is assigned one or more velocity vectors, which entails that they move along the trajectory of a constant velocity over a given timespan.
 For node $u$, the velocity vector is expressed as:
-$v_u = \begin{pmatrix}
+$\textbf{v}_u = \begin{pmatrix}
 v_{x,u}, v_{y,u}
 \end{pmatrix}^T$.
-\\
-By having a starting position, $z_u$, as well as a constant velocity, $v_u$, the position of a node at any time, $t$, is given by: 
+
+By having a starting position, $\textbf{z}_u$, as well as a constant velocity, $\textbf{v}_u$, the position of a node at any time, $t$, is given by: 
 
 \begin{equation}
     \textbf{z}_u(t) = \begin{pmatrix}
@@ -62,22 +62,22 @@ By having a starting position, $z_u$, as well as a constant velocity, $v_u$, the
 \end{equation}
 In the Euclidean latent space, based on the given positions, it is possible to compute distances using basic Pythagorean mathematics. 
 In order to find the distance between two nodes, the most straightforward approach is to compute their reciprocal Euclidean distance.
-The Euclidean distance at the starting position, ie. disregarding time, between node $u$ and $v$, can be computed from the following expression:
+The Euclidean distance at the starting position, ie. disregarding time, between nodes $u$ and $v$, can be computed from the following expression:
 
 \begin{equation}
-    ||z_u - z_v||_2
+    ||\textbf{z}_u - \textbf{z}_v||_2
     = 
     \sqrt{(x_u - x_v)^2 + (y_u - y_v)^2}
 \end{equation}
-As seen above though, the positions of nodes \textbf{are} time dependant, and hence this carries over to the distance measure, which is expressed as:
+As mentioned above though, the positions of nodes are in fact time dependant, and hence this carries over to the distance measure, which is expressed as:
 
 \begin{equation}
     ||\textbf{z}_u(t) - \textbf{z}_v(t)||_2
     = 
     \sqrt{((x_u + v_{x,u}t) - (x_v + v_{x,v}t))^2 + ((y_u + v_{y,u}t) - (y_v + v_{y,v}t))^2}
 \end{equation}
-For mathematical/computational reasons, which are explained in detail under section \ref{sec:Method:IntensityFunc:IntegralIntensityFunc}, this project utilizes the squared Euclidean distance as distance measure.
-This is written is a simplified form below:
+For mathematical and computational reasons, which are explained in detail under section \ref{sec:Method:IntensityFunc:IntegralIntensityFunc}, this project utilizes the squared Euclidean distance as distance measure.
+This is written below, in a simplified form:
 
 \begin{equation} 
 ||\textbf{z}_u(t) - \textbf{z}_v(t)||_2^2

@@ -1,21 +1,22 @@
 \subsection{Likelihood Function}
 \label{sec:Method:LikelihoodFunc}
-In order to properly model a TDGN, the model presented in this project needs a metric on which it can train.
+In order to learn a fitting representation of a given dynamic network, the proposed SCVM needs a metric on which it can train.
 For this purpose, the likelihood function is introduced.
 The likelihood function computes a metric on which the model optimization can be based, in this case relying heavily on the intensity function described above in section \ref{sec:Method:IntensityFunc}.
-\\\\
-This likelihood function computes the likelihood of the relevant input data, given a set of model parameters $\textbf{Z}$, $\textbf{V}$ and $\beta$.
-In other words; with a set of model parameters, ie. the bias term $\beta$ as well as the starting positions $\textbf{Z}$ and constant velocities $\textbf{V}$ of the N nodes in the relevant TDGN, what is the likelihood that the input data, the chronologically ordered set of pairwise node interactions, would be occur/be produced.
 
-For this project, the likelihood function, specifically the log-likelihood function, $\ell$ is given by the following expression:
+This likelihood function computes the likelihood of the relevant input data, given a set of model parameters $\textbf{Z}$, $\textbf{V}$ and $\beta$.
+In other words, what is the likelihood that the input data, the chronologically ordered pairwise node interactions, tuples of the form $(u, v, t)$, will occur by the SCVM with the  given parameters.
+
+For this project, the likelihood function, specifically the log-likelihood function $\ell$ is given by the following expression:
 
 \begin{equation}
     \ell = \sum_{i=1}^n \log \lambda (t_i) - \int_{t_0}^{t_n} \lambda(t) \mathrm{d} t
     \label{eq:LogLikelihoodFunc}
 \end{equation}
-This log-likelihood is given by the sum of the log of the intensity function for all interactions in the input data, $\sum_{i=1}^n \log \lambda (t_i)$, minus the integral of the intensity function, $\int_{t_0}^{t_n} \lambda(t) \mathrm{d} t$ \ref{sec:Method:IntensityFunc:IntegralIntensityFunc}, over the entire timespan and for all node pairs.
+This log-likelihood is the sum of the log of the intensity function for all interactions in the input data, $\sum_{i=1}^n \log \lambda (t_i)$, minus the integral of the intensity function over the entire timespan and for all node pairs, $\int_{t_0}^{t_n} \lambda(t) \mathrm{d} t$.
+In short, the log-likelihood is hence the log of the sum over event probabilities for all node pairs minus the log of the sum of the non-event probability for all node pairs, the probabilities being derived in section \ref{sec:Method:Poisson:EventProbability} and \ref{sec:Method:Poisson:NonEventProbability}.
 
-A more explicit way of writing the log-likelihood, while explicitly accounting for all node-pairs, is then.
+A more elaborate way of writing the log-likelihood, while explicitly accounting for all node-pairs, is then.
 
 \begin{equation}
     \ell = \sum_{i=1}^n \log \lambda_{u_i,v_i} (t_i) - \sum_{u=1}^{N-1} \sum_{v > u}^{N} \int_{t_0}^{t_n} \lambda_{u,v}(t) \mathrm{d} t
