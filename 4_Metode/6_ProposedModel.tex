@@ -8,37 +8,19 @@ The SCVM will then be introduced.
 \subsubsection{Constant Velocity base Model}
 \label{sec:Method:ProposedModel:ConstantVelocityModel}
 The CVM tries to determine the common bias term, initial position and initial velocity for $N$ nodes in a dynamic network, based on the pairwise node interactions happening over the timespan of the network.
-
 The model takes as input a chronologically ordered sequence of $n$ timestamped, pairwise node interactions, which are stored as $n$ tuples $(u_i, v_i, t_i)$.
-Here, $u_i$ and $v_i$ denote the two interacting nodes for interaction $i$, and $t_i$ denotes the time of interaction $i$.
-
+Here, $u_i$ and $v_i$ denote the two interacting nodes for interaction $i$, and $t_i$ denotes the time of interaction $i$. For a given node $u$ at interaction time $t$, the CVM then calculates the latent space node position as described in equation (\ref{eq:latent_pos}).
+\\\\
 The learnable parameters of the model are the set of parameter matrices $\textbf{Z}, \textbf{V} \in \mathbb{R} ^{N \times 2}$ as well as the bias term $\beta \in \mathbb{R}$.
 The parameter matrix $\textbf{Z}$ contains starting positions for all $N$ nodes, holding the $x$-component in the first column, and the $y$-component in the second.
-The same is true for $\textbf{V}$, just that it contains all node velocities vectors, which remain the same over the timespan.
+The same is true for $\textbf{V}$, just that it contains all node velocities, which remain the same over the timespan.
 The bias term $\beta$, as explained in section \ref{sec:Method:IntensityFunc}, is a real number used in modelling the background intensity of interactions.
 \\\\
 Each pair of nodes, $u$ and $v$, are associated with a Poisson point process, described under section \ref{sec:Method:Poisson:PoissonPointProcess}.
 These processes are each governed by an intensity function (\ref{eq:IntensityFunc}), described under section \ref{sec:Method:IntensityFunc}, which explains that the closer $u$ and $v$ are, the higher the intensity of interaction will be. 
 These pairwise intensity functions are utilized in the log-likelihood function (\ref{eq:LogLikelihoodFuncExplicit}), described under section \ref{sec:Method:LikelihoodFunc}, which outputs the log-likelihood of the input data given the parameters of the model, matrices $\textbf{Z}$ and $\textbf{V}$, and the common bias $\beta$.
-
+\\
 The optimization task of the model is to maximize the log-likelihood (in practice minimize the negative log-likelihood) of the input data by fitting the model parameters well.
-
-\paragraph{Latent Space Position Calculation}
-Given a set of node pair interactions and the time of each interaction, the CVM calculates the latent space node position for a node $u$ at interaction time $t$ as:
-\begin{equation}
-    \textbf{z}_{u}(t) = 
-    \begin{pmatrix}
-        x_{u}(t) \\
-        y_{u}(t)
-    \end{pmatrix}
-    =
-    \begin{pmatrix}
-        z_{u,x}+v_{u,x} \cdot t \\
-        z_{u,y}+v_{u,y} \cdot t
-    \end{pmatrix}
-    \;\; , \;\; \textbf{z}_{u}(t)
-    \label{eq:Method:ConstantVelocity:latent_pos}
-\end{equation}
 
 \paragraph{Loss Function}
 The loss function of the CVM is comprised of two parts here referred to as \textit{event intensity} and \textit{non-event intensity}. 
@@ -49,7 +31,7 @@ The event intensity $I_e$ for an input of $n$ node pair interactions is calculat
     I_e = \sum_{i = 0}^{n-1}  \lambda_{u_i , v_i}(t_i) =  \sum_{i =0}^{n-1} \beta - \rVert \textbf{z}_{u_i}(t_i) - \textbf{z}_{v_i}(t_i) \rVert_2^2
     \label{eq:Method:ProposedModel:event_intensity_calc}
 \end{equation}
-Where $\rVert \cdot \rVert_2^2$ is the squared Euclidean distance, $\beta$ is the common bias term, $\textbf{z}_{u_i , t_i}$ is the latent space position of node $u_i$ at interaction time $t_i$ as described in (\ref{eq:latent_pos}).
+Where $\rVert \cdot \rVert_2^2$ is the squared Euclidean distance, $\beta$ is the common bias term, $\textbf{z}_{u_i}(t_i)}$ is the latent space position of node $u_i$ at interaction time $t_i$ as described in (\ref{eq:latent_pos}).
 \\\\
 The non-event intensity $I_n$ for $n$ node pair interactions is simply computed by directly implementing the analytical solution to the constant velocity intensity integral (\ref{eq:analytical_integral}) from section \ref{sec:Method:IntensityFunc:IntegralIntensityFunc} and summing over it for all node pairs using the model starting positions and velocities in $\textbf{Z}$ and $\textbf{V}$:
 \begin{equation}
@@ -67,21 +49,18 @@ which is the negative log likelihood.
 \subsubsection{Stepwise Constant Velocity Model (SCVM)}
 \label{sec:Method:ProposedModel:PiecewiseConstantVelocityModel}
 
-With the constant velocity model, it is possible to model interactions between $N$ nodes in a TDGN by finding their true starting positions and velocities, as well as the bias term $\beta$, for a given timespan.
+With the CVM, it is possible to model interactions between $N$ nodes in a dynamic network by fitting starting positions and velocities, as well as the bias term $\beta$, for a given timespan.
 \\\\
-The positions of nodes are modelled to change, reflecting the change in intensity of interaction between nodes, starting in $\textbf{Z}$ at time $t=0$ and moving along the trajectories that result from the constant velocities $\textbf{V}$ over time, until end time $T$.
-With only one set of parameters for the entire timespan of a TDGN, the modelling ability is limited to describing changes in intensity of interaction with only changes in positions, along the straight trajectories of the velocity vectors contained in $\textbf{V}$.
-This will in many cases be insufficient for depicting the given TDGN in a useful manner. 
-In order to model with greater detail, the Constant Velocity Model is therefore expanded to the Stepwise Constant Velocity Model (SCVM). 
-The central idea with this model is to split the entire timespan of a TDGN into $S$ smaller time intervals where the node movements in each sub interval, or step, is modelled by a velocity vector. The model still relies on a single common bias term $\beta$, and a single set of node starting positions $\textbf{Z} \in \mathbb{R}^{N \times 2}$, but the velocity is expanded with another dimension $S$ corresponding to the number of steps, such that $\textbf{V} \in \mathbb{R}^{N \times 2 \times S}$.
-Having several velocities should allow for the TDGN to be modelled in a much more detailed manner, and should result in better representations in the Euclidean latent space.
-\\\\
-This enables for an expansion of the visualization made in section \ref{sec:Method:VModel:ModellingApproach}, in which the TDGN was visually understood as nodes starting in one point and travelling on a straight path in Euclidean latent space.
-Now, by having the nodes move according to the sequence of velocities contained in the SCVM, the nodes will be able to travel on non-linear paths through the Euclidean latent space.
-The complexity of their movements will hence depend on the number of steps, $S$, with larger $S$ leading to more possible velocity changes.
+% The positions of nodes are modelled to change, reflecting the change in intensity of interaction between nodes, starting in $\textbf{Z}$ at time $t=0$ and moving along the trajectories that result from the constant velocities $\textbf{V}$ over time, until end time $T$.
+With only one set of velocities for the entire timespan of a dynamic network, the modelling ability is limited to describing changes in intensity of interaction with only changes in positions, along the straight trajectories of the velocity vectors contained in $\textbf{V}$.
+This will in many cases be insufficient for depicting the given network in a useful manner. 
+In order to model with greater detail, the CVM model is therefore expanded to the Stepwise Constant Velocity Model (SCVM). 
+The central idea with this model is to bin the entire timespan of a dynamic network into $S$ smaller time intervals where the node movements in each time bin, or step, is modelled by a velocity vector. The model still relies on a single common bias term $\beta$, and a single set of node starting positions $\textbf{Z} \in \mathbb{R}^{N \times 2}$, but the velocity is expanded with another dimension $S$ corresponding to the number of steps, such that $\textbf{V} \in \mathbb{R}^{N \times 2 \times S}$.
+By having the nodes move according to the sequence of velocities contained in the SCVM, the nodes will be able to travel on non-linear paths through the 2D Euclidean latent space.
+The complexity of their movements will hence depend on the number of steps, $S$, with larger $S$ leading to more possible velocity changes allowing greater flexibility in the latent space movements of the nodes.
 
 \subsubsection{Model Step Size}
-The model is given a notion of how much time a step in the $S$ dimension corresponds to which can be used to compute latent space node positions at specific time points. For simplicity the model assumes equal size for each step and that the start time is 0. Such that only a single step size is needed for the model:
+The model is given a notion of how much time a step in the $S$ dimension corresponds to, i.e. the time bin size, which can be used to compute latent space node positions at specific time points. For simplicity the model assumes equal size for each step and that the start time is 0. Such that only a single step size is needed for the model:
 \begin{equation}
     \Delta_{step} = \frac{t_{max}}{S}
 \end{equation}
@@ -89,8 +68,8 @@ Where $t_{max}$ is the max time from the event interactions.
 
 \paragraph{Latent Space Position Calculation}
 \label{sec:Method:StepwiseLatentSpacePositions}
-The idea of adding a step dimension to the velocity matrix means a slight change in how the latent node positions for each interaction time are computed. Expanding on the idea from the constant velocity position calculation (\ref{eq:Method:ConstantVelocity:latent_pos}) we add the notion of the model step size $\Delta_{step}$ and the extra dimension to $\textbf{V}$ of size $S$. 
-We then define the latent space movement of a node $u$ to a time point t, with $0 < t \le t_{max}$, as the sum of movements from each step:
+The idea of adding a step dimension to the velocity matrix means a slight change in how the latent node positions for each interaction time are computed. Expanding on the idea from the constant velocity position calculation in (\ref{eq:latent_pos}) we add the notion of the model step size $\Delta_{step}$ and the extra dimension to $\textbf{V}$ of size $S$. 
+We then define the latent space movement of a node $u$ to a time point t, with $0 \le t \le t_{max}$, as the sum of movements from each step:
 \begin{equation}
     \mathcal{M}_{u}(t) = \sum_{j = 1}^{S} \textbf{v}_{j, u} \cdot \Delta_{j}(t) \;\;,\;\; \mathcal{M}_{u} \in \mathbb{R}^2
     \label{eq:Method:ConstantVelocity:Movement}
@@ -118,20 +97,20 @@ We then get the latent node position for a given node $u$ to time $t$ as:
         z_{u,y}+ \mathcal{M}_{u,y}(t)
     \end{pmatrix}
     \;\; \text{for} \;\; \mathcal{M}_{u_i,x}(t) \;,\; \mathcal{M}_{u_i,y}(t) \in \mathbb{R}
-    \label{eq:Method:ConstantVelocity:latent_pos}
+    \label{eq:Method:StepwiseConstantVelocity:latent_pos}
 \end{equation}
-Which is similar to (\ref{eq:Method:ConstantVelocity:latent_pos}), but where $\mathcal{M}_{u,x}$ and $\mathcal{M}_{u,y}$ represent node $u$'s summed stepwise movements in the $x$ and $y$ direction from time 0 to time $t$.
+Where $z_{u,x}$ and $z_{u,y}$ are the latent starting position coordinates for node $u$ and $\mathcal{M}_{u,x}$ and $\mathcal{M}_{u,y}$ represent node $u$'s summed stepwise movements in the $x$ and $y$ direction from time 0 to time $t$.
 
 
 \paragraph{Loss Function}
-The loss function of the stepwise model loss function remains identical to that of the constant velocity model, since the event and non-event intensities $I_e$ and $I_n$ can still be calculated as in (\ref{eq:Method:ProposedModel:event_intensity_calc}) and (\ref{eq:Method:ProposedModel:nonevent_intensity_calc}). The only difference will be, that the latent space positions used to calculate the event intensities are computed using the method described in section \ref{sec:Method:StepwiseLatentSpacePositions}.
+The loss function of the SCVM remains identical to that of the CVM, since the event and non-event intensities $I_e$ and $I_n$ can still be calculated as in (\ref{eq:Method:ProposedModel:event_intensity_calc}) and (\ref{eq:Method:ProposedModel:nonevent_intensity_calc}). The only difference will be, that the latent space positions used to calculate the event intensities are computed using the method described in section \ref{sec:Method:StepwiseLatentSpacePositions}.
 
 
 \subsubsection{Position and Drift Correction}
 \label{sec:Method:ProposedModel:PositionCorrection}
-Since the model is only fitted based on the relative node distances, and velocity changes if regularization is used. This means that the model is unaware of the exact values of the starting positions and velocities $\textbf{Z}$ and $\textbf{V}$ as long as the relative node distances produce a good fit. This also means that the model fitting can result in displacement from origo of the node starting positions and that drift can be introduced in the node positions, which is undesirable when visualizing the node behavior in latent space.
+Since the model is only fitted based on the relative node distances, and the size of stepwise velocity changes if regularization is used. This means that the model is unaware of the exact values of the starting positions and velocities $\textbf{Z}$ and $\textbf{V}$ as long as the relative node distances produce a good fit. This also means that the model fitting can result in displacement from origo of the node starting positions and that drift can be introduced in the node positions, which is undesirable when visualizing the node behavior in latent space.
 \\
-But, it is possible to center the model and remove drift while preserving the model loss and there by produce a more understandable visualization. 
+But, it is possible to center the model and remove drift while preserving the model loss and thereby produce a more understandable visualization. 
 To center the node positions around origo the coordinate-wise mean of $\textbf{Z}$
 \begin{equation}
         \overline{\textbf{z}} = 

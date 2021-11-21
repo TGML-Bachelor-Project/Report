@@ -13,7 +13,7 @@ Further, the number of unique nodes is an even greater limiting factor, since th
 An improvement to be made for the vectorized setup consist first and foremost in handling this memory requirement. 
 The code underlying the proposed model is not particularly optimized in terms of reducing memory requirements, as the focus has mainly been on optimizing the scalability in regards to run time. 
 \\
-One way the memory requirements could potentially be  reduced though, would be by splitting up the computation of node interaction intensities through batching of the nodes. 
+One way the memory requirements could potentially be reduced though, would be by splitting up the computation of node interaction intensities through batching of the nodes. 
 This is in theory easily done, as the computations of each node batch intensity can be computed and summed, thereby keeping an upper limit on how many nodes are included in each computation. 
 \\
 Another approach could be to not directly do node-wise batching, but instead (or also) use multiple GPUs. 
@@ -62,4 +62,4 @@ For creating the animations in this project, a simple dataframe of the learned p
 However, the animation process could be made far more scalable by using other available frameworks for graph creation and visualization, and allow for higher time-resolution animations to be created. 
 One such framework is Graphviz \cite{Graphviz}, which is optimized specifically for graph visualizations, and could advantageously be used in future work. 
 Using Graphviz should first of all make the visualizations scale to even larger amounts of nodes higher time-resolutions. 
-Also, edges are an integrated part of Graphviz, and the framework would therefore allow for easy visualizations of edges between nodes, when they interact according to the input data. This would make it possible to increase the interpretability of the visualizations even further e.g. by having edge flashes between nodes like "beams" connecting them when they interact according to the input data. Then the visualizations should show higher frequency of edge flashes between nodes as they move closer together and less frequent when they are away from each other.
+Also, edges are an integrated part of Graphviz, and the framework would therefore allow for easy visualizations of edges between nodes, when they interact according to the input data. As mentioned in the discussion about the results of research question 3, this could increase the interpretability of the visualizations even further. 

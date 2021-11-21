@@ -1,28 +1,29 @@
 \section{Conclusion}
 
-During the investigations conducted in this project, the presented research questions were answered and a number of insights were found:
+During the investigations conducted in this project, the posed research questions were answered and a number of insights were found:
 \\\\
-First of all, the results regarding research question one showed that the proposed SCVM had good modelling performance when comparing modelled intensity rates to ground truth models, and naturally outshone previous work when modelling multi-step, synthetically generated dynamic networks data.
-The tests of dyad removal and interaction removal revealed less striking performance, which might be resulting from the nature of the synthesized datasets. To clearly determine the reason for the low performance more tests have to be conducted.
-Nonetheless, the project concludes that the proposed SCVM through the introduction of stepwise computation, is able to model the interaction intensities of dynamic networks well, with more detail than previous work.
+First of all, the results regarding research question 1 showed that the proposed SCVM had good modelling performance when comparing modelled intensity rates to ground truth models, and naturally outshone previous work when modelling multi-step, synthetically generated dynamic network data.
+The tests of dyad removal and interaction removal revealed less striking performance, which might be resulting from the nature of the synthesized datasets. 
+To clearly determine the reason for the low performance, more tests have to be conducted.
+Nonetheless, the project concludes that the proposed SCVM, specifically through the introduction of stepwise computation, is able to model the interactions of dynamic networks well, with more detail than previous work.
 \\\\
 The project sought to implement the proposed model in a scalable manner, and the results presented for research question 2 proved that this was achieved with success.
-The training times for the vectorized setup was found to be 12 times faster when fitting two nodes with one step using the CPU, and the gap in performance widening drastically with more nodes.
-The training run times for the proposed training setup was evaluated when running on CPU and CUDA, in relation to number of nodes, steps and dataset size. For tests on nodes and steps the results showed, the significant improvements parallelization delivers as it enabled high performant training through the GPU. In this regard, the proposed model is definitely scalable.
-As such, the project concludes that the SCVM was in fact implemented in a scalable manner to great extend, making the modelling of larger networks feasible.
+The training times for the vectorized setup was found to be 32 times faster when fitting four nodes with one step, using the CPU, compared to the baseline non-vectorized setup.
+In relation to number of nodes, steps and dataset size, the training run times for the proposed training setup were evaluated when running on either the CPU or the GPU using CUDA.
+While the run times grew similarly for larger dataset sizes, increasing either number of nodes or steps showed the significant improvements parallelization provides, as it enables full use of the CUDA system. 
+In this regard, the proposed model is definitely scalable in terms of computation.
+The project discussed limitations to scalability which arise with memory allocation requirements, but found that several solutions to this limitations could be implemented without changing the SCVM training setup in any significant way.
+As such, the project concludes that the SCVM was in fact implemented in a scalable manner, to great extend making the modelling of larger networks feasible.
 \\\\
-With the proposed SCVM, a goal was to create visualizations that are explainable and intuitive for the observer, as to infer interaction relationships between entities in the dynamic network.
-The results showed that visualizations of real life datasets could be made so that this was possible at any given time point during the span of the given network.
+With the proposed SCVM, a goal was to create visualizations that are explainable and interpretable for an observer, as to understand the dynamics of a given network.
+The results showed that visualizations of datasets based on real dynamic networks could be made so that the network could be inspected at any given time during its duration.
 The results regarding explainability evaluated the impact of applying position, drift and rotation correction as well as regularizing the model.
-It was found that position and drift correction immediately makes for a more interpretable visualization, while correcting rotation was deemed to be an enhancement which mostly improves comparability between different networks.
-Regularization primarily made for a less abrupt change in node movements, but the issue of sudden large changes in node velocities were not a particular issue in the visualizations and as such regularization did not improve the overall explainability for the datasets in the case of this project, but might very well be relevant for other datasets.
-\\
-The project concludes, that while the visualizations produced by the SCVM could advantageously be expanded as to deliver more information in order to improve explainability, animating entities in a dynamic network as nodes with stepwise constant velocity dynamics allowed for a highly intuitive interpretation of how the nodes behave in regards to their interactions. 
+It was found that position and drift correction immediately made for a more interpretable visualization, while correcting rotation was deemed to be an enhancement which mostly improves comparability between different networks.
+While regularization was found to slow the movements of nodes down, it was not found to improve the overall explainability for the datasets in the case of this project, but might very well be relevant for other datasets.
+The project concludes, that while the visualizations produced by the SCVM could advantageously be expanded as to deliver more information in order to improve explainability, animating entities in a dynamic network as nodes with stepwise constant velocity dynamics allowed for a highly intuitive interpretation of how the nodes relate over time. 
 \\\\
-Some possibilities of future expansions to the proposed SCVM were discussed.
-These first and foremost included possible improvements to the scalability of the SCVM in terms of memory load, proposing the implementation of node-wise batching and the possibility for running on multiple GPU's.
-The introduction of node-specific and step-specific bias terms, as to possibly model a dynamic network with greater detail were also discussed as areas of future work.
-%and a sequential training setup which \textit{could} enable the training of networks with thousands of nodes.
+Some possibilities of future expansions to the proposed SCVM were discussed, including the introduction of node-specific and step-specific bias terms, as to possibly model a dynamic network with greater detail.
 \\\\
-Lastly, the project discusses some possible real life use cases the proposed model could be utilized in, one of these being work flow optimization at hospitals through understanding of the interactions that happen throughout a workday. But, many other areas can potentially be modelled as long as they can be represented through nodes and interactions, thereby presenting future possibilities as the data on real life dynamic networks evolves. 
+Lastly, the project briefly discussed some possible real life use cases the proposed model could be utilized in, one of these being work flow optimization at hospitals. 
+The project argued that many other areas can potentially be modelled as long as they can be represented through nodes and interactions, thereby presenting future possibilities as the data on real life dynamic networks evolves. 
 
