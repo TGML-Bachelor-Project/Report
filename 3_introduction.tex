@@ -7,43 +7,38 @@
 Many real world systems and problems can be represented as static graph networks, a representation that enables both a human and machine-interpretable understanding of the given system, further allowing for the use of various machine learning tasks such as link prediction \cite{GroverNode2vec:Networks} \cite{Hamilton2017RepresentationApplications}.
 Hence, in order to grasp the structure of a social network such as Facebook, a static graph network representation seems appropriate.
 Yet, to fully grasp such a network system, the aspect of time is crucial.
-In the case of Facebook, taking a static snapshot, ie. a static graph representation, will show us how it's users relate to each other for one instant, but next to nothing about how these users interact.
+In the case of Facebook, taking a static snapshot, ie. a static graph representation, will show us how its users relate to each other for one instant, but next to nothing about how these users interact.
 It is evident that to properly understand interactions between users, say how they make new connections and break old, the graph network representation must be temporally dynamic.
-
-This project is motivated by this fact, and works solely with networks that change over time, which can be represented as temporally dynamic graph networks, referred to as dynamic networks.
-Approaches to modelling dynamic networks have in recent years proved successful in allowing for well performing machine learning task \cite{Xu2020INDUCTIVEGRAPHS} \cite{Trivedi2019DYREP:GRAPHS} \cite{Rossi2020TEMPORALGRAPHS}, yet most lack explainability and the ability for human-level understanding.
+\\
+This project is motivated by this fact, and works solely with networks that change over time, which can be represented as temporally dynamic graph networks, in this project simply referred to as dynamic networks.
+Approaches to modelling dynamic networks have in recent years proved successful in allowing for well performing machine learning tasks \cite{Xu2020INDUCTIVEGRAPHS} \cite{Trivedi2019DYREP:GRAPHS} \cite{Rossi2020TEMPORALGRAPHS}, yet most lack explainability and the ability for human-level understanding.
 This project is further motivated by this, and seeks to investigate modelling of TDGNs in a manner that enforces explainability. 
-
 A very recent work developed, by Simon Tommerup et. al. \cite{Tommerup2021LearningNetworks}, models dynamic networks while enforcing explainability by utilizing a simpler modelling approach based on Newtonian dynamics in two-dimensional latent space.
-Though the work achieves some explainability, it suffers greatly in terms of information loss, ie. the amount of information kept during modelling, and severely in terms of scalability.
-On the basis of this Newtonian dynamics modelling approach, the fundamental goal with this project is to expand it's modelling capabilities, allowing for explainability of the modelled network, while improving scalability, making them suitable for use on larger, more complex data.
-
+Though the work achieves some explainability, it suffers greatly in terms of information loss, i.e. the amount of information kept during modelling, and severely in terms of scalability.
+On the basis of this Newtonian dynamics modelling approach, the fundamental goal with this project is to expand its modelling capabilities, allowing for explainability of the modelled network, while improving scalability, making it suitable for use on larger, more complex data.
 
 
 \subsection{Related Work}
 \label{sec:Intro:RelatedWork}
-The work presented in this project is related to, and builds upon, many principles established in earlier work.
-
-The first work to establish the use of latent space as a means of modelling graph networks was Hoff P et. al. \cite{Hoff2002LatentAnalysis}, in which the concept of depicting a static graph as nodes in latent space, with their relative distances describing likelihood of interaction, was introduced.
-
-In "Dynamic Social Network Analysis using Latent Space Models" by Sarkar and Moore \cite{Sarkar2005DynamicModels}, the latent space approach was expanded to dynamic graph networks.
-The approach developed by Sarkar and Moore serves as an early foundation for this project in terms of modelling TDGNs in an explainable manner.
-
-Several publications have since Sarkar and Moore been made, all presenting latent modelling approaches for dynamic graph networks. 
-Worth mentioning are DyRep, Rakshit Trivedi 2019 et. al. \cite{TrivediDYREP:GRAPHS}, which like this project uses a temporal point process loss, and TGN, Emanuele Rossi 2020 et. al. \cite{RossiTEMPORALGRAPHS}, which .
- 
-One of the most recent works, on which this project builds, was developed by Simon Tommerup et. al. \cite{Tommerup2021LearningNetworks}.
-His work seeks to simplify the latent space approach, by utilizing the simple Poisson point process, and enforces explainability by utilizing Newtonian dynamics in the latent space.
-
+The work presented in this project is related to, and builds upon, a range of principles established by earlier works.
+Some of the earliest work to establish the use of latent space as a means of modelling interactions in graph networks was Hoff P et. al. \cite{Hoff2002LatentAnalysis}, in which the concept of depicting a static graph as nodes in a Euclidean latent space, with their relative distances describing likelihood of interaction, was introduced. The idea of creating a spatial representation of interaction likelihoods that can easily be visualized and interpreted is a fundamental idea brought into this project.
+\\
+In "Dynamic Social Network Analysis using Latent Space Models" by Sarkar and Moore \cite{Sarkar2005DynamicModels}, the latent space approach was expanded to dynamic graph networks, which is a vital expansion for this project.
+The approach developed by Sarkar and Moore thereby serves as an early foundation for this project in terms of modelling dynamic networks in an explainable manner. By showing how to translate a static model of relations into a dynamic model operating in Euclidean latent space, they provide a valuable insight on how to bring the temporal dimension into the work of this project.
+\\
+Several publications have been made since Sarkar and Moore, all presenting latent modelling approaches for dynamic graph networks. Worth mentioning are DyRep, Rakshit Trivedi 2019 et. al. \cite{Trivedi2019DYREP:GRAPHS}, which like this project uses a temporal point process loss, and TGN, Emanuele Rossi 2020 et. al. \cite{Rossi2020TEMPORALGRAPHS}, which introduces the framework of Temporal Graph Networks(TGNs) for deep learning on dynamic networks represented as a sequences of timed events, like the data used in the project.
+ \\
+One of the most recent works, on which this project mainly builds, was developed by Simon Tommerup et. al. \cite{Tommerup2021LearningNetworks}.
+His work seeks to simplify the latent space approach, by utilizing the simple Poisson point process, and enforces explainability by utilizing Newtonian dynamics in the Euclidean latent space.
 
 
 
 \subsubsection{Research Questions} 
 \label{sec:Intro:ResearchQs}
-The main scope, and essentially the overarching research question of this project lies in determining how a scalable and explainable model can be implemented for visualizing interactions in a dynamic network.
+The main scope, and essentially the overarching goal of this project lies in determining how a scalable and explainable model can be implemented for visualizing interactions in a dynamic network.
 In order to answer this question, three research questions have been put forth.
 \\\\
-\hspace*{5mm} 1. How well can dynamic networks be modelled using a Stepwise Constant Velocity Model (SCVM) representation in Euclidean latent space?
+1. How well can dynamic networks be modelled using a Stepwise Constant Velocity Model (SCVM) representation in Euclidean latent space?
 %\hspace*{5mm} 1. How well can TDGNs be modelled using a velocity-dependant representation in latent Euclidean space, with stepwise event computation, and how well can it model the evolution of the TDGNs?
 \\
 This research question will be explored in two parts:
@@ -54,7 +49,7 @@ This means the timespan of a dynamic network is binned to match number of steps,
 
 Evaluating the modelling ability of the SCVM involves comparing intensity rates of node pairs with ground truths, testing how well the model is able to infer correct node interactions from unseen data, and investigating it's ability to map data of entire node pairs when these are unseen during testing.
 \\\\
-\hspace*{5mm} 2. To what extend can the model be implemented in a scalable manner?
+2. To what extend can the model be implemented in a scalable manner?
 \\
 The current approaches to modelling dynamic networks are heavily limited in terms of computational cost and hence unable to model larger networks on accessible hardware in a timely fashion.
 A scalable model will be able to run in a way that is much more computationally efficient than prior approaches, and allow for the modelling of larger, more complex networks.
@@ -62,7 +57,7 @@ A scalable model will be able to run in a way that is much more computationally 
 This research question will be answered by implementing the computations of the proposed model in a vectorized manner.
 This implementation is evaluated based on the improvement in efficiency over the work by Tommerup et. al. \cite{Tommerup2021LearningNetworks}, as well as the increase in run time in regards to network attributes when training on the CPU and GPU separately.
 \\\\
-\hspace*{5mm} 3. How can the model be visualized to enforce explainability?
+3. How can the model be visualized to enforce explainability?
 \\
 A key advantage to the latent space modelling approach is it's explainability, ie. that it is interpretable by a human observer.
 The proposed SCVM should allow for a more detailed interpretation of the complex behavior that a dynamic network might have over it's temporal duration.
@@ -74,19 +69,15 @@ In order to answer this research question, visualizations of real life dynamic n
 \subsection{Project Outline}
 \label{sec:Intro:ThesisOutline}
 The project consist of 5 more sections.
-
+\\
 Section 2, the methodology section, provides a thorough technical explanation of the work presented in this project.
 The first half of this section explains the theoretical aspects underlying the proposed model.
 This part also describes the way synthetic data is generated for testing the model.
 The second half fleshes out the proposed model, giving a detailed description of the learning taking place within it.
 An explanation of the scalability aspects is further given, as this too defines how the model functions, in a parallelized manner.
-
 Section 3 explains the datasets used for producing results.
-
 Section 4 begins by listing details related to reproducibility, and then presents and analyzes the results which relate to answering the three research questions.
-
 Section 5 discusses the results and possible future improvements, and ends by discussing some real life use cases in which the SCVM may be utilized.
-
 Section 6 is the conclusion, summarizing the key findings presented in the project, hence wrapping up.
 \\\\
 All code for the project is publicly available via the following link:

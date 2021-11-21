@@ -33,8 +33,13 @@ The ground truth parameters of the first synthetic dataset are as follows:
                 \end{matrix}\right), \hspace{10}
     \beta = 7.5
 \end{equation}
-These ground truth parameters yield a dataset, tuples denoting the two interacting nodes $u$ and $v$ in its first two columns, as well as the time of interaction $t$ in the third, ie. $(u_i, v_i, t_i)$, which has size $n=79,424$.
-
+These ground truth parameters yield a dataset, tuples denoting the two interacting nodes $u$ and $v$ in its first two columns, as well as the time of interaction $t$ in the third, ie. $(u_i, v_i, t_i)$, which has size $n=79,424$. 
+The following links provide animations of the data:
+\begin{align*}
+    &\text{\bluehref{https://tgml-bachelor-project.github.io/GT-dataset1-no-correction.html}{LINK: SYNTHETIC DATASET 1 WITHOUT CORRECTION}} \\
+    &\text{\bluehref{https://tgml-bachelor-project.github.io/GT-dataset1-with-correction.html}{LINK: SYNTHETIC DATASET 1 WITH CORRECTION}}
+\end{align*}
+to get a visual understanding of the setup.
 
 \subsubsection{Synthetic Dataset 2}
 \label{sec:Data:SyntheticData:SyntheticDataset2}
@@ -72,8 +77,12 @@ The ground truth parameters of the second synthetic dataset are as follows:
 All velocity vectors are written in appendix \ref{appendix:SyntheticDataset2}.
 \\
 These ground truth parameters yield a dataset which has size $n=330,023$.
-
-
+\\
+To see an animated representation of the dataset the following links are provided:
+\begin{align*}
+    &\text{\bluehref{https://tgml-bachelor-project.github.io/GT-dataset2-no-correction.html}{LINK: SYNTHETIC DATASET 2 WITHOUT CORRECTION}} \\
+    &\text{\bluehref{https://tgml-bachelor-project.github.io/GT-dataset2-with-correction.html}{LINK: SYNTHETIC DATASET 2 WITH CORRECTION}}
+\end{align*}
 
 \subsubsection{Synthetic Dataset 3}
 \label{sec:Data:SyntheticData:SyntheticDataset3}
@@ -133,7 +142,11 @@ The max time is $t_{max} = 20$, and as such the remaining ground truth parameter
                 -0.3 & -0.05\\
                 \end{matrix}\right)
 \end{equation}
-
+A visual representation is provided through the links below:
+\begin{align*}
+    &\text{\bluehref{https://tgml-bachelor-project.github.io/GT-dataset3-no-correction.html}{LINK: SYNTHETIC DATASET 3 WITHOUT CORRECTION}} \\
+    &\text{\bluehref{https://tgml-bachelor-project.github.io/GT-dataset3-with-correction.html}{LINK: SYNTHETIC DATASET 3 WITH CORRECTION}}
+\end{align*}
 
 \subsection{Real Data}
 \label{sec:Data:RealData}
@@ -147,17 +160,16 @@ Dataset can be found here:
 \\\\
 The first real dataset consists of player interactions in a game of Resistance. 
 This dataset has been chosen, at is one of few temporally dynamic networks available, which has relatively few nodes yet still many interactions.
-
+\\
 The Resistance game is a discussion, find-the-fraudster game, in which each player has a role belonging to either the resistance (good guys) or government spies (evil guys).
 Only the government spies know the identity of their teammates, and so the goal of the game is for the resistance to identify the spies through verbal communication and vote them out, while the spies try to vote out the resistance by acting innocence. 
-
+\\
 The interactions that make up the dataset are synthesized from a video recording of one such game of Resistance.
 For each time point, every third of a second, a perception algorithm, \cite{BaiPredictingVideos} \cite{Kumar2019PredictingNetworks}, evaluates for every player which other player he or she is most likely to be looking at.
 For utilizing this dataset in the project, one player looking at another player is defined as an interaction between the two.
-
+\\
 The specific dataset, game 4 of the included 62 games in the overall dataset, has eight players and a computer with which the players can interact to get hints during the game.
 This makes for $N=9$ nodes, having a total of 58.584 interactions spanning from time $t_{0} = 0$ seconds to $t_{max} = 2440$ seconds, approximately $40$ minutes and $40$ seconds.
-
 The timestamps are transformed from thirds of a second to minutes by the following formula:
 
 \begin{equation}
@@ -177,7 +189,6 @@ The first interactions happening at $t_{0} = 34,240$ seconds and the last at 151
 The data is essentially split temporally in two, and around half of interactions, 3.510.605, happen before time $t_{max} = 65,840$ seconds.
 The dataset used for the project is this first half, consisting of $N = 237$ nodes with $n = 3,510,605$ interactions.
 %From this half, the $n = 958,220$ interactions of 98 students and teachers are utilized.
-
 The timestamps are transformed to hours, starting at hour 0 and ending at 84.25, by the following formula:
 
 \begin{equation}

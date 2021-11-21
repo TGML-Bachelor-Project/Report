@@ -6,14 +6,14 @@ Training the models in this project is done using the Adam optimization algorith
 % A gradient descent algorithm seeks to optimize learnable parameters by stepping towards the direction of the negative gradient of the loss function with respect to these parameters.
 % This way, the model will eventually find the parameters that, globally or locally, minimize the loss function.
 % What makes the Adam optimization a stochastic gradient descent is the fact that the gradient is a stochastic approximation of the gradient based on the given batch of training data.
-The most important hyperparameter in regards to the Adam optimization algorithm is the learning rate, usually denoted by $\alpha$, which determines the step size that is taken in the direction of the negative gradient. 
+The most important hyperparameter in regards to the Adam optimization algorithm is the learning rate, usually denoted $\alpha$, which determines the step size that is taken in the direction of the negative gradient. 
 %As Adam builds upon the RMSProp optimizer, short for Root Mean Square Propagation, this learning rate is adapted for each learnable parameter, and hence slightly changing.
-
-For this project, a learning rate of $lr = 0.025$ was found to be a good fit as it converges relatively quickly while not overshooting for most trainings.
-Other hyperparameters of the training setup is Pytorch default.
-
-Note that all random number generators in this project, belonging to Python, Numpy and Torch, are set to $seed = 1$.
-
-While the number of Epochs needed by the SCVM for properly learning different dynamic networks, the proposed model could in most cases train for 5000 epochs in at most a couple of hours.
-5000 epochs was enough for all trainings to seemingly converge.
+For this project, a learning rate of $\alpha = 0.025$ was found to be a good fit as the SCVM converges relatively quickly for most trainings.
+Other hyperparameters of the training setup are Pytorch default.
+Note that all random number generators in this project, belonging to Python, Numpy and PyTorch, are set to $seed = 1$.
+\\
+While the number of Epochs needed by the SCVM for properly learning different dynamic networks varies, the proposed model could in most cases train for 5000 epochs in at most a couple of hours.
+The exception to this is the much larger Lyon Primary School dataset, which took around 12 hours to run 5000 epoch.
+5000 epochs was enough for all trainings to seemingly converge, and hence all results are based on models which have run for this number of epochs.
+When training model, the entire dataset is considered on big training batch, ie. the training data is not batched into smaller sub-sets, and the model performs optimization for each epoch on all data at once.
 

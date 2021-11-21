@@ -5,53 +5,71 @@
 \subsubsection{Modelling Performance and Testing of the SCVM}
 \label{sec:Discussion:Results:ModellingPerformance}
 
-The results presented for answering research question 1 first of all showed that the SCVM was highly capable of fitting to the interaction intensities of the synthetic datasets both for data generated using a single velocity step and for data with multiple steps. In that regard, the SCVM improves the performance of both the naive  model with no dynamics and the single step constant velocity model. 
-For the dyad removal tests the multi step SCVM was capable of keeping a fine fit of the intensities for the remaining node pairs, but the fit on the removed dyad was impacted negatively. Making the model consistently evaluate the intensities too low. This result point to the SCVM not quite being able to transitively determining the intensity of the removed dyad from the remaining node interactions. One reason for this could be if the synthesised data is structured such that too much information is lost when performing the dyad removal, thereby reducing the transitive properties to be used for determining the intensities of the dyad. A good test for this would have been to perform the dyad removal on several sythesized datasets with larger amounts of nodes e.g. 25, 50, 100, 150 and also changing node positions and changing the number of dyads removed.
+The results presented for answering research question 1 first of all showed that the SCVM was highly capable of fitting to the interaction intensities of the synthetic datasets, both for data generated using a single velocity step and for data with multiple steps. I
+n that regard, the SCVM improves the performance of both the baseline model with no dynamics and the single step constant velocity model. 
 \\
-The SCVM accuracy on removed node interactions turned out to be close to random for the synthesized data. This most likely is caused by the data synthetization, where the node movements are created in a way that produce very similar node pair intensities. This can for instance be seen from the intensity plots in figure \ref{fig:RQ1:SCVM_intensity} where the ground truth shows, that all node pair intensities are close to similar. This happens because the nodes are simulated as moving symmetrically towards each other. As the model tries to determine the most likely node pair from their intensities at the given time, this leads to all pairs being equally likely and such an accuracy around 50 \%. This might explain the 10 \% improvement of the accuracy when the model is evaluated on the real dataset 1, which has a more diverse movement of the nodes. Therefore, to properly evaluate the SCVM accuracy other datasets should be synthesized with varying node movements.  
+For the dyad removal tests, the multi step SCVM was capable of keeping a fine fit of the intensities for the remaining node pairs, but the fit on the removed dyad was impacted negatively. 
+The model consistently evaluated the intensities of the removed dyad as too low. 
+This result points to the SCVM not quite being able to transitively determine the intensity of the removed dyad from the remaining node interactions. 
+One reason for this could be if the synthesised data is structured such that too much information is lost when performing the dyad removal, thereby reducing the transitive properties for determining the intensities of the dyad. 
+A more elaborate test for this would have been to perform the dyad removal on several synthesized datasets with larger amounts of nodes e.g. 25, 50, 100, 150 and also changing node positions and changing the number of dyads removed.
+\\
+The SCVM accuracy on removed node interactions turned out to be close to random for the synthesized data. 
+This most likely is caused by the synthetic datasets used, for which the node movements were chosen in a way that produced very similar node pair intensities. 
+This can for instance be seen from the intensity plots in figure \ref{fig:RQ1:SCVM_intensity}, where the ground truth shows that all dyad intensities are close to similar. 
+This happens because the nodes are simulated as moving close to symmetrically towards each other. 
+As the model tries to determine the most likely node pair from their intensities at the given time, this leads to all pairs being somewhat equally likely and as such an accuracy around 50 \% is given. 
+This might explain the 10 \% improvement of the accuracy when the model is evaluated on the real dataset 1, the Resistance game, which has a more diverse movement of the nodes.
+Therefore, to properly evaluate the SCVM accuracy, other datasets should be synthesized with more diverse node movements.  
 
 
 \subsubsection{Computation Times and Memory Limitations}
 \label{sec:Discussion:Results:ComputationSpeed}
-In the results for research question 2, see section \ref{sec:ResearchQuestion2}, it was shown how the proposed vectorized setup improved scalability to such extend that it reduced the run time for training on synthetic dataset 1 by around a factor 32 compared to the non-vectorized setup.
-The subsequent section, regarding computational speed, gave a more detailed overview of the running times of the vectorized setup, in relation to number of nodes, steps and interactions.
-The results showed that both when increasing the number of nodes in the dataset, as well as the number of steps the SCVM had to fit, the run times were similar for low numbers, but increased seemingly exponentially when running the training on the CPU, and relatively linearly when training using CUDA.
-The explanation for these results seem rather straight forward; the vectorized setup enables parallelization, enabling the computations to be run in parallel on multiple cores, of which the GPU has in abundance compared to the CPU. 
-Specifically, the CPU, an Intel Core i7-9750H, used for generating these results has 6 cores (with multi threading this number is actually 12) while the GPU, an NVIDA GeForce GTX 1650, has 896 CUDA cores.
-%In theory, this means 896 calculations can happen simultaneously compared to 12.
+In the results for research question 2, see section \ref{sec:ResearchQuestion2}, it was shown how the proposed vectorized setup improved scalability to such extend that it reduced the run time for training on synthetic dataset 1, fitting one step, by around a factor 32 compared to the non-vectorized baseline setup.
 \\
-\noindent
+The subsequent section, regarding computational speed, gave a more detailed overview of the running times of the vectorized setup, in relation to number of nodes, steps and interactions.
+These results showed that both when increasing the number of nodes in the dataset, as well as the number of steps the SCVM had to fit, the run times were similar for low numbers, but increased seemingly exponentially when running the training on the CPU, and relatively linearly when running on the GPU using CUDA.
+The explanation for these results seem rather straight forward; the vectorized setup introduces parallelization, enabling the computations to be run in parallel on multiple cores, of which the GPU has in abundance compared to the CPU. 
+Specifically, the CPU, an Intel Core i7-9750H, used for generating these results has 6 cores (with multi threading this number is in practise 12) while the GPU, an NVIDA GeForce GTX 1650, has 896 CUDA cores.
+\\
 The size of the dataset $n$, i.e. number of interactions, resulted in the same run times for both the CPU and CUDA, growing proportionally with $n$.
-A reason for the similar performance most likely is, that the number of nodes and steps are kept constant on a low value i.e. 4 nodes and 4 velocity steps to only test the impact of the number of interactions. As the parallization capabilities of the GPU are only benefitting from higher numbers of nodes and velocity steps the CPU can still keep up and handle the same amount of interactions. Also a possible way of improving the performance over all on number of interactions would be to parallelize the batch training. As of now the batch training is done sequentially, but Pytorch provides possibilities of doing parallel data processing, which could be explored further in the future. 
+The vectorized setup implemented for the SCVM parallelizes the computation across nodes and steps, but not interactions, hence the advantage of more cores are not relevant when only raising the number interactions. 
+\\
+A possible way of improving the performance over number of interactions would be to parallelize the training across batches of interactions. 
+Batching was not utilized for most of this project, but as of now batched training is done sequentially, and so would not improve run times.
+Pytorch provides possibilities of doing parallel data processing, which could be explored further in the future. 
 
 
 \subsubsection{Explainability of SCVM Animations}
 \label{sec:Discussion:Results:Explainability}
 The results for research question 3, see section \ref{sec:ResearchQuestion3}, first showed what impact applying position, drift and rotation correction to the SCVM had, in regards to the visualizations of the learned dynamics.
-It could clearly be seen that correcting positions and drift made for visualizations that were more interpretable, as they could more easily be inspected by an observer.
+It was clearly seen that correcting position and drift made for a visualization that was more interpretable, as it could more easily be inspected by an observer.
+Correction of the rotation of the learned dynamics yielded a visualization that was distinct from its non-rotation-corrected counterpart, and while it initially seems negligible in regards of improving explainability, it may in fact do just that.
+This is due to the fact that correcting rotation standardises the movements in latent space to always have the most movement in the x-axis..
+As such, comparing visualizations of SCVM learned dynamics is more consistent with rotation corrected.
 \\
-Correction of the rotation of the learned dynamics yielded a visualization that was distinct from its non-rotation-corrected counterpart, and while it initially seems negligible by an observer, it will non the less increase interpretability.
-This is due to the fact that correcting rotation standardises the movements in latent space to always have the most movement in the x-axis, regardless of which directions the learned parameters end up moving along.
-As such, comparing different learned dynamics is more consistent with rotation corrected.
-\\
-Applying regularization clearly dampened the change in velocity between steps, hence smoothing the movements of nodes. 
-While the nodes definitely moved more slowly through latent space with higher regularization parameters $\gamme$, the addition of regularization for the sake of explainability did not seem strikingly convincing in the case of the datasets chosen for this project.
+Applying regularization dampened the change in velocity between steps to some extend, hence smoothing the movements of nodes. 
+While the nodes seemed to move more slowly through latent space with higher regularization parameters $\gamme$, the addition of regularization for the sake of explainability did not seem strikingly convincing when evaluating on the animations.
 \\\\
 When looking at the visualizations made on the basis of interactions in a game of Resistance, the visualizations with 100 steps to some extend enables for an understanding of how each player relates to each other over the duration of the game. 
-The computer, shown in the animations as P0, is less active during the game, and this can clearly be seen in the animation as it floats further from the human players, only being engaged by some players a few times during the game.
-The players can in the animation be seen as interacting with each other in a somewhat interpretable way, their relation can be inspected at a given time point, yet they can easily be seen as sporadic.
-Taking the stance that the data is modelled to the best extend possible by the SCVM, and that this modelling is sufficient in describing the dynamics of the game, it can be argued that the animation lacks the ability to show the observer whether this sporadic-like behaviour is in fact based in the underlying data.
+The computer, shown in the animations as P0, is being interacted with a lot less than the eight players, and this can clearly be seen in the animation as it moves around further from the human players, only coming in closer proximity to the human players a few times during the game.
+\\
+The inter-player relations can be inspected at a given time point, but looking at the animations it is also clear that their movements are somewhat sporadic.
+Taking the stance that the data is modelled to the best extend possible by the SCVM, and that this modelling is sufficient in describing the dynamics of the game well, it can be argued that the animation approach utilized in this project lacks some interpretability.
+An observer should ideally be able to infer whether sporadic-like behaviour, as seen in these animation, in fact stems from the underlying data or not.
 If the interactions of the human players \textit{is} in fact sporadic to some degree, the animation should communicate this information to the observer.
 One way of doing this would be to visually include the actual interactions of the underlying dataset.
-This could be done by showing/flashing a link between a given node pair at the time of their actual interactions.
+This could be done by flashing a link between a given node pair at the times of their actual interactions.
 This addition to the animation would help to rationalize the closeness of nodes, as closer nodes in this case should have much more frequent link-flashes than nodes farther apart.
 \\\\
-The animation made on the basis of the Lyon Primary School dataset depicts an at the same time clear and somewhat confusing picture of interactions between students and teachers.
-Each student node, labelled with the appropriate school class, is clearly seen clustering with other nodes of the same class, and in most of the animation accommodated by a teacher.
-For much of the animation, multiple of the present clusters consist of multiple classes with an appropriate number of teachers, but while a straight forward answer to why this is the case is that they of course interact with each other at those times, this yields no understanding of why they do.
-In order to better understand the dynamic network from the presented animation, an observer needs more information.
-For the Lyon Primary School dataset, the animation shows some time spans where the nodes do not cluster much, and while this \textit{could} be due to the pupils having a holiday period, an observer can only guess. As such it would be advisable to perform visualizations on another real life dataset, where the node interaction data is accompanied by a qualitative description of what actually happened during the data collection. However such rich datasets are not easily found and might even have to be created from scratch to properly perform the test.
-%For the Lyon Primary School dataset, information about what courses are running at a given time would for example enable for an observer to better grasp 
+The animations made on the basis of the Lyon Primary School dataset depict an at the same time clear yet somewhat confusing picture of interactions between the present individuals.
+Each student node, labelled with the appropriate school class, is clearly seen clustering with other nodes of the same class, in most of the animation accommodated by one teacher.
+For much of the animation, multiple of the clusters consist of multiple classes with an appropriate number of teachers.
+While the simple reason for this is that these classes interact with each other at those periods of time, there is no inherent information as to why.
+It might be that these clustered classes are being taught the same subject, or are on a school trip together, but in order to better understand why the SCVM-produced representation shows them as a cluster, an observer could greatly benefit from such information.
+As such, it would be interesting to produce visualizations on other real life datasets, where the node interaction data is accompanied by some description of what is happening at the times of the interactions. 
+However, such rich datasets are not easily found and might even have to be created from scratch to be used in the future.
+
 
 
 

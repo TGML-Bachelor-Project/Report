@@ -1,17 +1,14 @@
 \subsection*{Abstract}
 
-This project proposes the Stepwise Constant Velocity Model (SCVM) which models dynamic networks in two-dimensional latent space using Newtonian dynamics with stepwise computation.
-The SCVM is implemented with a vectorized training setup in order to utilize the power of CUDA that stems from parallelization.
+This project proposes the Stepwise Constant Velocity Model (SCVM) which models dynamic networks in two-dimensional Euclidean latent space by binning the time dimension into steps and then fitting constant velocities for the nodes in each step.
+The SCVM is implemented in Pytorch with a vectorized training setup in order to utilize the power of CUDA and GPU parallelization.
 \\\\
-The proposed model is evaluated in terms of modelling capabilities, and found to model dynamic networks well, using Newtonian dynamics in a stepwise fashion as to accommodate for the dynamical nature of dynamic networks.
+The proposed model is evaluated in terms of how well it fits synthesized dynamic networks where the initial conditions of the networks are known and used to create ground truths for comparison. Also, the model is evaluated on real life data using accuracy scores for node interaction prediction and by visualizing how the SCVM models the networks. While the predictive performance shows underwhelming results that need further investigation, the SCVM model shows promising outcomes in regards to fitting network interaction intensities and visualizing the node behavior in latent space.
 \\\\
-Running times are evaluated for the SCVM running on CPU and CUDA, the results concluding that vectorized training setup greatly improves running times when utilizing CUDA.
+Running times are evaluated for the SCVM running on CPU and CUDA, the results concluding that the vectorized training setup greatly improves running times when utilizing CUDA.
 This scalable implementation enables for the modelling of larger dynamic networks than would have been feasible with a non-vectorized training setup.
 \\\\
-Real dynamic networks are visualized through the creation of animations which depict the SCVM-modelled stepwise Newtonian dynamics in two-dimensional latent space.
-These animations are improved through the implementation of non-disruptive corrections to the learned dynamics, elevating the interpretability and explainability of the visualized dynamic network.
+Real dynamic networks are visualized through the creation of animations which depict the SCVM-modelled stepwise velocity dynamics.
+These animations are improved through the implementation of non-disruptive corrections of node positions, drift, and rotation to the learned dynamics, elevating the interpretability and explainability of the visualized dynamic network.
 \\\\
-The paper discusses results to its research questions, and argues for the investigation of a number of additions to the proposed SCVM which could improve its modelling capabilities, scalability and explainability.
-\\\\
-Lastly, possible use cases for the proposed model are discussed, amongst which the potential use in 
-
+Rounding off this project discusses the results to its research questions, together with potential real life use cases of the SCVM, and argues for the investigation of a number of additions to the proposed SCVM model which could improve its modelling capabilities, scalability and explainability.
